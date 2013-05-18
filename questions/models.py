@@ -56,3 +56,6 @@ class AMAVote(models.Model):
     
     created = models.DateTimeField(auto_now_add=True, editable=False)
     edited = models.DateTimeField(auto_now=True, editable=False)
+    
+    class Meta:
+        unique_together = ('user', 'question')
