@@ -12,6 +12,15 @@ class AMASession(models.Model):
     created = models.DateTimeField(auto_now_add=True, editable=False)
     edited = models.DateTimeField(auto_now=True, editable=False)
     
+    def __unicode__(self):
+        if user.first_name is not None and user.last_name is not None:
+            return u"%s %s's AMA Session" % (user.first_name, user.last_name)
+        else:
+            return u"%s's AMA Session" % user.username
+        
+    def get_absolute_url(self):
+        return '/s/%i/' % self.id
+    
 class AMAQuestion(models.Model):
     '''
     Questions asked by users are represented by this model.
@@ -25,7 +34,12 @@ class AMAQuestion(models.Model):
     
     created = models.DateTimeField(auto_now_add=True, editable=False)
     edited = models.DateTimeField(auto_now=True, editable=False)
-
+    
+    def __unicode__(self):
+        if answer:
+            return '[X]Q: %s' % question
+        else:
+            return '[_]Q: %s' % question
 
 class AMAAnswer(models.Model):
     '''
@@ -37,6 +51,9 @@ class AMAAnswer(models.Model):
     
     created = models.DateTimeField(auto_now_add=True, editable=False)
     edited = models.DateTimeField(auto_now=True, editable=False)
+    
+    def __unicode(self):
+        return 'A: %s' % response
     
 class AMAVote(models.Model):
     '''
