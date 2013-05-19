@@ -55,24 +55,24 @@ class AMAAnswer(models.Model):
     def __unicode(self):
         return 'A: %s' % response
     
-class AMAVote(models.Model):
-    '''
-    Users' votes on questions are represented here.
-    '''
-    
-    user = models.ForeignKey(User, related_name='votes', editable=False)
-    question = models.ForeignKey(AMAQuestion, related_name='votes', editable=False)
-    
-    VOTE_CHOICES = (
-        (1, 'Upvote'),
-        (0, 'Neutral'),
-        (-1, 'Downvote'),
-    )
-    
-    value = models.IntegerField(choices=VOTE_CHOICES)
-    
-    created = models.DateTimeField(auto_now_add=True, editable=False)
-    edited = models.DateTimeField(auto_now=True, editable=False)
-    
-    class Meta:
-        unique_together = ('user', 'question')
+# class AMAVote(models.Model):
+#     '''
+#     Users' votes on questions are represented here.
+#     '''
+#     
+#     user = models.ForeignKey(User, related_name='votes', editable=False)
+#     question = models.ForeignKey(AMAQuestion, related_name='votes', editable=False)
+#     
+#     VOTE_CHOICES = (
+#         (1, 'Upvote'),
+#         (0, 'Neutral'),
+#         (-1, 'Downvote'),
+#     )
+#     
+#     value = models.IntegerField(choices=VOTE_CHOICES)
+#     
+#     created = models.DateTimeField(auto_now_add=True, editable=False)
+#     edited = models.DateTimeField(auto_now=True, editable=False)
+#     
+#     class Meta:
+#         unique_together = ('user', 'question')
