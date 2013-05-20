@@ -1,5 +1,8 @@
 from django.db import models
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
+
+import datetime
 
 class AMASession(models.Model):
     '''
@@ -13,13 +16,16 @@ class AMASession(models.Model):
     edited = models.DateTimeField(auto_now=True, editable=False)
     
     def __unicode__(self):
-        if user.first_name is not None and user.last_name is not None:
-            return u"%s %s's AMA Session" % (user.first_name, user.last_name)
+        if self.owner.get_full_name():
+            return u"%s's AMA Session" % (self.owner.get_full_name())
         else:
-            return u"%s's AMA Session" % user.username
+            return u"%s's AMA Session" % (self.owner.username)
         
     def get_absolute_url(self):
         return '/s/%i/' % self.id
+        
+    def is_running(self):
+        return self.start_time.replace(tzinfo=None)<datetime.datetime.now()<self.end_time.replace(tzinfo=None)
     
 class AMAQuestion(models.Model):
     '''
@@ -30,16 +36,24 @@ class AMAQuestion(models.Model):
     target = models.ForeignKey(User, related_name='asked_questions', editable=False)
     question = models.TextField()
     
-    session = models.ForeignKey(AMASession, related_name='questions', editable=False, blank=True, null=True)
+    session = models.ForeignKey(AMASession, related_name='questions', editable=False)
     
     created = models.DateTimeField(auto_now_add=True, editable=False)
     edited = models.DateTimeField(auto_now=True, editable=False)
     
     def __unicode__(self):
-        if answer:
-            return '[X]Q: %s' % question
+        try:
+            self.answer
+        except ObjectDoesNotExist:
+            return '[_]Q: %s' % self.question
         else:
-            return '[_]Q: %s' % question
+            return '[X]Q: %s' % self.question
+            
+    def get_score(self):
+        try:
+            return self.score if self.score is not None else 0
+        except KeyError:
+            return 0
 
 class AMAAnswer(models.Model):
     '''
@@ -55,24 +69,25 @@ class AMAAnswer(models.Model):
     def __unicode(self):
         return 'A: %s' % response
     
-# class AMAVote(models.Model):
-#     '''
-#     Users' votes on questions are represented here.
-#     '''
-#     
-#     user = models.ForeignKey(User, related_name='votes', editable=False)
-#     question = models.ForeignKey(AMAQuestion, related_name='votes', editable=False)
-#     
-#     VOTE_CHOICES = (
-#         (1, 'Upvote'),
-#         (0, 'Neutral'),
-#         (-1, 'Downvote'),
-#     )
-#     
-#     value = models.IntegerField(choices=VOTE_CHOICES)
-#     
-#     created = models.DateTimeField(auto_now_add=True, editable=False)
-#     edited = models.DateTimeField(auto_now=True, editable=False)
-#     
-#     class Meta:
-#         unique_together = ('user', 'question')
+class AMAVote(models.Model):
+
+    '''
+    Users' votes on questions are represented here.
+    '''
+    
+    user = models.ForeignKey(User, related_name='votes', editable=False)
+    question = models.ForeignKey(AMAQuestion, related_name='votes', editable=False)
+    
+    VOTE_CHOICES = (
+        (1, 'Upvote'),
+        (0, 'Neutral'),
+        (-1, 'Downvote'),
+    )
+    
+    value = models.IntegerField(choices=VOTE_CHOICES)
+    
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    edited = models.DateTimeField(auto_now=True, editable=False)
+    
+    class Meta:
+        unique_together = ('user', 'question')
