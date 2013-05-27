@@ -127,7 +127,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 	# PIP Apps
-	'rest_framework',
+	'tastypie',
 	# Custom Apps
     'questions',
 )

@@ -1,4 +1,3 @@
 django
-django-voting
 django-menu
-djangorestframework
+django-tastypie

@@ -48,12 +48,6 @@ class AMAQuestion(models.Model):
             return '[_]Q: %s' % self.question
         else:
             return '[X]Q: %s' % self.question
-            
-    def get_score(self):
-        try:
-            return self.score if self.score is not None else 0
-        except KeyError:
-            return 0
 
 class AMAAnswer(models.Model):
     '''
