@@ -48,7 +48,8 @@ USE_L10N = True
 USE_TZ = True
 
 # Auto-generated for local dev purposes
-PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
+PROJECT_PATH = os.path.realpath(os.path.join(os.path.dirname(__file__), os.pardir))
+print PROJECT_PATH
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
@@ -110,9 +111,7 @@ ROOT_URLCONF = 'ama.urls'
 WSGI_APPLICATION = 'ama.wsgi.application'
 
 TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
+    os.path.join(PROJECT_PATH, 'template')
 )
 
 INSTALLED_APPS = (
