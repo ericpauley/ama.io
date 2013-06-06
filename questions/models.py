@@ -4,7 +4,26 @@ from django.contrib.auth.models import User
 
 import datetime
 
-class AMASession(models.Model):
+import string, random
+
+class SluggedModel(models.Model):
+    slug = models.SlugField(primary_key=True, unique=True, editable=False, blank=True)
+
+    def save(self, *args, **kwargs):
+        while not self.slug:
+            ret = []
+            "".join(random.sample('1234567890abcdefghjkmnpqrstuvwxyz', 4))
+
+            newslug = ''.join(ret)
+            if self.objects.filter(pk=newslug).count():
+                self.slug = newslug
+
+        super(SluggedModel, self).save(*args, **kwargs)
+
+    class Meta:
+        abstract = True
+
+class AMASession(SluggedModel):
     '''
     Question answering sessions are represented by this model.
     '''
