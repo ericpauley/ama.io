@@ -11,5 +11,6 @@ v1_api.register(AnswerResource())
 
 urlpatterns = patterns('',
     url(r'^$', views.test),
+    url(r'^(s|session)/(?P<slug>[1234567890abcdefghjkmnpqrstuvwxyz]{4})/$', views.session),
     url(r'^api/', include(v1_api.urls)),
 )
