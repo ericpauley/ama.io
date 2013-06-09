@@ -1,0 +1,78 @@
+{%extends "base.html"%}
+{%block prescript%}
+{%load markup%}
+<script type="text/javascript">
+GLOBALS={
+	session: "{{session.slug}}"
+	}
+</script>
+{%endblock%}
+{%block content%}
+<div class="hero-unit">
+	<div class="control-group">
+		<div class="controls">
+		</div>
+	</div>
+	<h1>
+		{{session.data.title}}
+	</h1>
+	<p>
+		{{session.data.desc|markdown:"safe"}}
+	</p>
+	<p>
+	</p>
+</div>
+<ul id="sessiontabs" class="nav nav-tabs">
+	<li class="active">
+		<a href="#unanswered" data-toggle="tab">Unanswered Questions</a>
+	</li>
+	<li>
+		<a href="#answered" data-toggle="tab">Answered Questions</a>
+	</li>
+	<li>
+		<a href="#about" data-toggle="tab">About</a>
+	</li>
+</ul>
+<div id="sessiontabcontent" class="tab-content">
+	<div class="tab-pane fade active in" id="unanswered">
+		<div class="row-fluid">
+			<div class="span10">
+				<table class="table table-striped table-hover">
+					<thead>
+						<tr>
+							<th>
+								Score
+							</th>
+							<th>
+								Question
+							</th>
+							<th>
+								Asker
+							</th>
+							{%if user == session.owner%}<th>
+								Actions
+							</th>
+							{%endif%}
+						</tr>
+					</thead>
+					<tbody>
+						{%for question in session.get_answered%}
+						{%include "question.html"%}
+						{%endfor%}
+					</tbody>
+				</table>
+			</div>
+			<div class="btn btn-large btn-success span2">
+				<i class="icon-plus"></i>
+				Ask
+			</div>
+		</div>
+	</div>
+	<div class="tab-pane fade" id="answered">
+		Test2
+	</div>
+	<div class="tab-pane fade" id="about">
+		Test3
+	</div>
+</div>
+{%endblock%}

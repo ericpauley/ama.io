@@ -1,23 +1,21 @@
 from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
+from jsonfield import JSONField
 
 import datetime
 
-import string, random
+import string
+import random
 
 class SluggedModel(models.Model):
     slug = models.SlugField(primary_key=True, unique=True, editable=False, blank=True)
 
     def save(self, *args, **kwargs):
         while not self.slug:
-            ret = []
-            "".join(random.sample('1234567890abcdefghjkmnpqrstuvwxyz', 4))
-
-            newslug = ''.join(ret)
-            if self.objects.filter(pk=newslug).count():
+            newslug = "".join(random.sample('1234567890abcdefghjkmnpqrstuvwxyz', 4))
+            if self.__class__.objects.filter(slug=newslug).count() == 0:
                 self.slug = newslug
-
         super(SluggedModel, self).save(*args, **kwargs)
 
     class Meta:
@@ -27,9 +25,11 @@ class AMASession(SluggedModel):
     '''
     Question answering sessions are represented by this model.
     '''
-    owner = models.ForeignKey(User, related_name='sessions', editable=False)
+    owner = models.ForeignKey(User, related_name='sessions')
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
+    
+    data = JSONField(default={}, blank=True)
     
     created = models.DateTimeField(auto_now_add=True, editable=False)
     edited = models.DateTimeField(auto_now=True, editable=False)
@@ -43,6 +43,12 @@ class AMASession(SluggedModel):
     def get_absolute_url(self):
         return '/s/%i/' % self.id
         
+    def get_unanswered(self):
+        return self.questions.filter(answer=None).annotate(score=models.Sum('votes__value'))
+        
+    def get_answered(self):
+        return self.questions.exclude(answer=None).annotate(score=models.Sum('votes__value'))
+        
     def is_running(self):
         return self.start_time.replace(tzinfo=None)<datetime.datetime.now()<self.end_time.replace(tzinfo=None)
     
@@ -51,14 +57,22 @@ class AMAQuestion(models.Model):
     Questions asked by users are represented by this model.
     '''
     
-    asker = models.ForeignKey(User, related_name='own_questions', editable=False)
-    target = models.ForeignKey(User, related_name='asked_questions', editable=False)
+    asker = models.ForeignKey(User, related_name='own_questions')
+    target = models.ForeignKey(User, related_name='asked_questions')
     question = models.TextField()
     
-    session = models.ForeignKey(AMASession, related_name='questions', editable=False)
+    data = JSONField(default={}, blank=True)
+    
+    session = models.ForeignKey(AMASession, related_name='questions')
     
     created = models.DateTimeField(auto_now_add=True, editable=False)
     edited = models.DateTimeField(auto_now=True, editable=False)
+    
+    def get_score(self):
+        try:
+            return self.score if score is not None else 0
+        except:
+            return 0
     
     def __unicode__(self):
         try:
@@ -73,8 +87,10 @@ class AMAAnswer(models.Model):
     Answers to questions are represented by this model.
     '''
     
-    question = models.OneToOneField(AMAQuestion, related_name='answer', editable=False)
+    question = models.OneToOneField(AMAQuestion, related_name='answer')
     response = models.TextField()
+    
+    data = JSONField(default={}, blank=True)
     
     created = models.DateTimeField(auto_now_add=True, editable=False)
     edited = models.DateTimeField(auto_now=True, editable=False)

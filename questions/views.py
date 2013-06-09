@@ -9,7 +9,7 @@ def test(request):
     
 def session(request, slug):
     try:
-        s = session.objects.get(slug=slug.lower())
-    except Session.DoesNotExist:
+        s = AMASession.objects.get(slug=slug.lower())
+    except AMASession.DoesNotExist:
         raise Http404
     return render(request, "session.html", {'session':s})

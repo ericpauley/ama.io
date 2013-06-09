@@ -1,0 +1,31 @@
+<tr>
+	<td style="vertical-align:middle;">
+		<div class="btn-group-vertical">
+			<a href="#" class="btn btn-succes"><i class="icon-thumbs-up"></i></a>
+			<a href="#" disabled="" class="btn btn-dnger" style="width:32px">{{question.get_score}}</a>
+			<a href="#" class="btn btn-dager"><i class="icon-thumbs-down"></i></a>
+		</div>
+	</td>
+	<td>
+		{{question.question}}
+		<!---<form class="form-inline row-fluid">
+	<textarea class="pull-left span10" style="resize: vertical; margin-top: 0px; margin-bottom: 0px; height: 50px;"></textarea>
+	<button type="submit" class="btn btn-large btn-success span2 pull-right"
+	style="
+">
+		Answer
+	</button>
+</form>-->
+	</td>
+	<td>
+		{{question.asker}}
+	</td>
+	{% if user == question.target%}
+	<td style="vertical-align:middle;">
+		<div class="btn-group-vertical">
+			<a href="#" class="btn"><i class="icon-ok"></i> Answer</a>
+			<a href="#" class="btn"><i class="icon-remove"></i> delete</a>
+		</div>
+	</td>
+	{%endif%}
+</tr>
