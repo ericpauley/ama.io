@@ -1,4 +1,4 @@
-from tastypie.resources import ModelResource
+from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie import fields
 from tastypie.authorization import ReadOnlyAuthorization
 from questions.models import AMASession,AMAQuestion,AMAAnswer
@@ -25,12 +25,18 @@ class SessionResource(ModelResource):
 
 class QuestionResource(ModelResource):
 
-    answer = fields.OneToOneField('questions.api.AnswerResource', 'answer', related_name='question', null=True)
+    answer = fields.OneToOneField('questions.api.AnswerResource', 'answer', related_name='question', null=True, full=True)
+    session = fields.OneToOneField('questions.api.SessionResource', 'session', null=True)
     score = fields.IntegerField(attribute='score', default=0, readonly=True)
 
     class Meta:
         queryset = AMAQuestion.objects.all().annotate(score=Sum('votes__value'))
         resource_name = 'question'
+        filtering = {
+            'session': ALL_WITH_RELATIONS,
+            'answer': ALL_WITH_RELATIONS,
+            'score': ALL
+        }
         
 class AnswerResource(ModelResource):
     question = fields.OneToOneField(QuestionResource, 'question', related_name='answer')
