@@ -1,10 +1,43 @@
-<tr>
-	<td style="vertical-align:middle;">
-		<div class="btn-group-vertical">
+{%load markup%}
+<div id = "question-{{question.id}}"class="span12 well">
+	<div class="row-fluid">
+		<div style="vertical-align:middle;" class="span2 btn-group-vertical">
+			{% if user == question.target%}
+			<a href="#" class="btn"><i class="icon-ok"></i> Answer</a>
+			{%else%}
 			<a href="#" class="btn btn-succes"><i class="icon-thumbs-up"></i></a>
-			<a href="#" disabled="" class="btn btn-dnger" style="width:32px">{{question.get_score}}</a>
+			{%endif%}
+			<div disabled class="btn" >{{question.get_score}}</div>
+			{% if user == question.target%}
+			<a href="#" class="btn"><i class="icon-trash"></i> delete</a>
+			{%else%}
 			<a href="#" class="btn btn-dager"><i class="icon-thumbs-down"></i></a>
+			{%endif%}
+			
 		</div>
+		<div class="span10">
+			<blockquote>
+			<p>{{question.question}}</p>
+			<small>{{question.asker}}</small>
+			</blockquote>
+		</div>
+	</div>
+	{% if question.answer%}
+	<hr/>
+	<div class="row-fluid">
+		<div class="span12">
+		<blockquote>
+			<p>{{question.answer.response|markdown:"safe"}}</p>
+		</blockquote>
+		</div>
+	</div>
+	{%endif%}
+</div>
+
+
+<!--<tr>
+	<td style="vertical-align:middle;">
+		
 	</td>
 	<td>
 		{{question.question}}
@@ -15,7 +48,7 @@
 ">
 		Answer
 	</button>
-</form>-->
+</form>--
 	</td>
 	<td>
 		{{question.asker}}
@@ -28,4 +61,4 @@
 		</div>
 	</td>
 	{%endif%}
-</tr>
+</tr>-->
