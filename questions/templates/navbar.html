@@ -42,37 +42,16 @@
 		</li>
 	</ul>
 	{% if user.is_anonymous%}
-	<form class="navbar-form pull-right">
-		<input class="span2" type="text" placeholder="Email">
-		<input class="span2" type="password" placeholder="Password">
-		<button class="btn">
+	<form id="login_form" class="navbar-form pull-right">
+		<input id="username" name="username" class="span2" type="text" placeholder="Email">
+		<input id="password" name="password" class="span2" type="password" placeholder="Password">
+		<button id="login" class="btn">
 			Sign in
 		</button>
 		<a href="#registerModal" data-toggle="modal" class="btn">
 			Register
 		</a>
 	</form>
-	<div id="registerModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="registerModelLabel" aria-hidden="true">
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-			<h3 id="registerModalLabel">
-				Register
-			</h3>
-		</div>
-		<div class="modal-body">
-			<form>
-				<fieldset>
-					<input id="regUsername" type="text" class="span"></input>
-					<input id="regPass" type="password" class="span"></input>
-					<input id="regPass2" type="password" class="span"></input>
-					<input id="email" type="text" class="span"></input>
-				</fieldset>
-			</form>
-		</div>
-		<div class="modal-footer">
-			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> <button class="btn btn-primary btn-success">Submit</button>
-		</div>
-	</div>
 	{%else%}
 	<p class="navbar-text pull-right">Hello, {{user}}. <a href="{%url 'logout'%}">Logout.</a></p>
 	{%endif%}

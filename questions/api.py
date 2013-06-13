@@ -34,13 +34,10 @@ class UserResource(ModelResource):
         ]
 
     def login(self, request, **kwargs):
-        print request.META.get('CONTENT_TYPE', 'application/json')
         self.method_check(request, allowed=['post'])
 
-        data = self.deserialize(request, request.raw_post_data, format=request.META.get('CONTENT_TYPE', 'application/json'))
-
-        username = data.get('username', '')
-        password = data.get('password', '')
+        username = request.POST.get('username', '')
+        password = request.POST.get('password', '')
 
         user = authenticate(username=username, password=password)
         if user:
