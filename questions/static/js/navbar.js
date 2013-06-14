@@ -26,3 +26,20 @@ $("#reg_terms").click(function(){
 		$("#reg_submit").prop("disabled", true)
 	}
 })
+
+$("#reg_form").submit(function(event){
+	event.preventDefault()
+	$.ajax({
+		type: "POST",
+		url: "/api/v1/user/register/",
+		data: $("#reg_form").serialize()
+	}).done(function(data) {
+		location.reload()
+	}).fail(function(data, text){
+		console.log("Sample of data:", data.data.reason);
+	})
+})
+
+$("#reg_submit").click(function(){
+	$("#reg_form").submit()
+})
