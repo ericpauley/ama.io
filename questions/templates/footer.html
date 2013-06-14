@@ -8,14 +8,33 @@
 			Register
 		</h3>
 	</div>
-	<div class="modal-body">
-		<form>
-			<fieldset>
-				<input id="regUsername" type="text" class="span"></input>
-				<input id="regPass" type="password" class="span"></input>
-				<input id="regPass2" type="password" class="span"></input>
-				<input id="email" type="text" class="span"></input>
-			</fieldset>
+	<div class="modal-body container-fluid">
+		<form class="form-horizontal">
+			<div class="control-group">
+				<label class="control-label" for="regUsername">Username</label>
+				<div class="controls">
+					<input type="text" id="regUsername" placeholder="Username">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="regEmail">Email</label>
+				<div class="controls">
+					<input type="text" id="regEmail" placeholder="Email">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="regPassword">Password</label>
+				<div class="controls">
+					<input type="password" id="regPassword" placeholder="Password">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="regConfirm">Confirm</label>
+				<div class="controls">
+					<input type="password" id="regConfirm" placeholder="Confirm">
+				</div>
+			</div>
+			
 		</form>
 	</div>
 	<div class="modal-footer">

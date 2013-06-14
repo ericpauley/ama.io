@@ -1,29 +1,29 @@
 {% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-  {%include "head.html"%}
-  </head>
-  <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-    	<div class="navbar-inner">
-    		<div class="container">
+<head>
+	{%include "head.html"%}
+</head>
+<body>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
 				{%include "navbar.html"%}
-    			<!--/.nav-collapse -->
-    		</div>
-    	</div>
-    </div>
-    <div class="container">
-    	{%block content%}{%endblock%}
+				<!--/.nav-collapse -->
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		{%block content%}{%endblock%}
 		{%block footer%}
-    	<footer>
-    	{%include "footer.html"%}
-    	</footer>
+		<footer>
+			{%include "footer.html"%}
+		</footer>
 		{%endblock%}
-    </div>
-    <!-- /container -->
+	</div>
+	<!-- /container -->
 	{%block prescript%}{%endblock%}
-    {%include "scripts.html"%}
+	{%include "scripts.html"%}
 	{%block postscript%}{%endblock%}
-  </body>
+</body>
 </html>

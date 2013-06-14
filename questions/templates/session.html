@@ -1,7 +1,7 @@
 {%extends "base.html"%} {%load markup%} {%block prescript%} <script type="text/javascript">
 GLOBALS={
 	session: "{{session.slug}}"
-	}
+}
 </script>{%endblock%} {%block content%}
 <div class="page-header row-fluid">
 	<h1>
@@ -9,7 +9,7 @@ GLOBALS={
 	</h1>
 </div>
 <div class="row-fluid">
-{{session.data.desc|markdown:"safe"}}
+	{{session.data.desc|markdown:"safe"}}
 </div>
 <div class="row-fluid">
 	<ul id="sessiontabs" class="nav nav-tabs">
@@ -32,7 +32,6 @@ GLOBALS={
 				<a href="#askModal" class="btn btn-large btn-success span2" data-toggle="modal">
 					Ask
 				</a>
-				
 				<div id="askModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="askModelLabel" aria-hidden="true">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -40,7 +39,7 @@ GLOBALS={
 							Ask Question
 						</h3>
 					</div>
-					<div class="modal-body">
+					<div class="modal-body container-fluid">
 						<form>
 							<fieldset>
 								<textarea class="span" placeholder="Question" rows="5"></textarea>
@@ -65,5 +64,4 @@ GLOBALS={
 		</div>
 	</div>
 </div>
-{% for i in "1234567890123456789012345678909875434568987654"%}<br/>{%endfor%}
 {%endblock%}
