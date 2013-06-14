@@ -29,14 +29,20 @@ $("#reg_terms").click(function(){
 
 $("#reg_form").submit(function(event){
 	event.preventDefault()
+	$(".form-alert").hide()
 	$.ajax({
 		type: "POST",
 		url: "/api/v1/user/register/",
 		data: $("#reg_form").serialize()
 	}).done(function(data) {
 		location.reload()
-	}).fail(function(data, text){
-		console.log("Sample of data:", data.data.reason);
+	}).fail(function(xhr){
+		var err = eval("(" + xhr.responseText + ")")
+		if(err.reason == "exists"){
+			$("#reg_exists").show()
+		}else if(err.reason == "pass_match"){
+			$("#reg_passmatch").show()
+		}
 	})
 })
 

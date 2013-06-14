@@ -1,0 +1,1 @@
+$(".form-alert").hide()

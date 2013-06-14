@@ -10,6 +10,8 @@
 	</div>
 	<div class="modal-body container-fluid">
 		<form id="reg_form" class="form-horizontal">
+			{%include "error.html" with id="reg_exists" message="That username is taken." only%}
+			{%include "error.html" with id="reg_passmatch" message="Passwords don't match." only%}
 			<div id="reg_username_group" class="control-group">
 				<label class="control-label" for="reg_username">Username</label>
 				<div class="controls">
