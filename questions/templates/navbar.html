@@ -10,13 +10,10 @@
 			<a href="/">Home</a>
 		</li>
 		<li>
-			<a href="#about">About</a>
-		</li>
-		<li>
-			<a href="#contact">Contact</a>
+			<a href="/about">About</a>
 		</li>
 		<li class="dropdown">
-			<a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+			<a href="#" class="dropdown-toggle" data-toggle="dropdown">Sessions <b class="caret"></b></a>
 			<ul class="dropdown-menu">
 				<li>
 					<a href="#">Action</a>
@@ -43,16 +40,34 @@
 	</ul>
 	{% if user.is_anonymous%}
 	<form id="login_form" class="navbar-form pull-right">
-		<input id="username" name="username" class="span2" type="text" placeholder="Email">
-		<input id="password" name="password" class="span2" type="password" placeholder="Password">
-		<button id="login" class="btn">
-			Sign in
-		</button>
-		<a href="#registerModal" data-toggle="modal" class="btn">
-			Register
-		</a>
+		<div class="input-prepend">
+			<span class="add-on"><i class="icon-user"></i></span><input id="username" name="username" class="span2" type="text" placeholder="Username">
+		</div>
+		<div class="input-prepend">
+			<span class="add-on">?</span>
+			<input id="password" name="password" class="span2" type="password" placeholder="Password">
+		</div>
+		<div class="input-prepend btn-group">
+			<button id="login" class="btn">
+				Sign in
+			</button>
+			<a href="#registerModal" data-toggle="modal" class="btn">
+				Register
+			</a>
+		</div>
 	</form>
 	{%else%}
-	<p class="navbar-text pull-right">Hello, {{user}}. <a href="{%url 'logout'%}">Logout.</a></p>
+	<div class="navbar-text pull-right btn-group">
+		<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+			{{user}} <b class="caret"></b>
+		</a>
+		<ul class="dropdown-menu">
+			<li><a tabindex="-1" href="#"><i class="icon-th-list"></i> My Sessions</a></li>
+			<li><a tabindex="-1" href="#"><i class="icon-plus"></i> Create Session</a></li>
+			<li class="divider"></li>
+			<li><a tabindex="-1" href="#"><i class="icon-cog"></i> Settings</a></li>
+		</ul>
+		<a class="btn" href="{%url 'logout'%}">Logout.</a>
+	</div>
 	{%endif%}
 </div>
