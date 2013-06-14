@@ -1,13 +1,15 @@
-from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
+from django.conf.urls import url
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
+from django.db.models import Sum
+from questions.authorization import SessionAuthorization
+from questions.models import AMASession,AMAQuestion,AMAAnswer
 from tastypie import fields
 from tastypie.authorization import ReadOnlyAuthorization
-from questions.models import AMASession,AMAQuestion,AMAAnswer
-from questions.authorization import SessionAuthorization
-from django.contrib.auth.models import User
-from django.db.models import Sum
-from django.contrib.auth import authenticate, login, logout
 from tastypie.http import HttpUnauthorized, HttpForbidden, HttpConflict, HttpBadRequest, HttpApplicationError
-from django.conf.urls import url
+from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie.utils import trailing_slash
 
 class UserResource(ModelResource):
@@ -21,8 +23,8 @@ class UserResource(ModelResource):
             'first_name': ALL,
             'last_name': ALL,
             'username': ALL
-        }
 
+        }
     def prepend_urls(self):
         return [
             url(r"^(?P<resource_name>%s)/login%s$" %
