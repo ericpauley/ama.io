@@ -6,7 +6,7 @@ from questions.authorization import SessionAuthorization
 from django.contrib.auth.models import User
 from django.db.models import Sum
 from django.contrib.auth import authenticate, login, logout
-from tastypie.http import HttpUnauthorized, HttpForbidden
+from tastypie.http import HttpUnauthorized, HttpForbidden, HttpConflict, HttpBadRequest, HttpApplicationError
 from django.conf.urls import url
 from tastypie.utils import trailing_slash
 
@@ -31,7 +31,44 @@ class UserResource(ModelResource):
             url(r'^(?P<resource_name>%s)/logout%s$' %
                 (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('logout'), name='api_logout'),
+            url(r'^(?P<resource_name>%s)/register%s$' %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('register'), name='api_register'),
         ]
+
+    def register(self, request, **kwargs):
+        self.method_check(request, allowed=['post'])
+        username = request.POST.get('username', '').lower()
+        email = request.POST.get('email', '')
+        password = request.POST.get('password', '')
+        confirm = request.POST.get('confirm', '')
+
+        if password != confirm:
+            return self.create_response(request, {
+                    'success': False,
+                    'reason': 'pass_match',
+                }, HttpBadRequest)
+
+        if User.objects.filter(username=username).count() > 0:
+            return self.create_response(request, {
+                    'success': False,
+                    'reason': 'exists',
+                }, HttpConflict)
+
+        user = User.objects.create_user(username, email, password)
+        user = authenticate(username=username, password=password)
+        if user:
+            if user.is_active:
+                login(request, user)
+                return self.create_response(request, {
+                    'success': True
+                })
+        else:
+            return self.create_response(request, {
+                'success': False,
+                'reason': 'error',
+                }, HttpApplicaitonError )
+
 
     def login(self, request, **kwargs):
         self.method_check(request, allowed=['post'])
