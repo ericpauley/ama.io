@@ -4,8 +4,9 @@ from django.shortcuts import render
 from questions.models import AMASession
 
 
-def test(request):
-    return render(request, "base.html")
+def home(request):
+    sessions = AMASession.objects.all().extra(order_by = ['-start_time'])
+    return render(request, "home.html", {'sessions': sessions})
 
 def user(request, username):
     try:

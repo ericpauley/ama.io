@@ -10,7 +10,7 @@ v1_api.register(QuestionResource())
 v1_api.register(AnswerResource())
 
 urlpatterns = patterns('',
-    url(r'^$', views.test),
+    url(r'^$', views.home),
     url(r'^s/(?P<slug>\w{4})/$', views.session, name="session"),
     url(r'^session/(?P<slug>\w{4})/$', views.session),
     url(r'^u/(?P<username>\w{4,20})/$', views.user, name="user"),
