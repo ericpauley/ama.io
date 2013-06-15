@@ -109,7 +109,6 @@ class AMAVote(models.Model):
     
     VOTE_CHOICES = (
         (1, 'Upvote'),
-        (0, 'Neutral'),
         (-1, 'Downvote'),
     )
     
