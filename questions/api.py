@@ -133,10 +133,21 @@ class QuestionResource(ModelResource):
         }
 
     def dehydrate(self, bundle):
-        if bundle.request.user.is_authenticated():
-            v = bundle.obj.votes.filter(user__username=bundle.request.user.username).aggregate(sum=Sum('value'))
-            bundle.data['vote'] = v['sum'] if v['sum'] is not None else 0
+        bundle.data['vote'] = bundle.obj.vote
         return bundle
+
+    def get_object_list(self, request):
+        if request.user.is_authenticated():
+            return super(QuestionResource, self).get_object_list(request).extra(select = {
+                    "_vote" : """
+                    SELECT value
+                    FROM questions_amavote
+                    WHERE questions_amavote.question_id = questions_amaquestion.id
+                    AND questions_amavote.user_id = (%d)
+                    """ % request.user.id
+                })
+        else:
+            return super(QuestionResource, self).get_object_list(request)
 
     def prepend_urls(self):
         return [
