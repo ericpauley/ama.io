@@ -1,12 +1,12 @@
-from django.db import models
-from django.core.exceptions import ObjectDoesNotExist
+import datetime
+import random
+import string
+
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
+from django.db import models
 from jsonfield import JSONField
 
-import datetime
-
-import string
-import random
 
 class SluggedModel(models.Model):
     slug = models.SlugField(primary_key=True, unique=True, editable=False, blank=True)
