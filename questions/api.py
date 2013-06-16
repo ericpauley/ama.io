@@ -122,10 +122,9 @@ class QuestionResource(ModelResource):
     answer = fields.OneToOneField('questions.api.AnswerResource', 'answer', related_name='question', null=True, full=True)
     session = fields.OneToOneField('questions.api.SessionResource', 'session', null=True)
     score = fields.IntegerField(attribute='score', default=0, readonly=True)
-    vote = fields.IntegerField(readonly=True, default=0)
 
     class Meta:
-        queryset = AMAQuestion.objects.all().annotate(score=Sum('votes__value'))
+        queryset = AMAQuestion.objects.all().annotate(_score=Sum('votes__value'))
         resource_name = 'question'
         filtering = {
             'session': ALL_WITH_RELATIONS,

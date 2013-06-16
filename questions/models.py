@@ -39,6 +39,20 @@ class AMASession(SluggedModel):
             return u"%s's AMA Session" % (self.owner.get_full_name())
         else:
             return u"%s's AMA Session" % (self.owner.username)
+
+    def get_marked_questions(self, user):
+        answered = self.questions.all().annotate(_score=models.Sum('votes__value'))
+        if user.is_authenticated():
+            return answered.extra(select = {
+                "_vote" : """
+                SELECT value
+                FROM questions_amavote
+                WHERE questions_amavote.question_id = questions_amaquestion.id
+                AND questions_amavote.user_id = (%d)
+                """ % user.id
+            })
+        else:
+            return answered
         
     def get_absolute_url(self):
         return '/s/%i/' % self.id
@@ -68,10 +82,18 @@ class AMAQuestion(models.Model):
     created = models.DateTimeField(auto_now_add=True, editable=False)
     edited = models.DateTimeField(auto_now=True, editable=False)
     
-    def get_score(self):
+    @property
+    def vote(self):
         try:
-            return self.score if score is not None else 0
-        except:
+            return self._vote if self._vote is not None else 0
+        except AttributeError:
+            return 0
+
+    @property
+    def score(self):
+        try:
+            return self._score if self._score is not None else 0
+        except AttributeError:
             return 0
     
     def __unicode__(self):

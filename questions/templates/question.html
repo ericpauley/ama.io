@@ -5,13 +5,13 @@
 			{% if user == question.target%}
 			<a href="#" class="btn"><i class="icon-ok"></i> Answer</a>
 			{%else%}
-			<a href="#" class="btn btn-succes"><i class="icon-thumbs-up"></i></a>
+			<a href="#" class="btn upvote {%if question.vote == 1%}btn-success{%endif%}"><i class="icon-thumbs-up"></i></a>
 			{%endif%}
-			<div disabled class="btn" >{{question.get_score}}</div>
+			<div disabled class="btn" >{{question.score}}</div>
 			{% if user == question.target%}
 			<a href="#" class="btn"><i class="icon-trash"></i> delete</a>
 			{%else%}
-			<a href="#" class="btn btn-dager"><i class="icon-thumbs-down"></i></a>
+			<a href="#" class="btn downvote {%if question.vote == -1%}btn-danger{%endif%}"><i class="icon-thumbs-down"></i></a>
 			{%endif%}
 			
 		</div>

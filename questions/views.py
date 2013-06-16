@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.db.models import Sum
 from django.http import Http404
 from django.shortcuts import render
 from questions.models import AMASession
@@ -18,6 +19,8 @@ def user(request, username):
 def session(request, slug):
     try:
         s = AMASession.objects.get(slug=slug.lower())
+        answered = s.get_marked_questions(request.user).exclude(answer=None)
+        unanswered = s.get_marked_questions(request.user).filter(answer=None)
     except AMASession.DoesNotExist:
         raise Http404
-    return render(request, "session.html", {'session':s})
+    return render(request, "session.html", {'session':s, 'unanswered': unanswered, 'answered': answered})
