@@ -182,7 +182,8 @@ class QuestionResource(ModelResource):
         if vote != 0:
             AMAVote(user=request.user, question=AMAQuestion.objects.get(pk=pk), value=vote).save()
         return self.create_response(request, {
-            'success': True
+            'success': True,
+            'score': AMAQuestion.objects.all().annotate(_score=Sum('votes__value')).get(pk=pk).score
         })
 
 class AnswerResource(ModelResource):
