@@ -41,7 +41,13 @@ class AMASession(SluggedModel):
             return u"%s's AMA Session" % (self.owner.username)
 
     def get_marked_questions(self, user):
-        answered = self.questions.all().annotate(_score=models.Sum('votes__value'))
+        answered = self.questions.all().extra(select={
+            "_score":"""
+            SELECT IFNULL(SUM(value), 0)
+            FROM questions_amavote
+            WHERE questions_amavote.question_id = questions_amaquestion.id
+            """
+        }).order_by("-_score")
         if user.is_authenticated():
             return answered.extra(select = {
                 "_vote" : """
