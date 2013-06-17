@@ -59,6 +59,19 @@ $(function(){
 				for(var i=0; i<data['questions'].length;i++){
 					var question = data['questions'][i]
 					id = question['id']
+					if(!$("#question-"+id).length){
+						if(question['answer'] == null){
+							$("#unansweredlist").append(question['html'])
+						}else{
+							$("#answeredlist").append(question['html'])
+						}
+						return
+					}
+					if(question['answer'] == null){
+						$("#unansweredlist").append($("#question-"+id))
+					}else{
+						$("#answeredlist").append($("#question-"+id))
+					}
 					$("#score-"+id).text(question['score'])
 					if(question['vote'] == 1){
 						$("#upvote-"+id).addClass("btn-success")
@@ -72,5 +85,5 @@ $(function(){
 					}
 				}
 			})
-	}, 1000)
+	}, 10000)
 })

@@ -34,7 +34,7 @@ GLOBALS['session'] = "{{session.slug}}"
 	<div id="sessiontabcontent" class="tab-content">
 		<div class="tab-pane fade active in" id="unanswered">
 			<div class="row-fluid">
-				<div class="span10">
+				<div class="span10" id="unansweredlist">
 					{%for question in unanswered%} {%include "question.html"%} {%endfor%}
 				</div>
 				<a href="#askModal" class="btn btn-large btn-success span2" data-toggle="modal">
@@ -62,7 +62,7 @@ GLOBALS['session'] = "{{session.slug}}"
 		</div>
 		<div class="tab-pane fade" id="answered">
 			<div class="row-fluid">
-				<div class="span12">
+				<div class="span12" id="answeredlist">
 					{%for question in answered%} {%include "question.html"%} {%endfor%}
 				</div>
 			</div>
