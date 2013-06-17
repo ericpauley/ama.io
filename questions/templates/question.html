@@ -1,17 +1,17 @@
 {%load markup%}
-<div id = "question-{{question.id}}"class="span12 thumbnail">
+<div data-question="{{question.id}}" id="question-{{question.id}}" class="span12 thumbnail">
 	<div class="row-fluid">
 		<div style="vertical-align:middle;" class="span2 btn-group-vertical">
 			{% if user == question.target%}
 			<a href="#" class="btn"><i class="icon-ok"></i> Answer</a>
 			{%else%}
-			<a href="#" class="btn upvote {%if question.vote == 1%}btn-success{%endif%}"><i class="icon-thumbs-up"></i></a>
+			<a href="#" id="upvote-{{question.id}}" data-question="{{question.id}}" class="btn upvote {%if question.vote == 1%}btn-success{%endif%}"><i class="icon-thumbs-up"></i></a>
 			{%endif%}
-			<div disabled class="btn" >{{question.score}}</div>
+			<div disabled id="score-{{question.id}}" class="btn" >{{question.score}}</div>
 			{% if user == question.target%}
 			<a href="#" class="btn"><i class="icon-trash"></i> delete</a>
 			{%else%}
-			<a href="#" class="btn downvote {%if question.vote == -1%}btn-danger{%endif%}"><i class="icon-thumbs-down"></i></a>
+			<a href="#" id="downvote-{{question.id}}" data-question="{{question.id}}" class="btn downvote {%if question.vote == -1%}btn-danger{%endif%}"><i class="icon-thumbs-down"></i></a>
 			{%endif%}
 			
 		</div>
