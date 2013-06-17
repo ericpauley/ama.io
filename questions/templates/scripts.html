@@ -9,4 +9,9 @@
 <script src="{% static 'js/script.js' %}">
 </script>
 <script>
+{%if user.is_authenticated%}
+GLOBALS['auth'] = true
+{%else%}
+GLOBALS['auth'] = false
+{%endif%}
 </script>
