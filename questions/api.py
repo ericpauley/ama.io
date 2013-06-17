@@ -11,6 +11,8 @@ from tastypie.authorization import ReadOnlyAuthorization
 from tastypie.http import HttpUnauthorized, HttpForbidden, HttpConflict, HttpBadRequest, HttpApplicationError
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie.utils import trailing_slash
+import json
+from markdown import markdown
 
 class UserResource(ModelResource):
     class Meta:
@@ -106,6 +108,7 @@ class UserResource(ModelResource):
 
 class SessionResource(ModelResource):
     owner = fields.ForeignKey(UserResource, 'owner')
+    questions = fields.ToManyField('questions.api.QuestionResource', lambda bundle:bundle.obj.get_marked_questions(bundle.request.user), use_in='detail', full='true', related_name='session')
 
     class Meta:
         queryset = AMASession.objects.all()
@@ -116,6 +119,11 @@ class SessionResource(ModelResource):
             'start_time': ALL,
             'end_time': ALL
         }
+
+    def dehydrate_data(self, bundle):
+        if 'desc' in bundle.obj.data:
+            bundle.obj.data['desc-html'] = markdown(bundle.obj.data['desc'])
+        return bundle.obj.data
 
 class QuestionResource(ModelResource):
 

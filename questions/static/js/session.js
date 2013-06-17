@@ -1,6 +1,6 @@
 $(".upvote").click(function(){
 	if(GLOBALS.auth){
-		id = $(this).attr("data-question")
+		var id = $(this).attr("data-question")
 		if($(this).hasClass("btn-success")){
 			$(this).removeClass("btn-success");
 			$.post("/api/v1/question/"+id+"/vote/",
@@ -26,7 +26,7 @@ $(".upvote").click(function(){
 
 $(".downvote").click(function(){
 	if(GLOBALS.auth){
-		id = $(this).attr("data-question")
+		var id = $(this).attr("data-question")
 		if($(this).hasClass("btn-danger")){
 			$(this).removeClass("btn-danger");
 			$.post("/api/v1/question/"+id+"/vote/",
@@ -48,4 +48,29 @@ $(".downvote").click(function(){
 	}else{
 		$("#loginModal").modal()
 	}
+})
+
+$(function(){
+	setInterval(function(){
+		$.get("/api/v1/session/"+GLOBALS['session'],
+			function(data){
+				$("#session-title").text(data['data']['title'])
+				$("#session-desc").html(data['data']['desc-html'])
+				for(var i=0; i<data['questions'].length;i++){
+					var question = data['questions'][i]
+					id = question['id']
+					$("#score-"+id).text(question['score'])
+					if(question['vote'] == 1){
+						$("#upvote-"+id).addClass("btn-success")
+					}else{
+						$("#upvote-"+id).removeClass("btn-success")
+					}
+					if(question['vote'] == -1){
+						$("#downvote-"+id).addClass("btn-danger")
+					}else{
+						$("#downvote-"+id).removeClass("btn-danger")
+					}
+				}
+			})
+	}, 1000)
 })
