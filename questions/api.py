@@ -1,9 +1,13 @@
+import json
+
 from django.conf.urls import url
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.db.models import Sum
+from django.template.loader import render_to_string
+from markdown import markdown
 from questions.authorization import SessionAuthorization
 from questions.models import AMASession,AMAQuestion,AMAAnswer,AMAVote
 from tastypie import fields
@@ -11,8 +15,8 @@ from tastypie.authorization import ReadOnlyAuthorization
 from tastypie.http import HttpUnauthorized, HttpForbidden, HttpConflict, HttpBadRequest, HttpApplicationError
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie.utils import trailing_slash
-import json
-from markdown import markdown
+from django.template import RequestContext
+
 
 class UserResource(ModelResource):
     class Meta:
@@ -142,6 +146,7 @@ class QuestionResource(ModelResource):
 
     def dehydrate(self, bundle):
         bundle.data['vote'] = bundle.obj.vote
+        bundle.data['html'] = render_to_string("question.html", {'question': bundle.obj}, RequestContext(bundle.request))
         return bundle
 
     def get_object_list(self, request):
