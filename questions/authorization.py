@@ -1,4 +1,4 @@
-from tastypie.authorization import Authorization
+from tastypie.authorization import Authorization,ReadOnlyAuthorization
 from tastypie.exceptions import Unauthorized
 
 class SessionAuthorization(Authorization):
@@ -26,3 +26,7 @@ class SessionAuthorization(Authorization):
 
     def delete_detail(self, object_list, bundle):
         return bundle.obj.owner == bundle.request.user
+
+class QuestionAuthorization(ReadOnlyAuthorization):
+    def delete_detail(self, object_list, bundle):
+        return bundle.obj.target == bundle.request.user or bundle.obj.session.owner == bundle.request.user

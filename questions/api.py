@@ -8,7 +8,7 @@ from django.core.validators import validate_email
 from django.db.models import Sum
 from django.template.loader import render_to_string
 from markdown import markdown
-from questions.authorization import SessionAuthorization
+from questions.authorization import SessionAuthorization, QuestionAuthorization
 from questions.models import AMASession,AMAQuestion,AMAAnswer,AMAVote
 from tastypie import fields
 from tastypie.authorization import ReadOnlyAuthorization
@@ -178,6 +178,7 @@ class QuestionResource(ModelResource):
             'answer': ALL_WITH_RELATIONS,
             'score': ALL
         }
+        authorization = QuestionAuthorization()
 
     def dehydrate(self, bundle):
         bundle.data['vote'] = bundle.obj.vote
