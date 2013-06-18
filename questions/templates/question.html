@@ -10,7 +10,7 @@
 				{%endif%}
 				<div disabled id="score-{{question.id}}" class="btn" >{{question.score}}</div>
 				{% if user == question.target%}
-				<a href="#" class="btn"><i class="icon-trash"></i> delete</a>
+				<a href="#" class="delete btn" data-question="{{question.id}}"><i class="icon-trash"></i> delete</a>
 				{%else%}
 				<a href="#" id="downvote-{{question.id}}" data-question="{{question.id}}" class="btn downvote {%if question.vote == -1%}btn-danger{%endif%}"><i class="icon-thumbs-down"></i></a>
 				{%endif%}

@@ -1,64 +1,75 @@
-$(".upvote").click(function(){
-	if(GLOBALS.auth){
-		var id = $(this).attr("data-question")
-		$("#question-"+id).addClass("lock")
-		if($(this).hasClass("btn-success")){
-			$(this).removeClass("btn-success");
-			$.post("/api/v1/question/"+id+"/vote/",
-				{'vote': 0},
-				function(data){
-					$("#score-"+id).text(data['score'])
-				})
-				setTimeout(function(){
-					$("#question-"+id).removeClass("lock")
-				}, 500)
+function sessionClicks(){
+	$(".upvote").click(function(){
+		if(GLOBALS.auth){
+			var id = $(this).attr("data-question")
+			$("#question-"+id).addClass("lock")
+			if($(this).hasClass("btn-success")){
+				$(this).removeClass("btn-success");
+				$.post("/api/v1/question/"+id+"/vote/",
+					{'vote': 0},
+					function(data){
+						$("#score-"+id).text(data['score'])
+					})
+					setTimeout(function(){
+						$("#question-"+id).removeClass("lock")
+					}, 500)
+			}else{
+				$(this).addClass("btn-success");
+				$("#downvote-"+id).removeClass("btn-danger")
+				$.post("/api/v1/question/"+id+"/vote/",
+					{'vote': 1},
+					function(data){
+						$("#score-"+id).text(data['score'])
+					})
+					setTimeout(function(){
+						$("#question-"+id).removeClass("lock")
+					}, 500)
+			}
 		}else{
-			$(this).addClass("btn-success");
-			$("#downvote-"+id).removeClass("btn-danger")
-			$.post("/api/v1/question/"+id+"/vote/",
-				{'vote': 1},
-				function(data){
-					$("#score-"+id).text(data['score'])
-				})
-				setTimeout(function(){
-					$("#question-"+id).removeClass("lock")
-				}, 500)
+			$("#loginModal").modal()
 		}
-	}else{
-		$("#loginModal").modal()
-	}
-})
+	})
 
-$(".downvote").click(function(){
-	if(GLOBALS.auth){
-		var id = $(this).attr("data-question")
-		$("#question-"+id).addClass("lock")
-		if($(this).hasClass("btn-danger")){
-			$(this).removeClass("btn-danger");
-			$.post("/api/v1/question/"+id+"/vote/",
-				{'vote': 0},
-				function(data){
-					$("#score-"+id).text(data['score'])
-				})
-				setTimeout(function(){
-					$("#question-"+id).removeClass("lock")
-				}, 500)
+	$(".downvote").click(function(){
+		if(GLOBALS.auth){
+			var id = $(this).attr("data-question")
+			$("#question-"+id).addClass("lock")
+			if($(this).hasClass("btn-danger")){
+				$(this).removeClass("btn-danger");
+				$.post("/api/v1/question/"+id+"/vote/",
+					{'vote': 0},
+					function(data){
+						$("#score-"+id).text(data['score'])
+					})
+					setTimeout(function(){
+						$("#question-"+id).removeClass("lock")
+					}, 500)
+			}else{
+				$(this).addClass("btn-danger");
+				$("#upvote-"+id).removeClass("btn-success")
+				$.post("/api/v1/question/"+id+"/vote/",
+					{'vote': -1},
+					function(data){
+						$("#score-"+id).text(data['score'])
+					})
+					setTimeout(function(){
+						$("#question-"+id).removeClass("lock")
+					}, 500)
+			}
 		}else{
-			$(this).addClass("btn-danger");
-			$("#upvote-"+id).removeClass("btn-success")
-			$.post("/api/v1/question/"+id+"/vote/",
-				{'vote': -1},
-				function(data){
-					$("#score-"+id).text(data['score'])
-				})
-				setTimeout(function(){
-					$("#question-"+id).removeClass("lock")
-				}, 500)
+			$("#loginModal").modal()
 		}
-	}else{
-		$("#loginModal").modal()
-	}
-})
+	})
+
+	$(".delete").click(function(){
+		$.ajax("/api/v1/question/"+$(this).attr("data-question")+"/",
+			{
+				'type':"DELETE"
+			})
+	})
+}
+
+sessionClicks()
 
 $("#ask-submit").click(function(){
 	$.post("/api/v1/session/"+GLOBALS['session']+"/ask/",
@@ -118,6 +129,7 @@ $(function(){
 						$(this).remove()
 					}
 				})
+				sessionClicks()
 			})
 	}, 1000)
 })
