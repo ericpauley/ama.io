@@ -69,8 +69,11 @@ $(function(){
 					}
 					if(question['answer'] == null){
 						$("#unansweredlist").append($("#question-"+id))
+						$("#answer-"+id).hide()
 					}else{
 						$("#answeredlist").append($("#question-"+id))
+						$("#answer-"+id).show()
+						$("#answer-text-"+id).text(question['answer']['response'])
 					}
 					$("#score-"+id).text(question['score'])
 					if(question['vote'] == 1){
