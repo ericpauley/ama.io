@@ -56,9 +56,11 @@ $(function(){
 			function(data){
 				$("#session-title").text(data['data']['title'])
 				$("#session-desc").html(data['data']['desc-html'])
+				var ids = []
 				for(var i=0; i<data['questions'].length;i++){
 					var question = data['questions'][i]
-					id = question['id']
+					var id = question['id']
+					ids.push(id)
 					if(!$("#question-"+id).length){
 						if(question['answer'] == null){
 							$("#unansweredlist").append(question['html'])
@@ -87,6 +89,11 @@ $(function(){
 						$("#downvote-"+id).removeClass("btn-danger")
 					}
 				}
+				$(".question").each(function(){
+					if(ids.indexOf(parseInt($(this).attr('data-question'))) == -1){
+						$(this).remove()
+					}
+				})
 			})
-	}, 10000)
+	}, 1000)
 })

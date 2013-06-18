@@ -1,6 +1,6 @@
 {%load markup%}
-<div class="row-fluid">
-	<div data-question="{{question.id}}" id="question-{{question.id}}" class="span12 thumbnail">
+<div class="question row-fluid" data-question="{{question.id}}" id="question-{{question.id}}">
+	<div class="span12 thumbnail">
 		<div class="row-fluid">
 			<div style="vertical-align:middle;" class="span2 btn-group-vertical">
 				{% if user == question.target%}
