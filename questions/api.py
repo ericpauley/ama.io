@@ -124,6 +124,41 @@ class SessionResource(ModelResource):
             'end_time': ALL
         }
 
+    def prepend_urls(self):
+        return [
+            url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/ask%s$" %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('ask'), name="api_login"),
+        ]
+
+    def ask(self, request, pk, **kwargs):
+        self.method_check(request, allowed=['post'])
+
+        if not request.user.is_authenticated():
+            return self.create_response(request, {
+                'success': False,
+                'reason': 'not_logged_in',
+                }, HttpUnauthorized )
+
+        if AMASession.objects.filter(pk=pk).count() == 0:
+            return self.create_response(request, {
+                'success': False,
+                'reason': 'no_question',
+                }, HttpBadRequest )
+        question = request.POST['question']
+
+        s = AMASession.objects.get(pk=pk)
+        q = AMAQuestion()
+        q.asker = request.user
+        q.session = s
+        q.target = s.owner
+        q.question = question
+        q.save()
+
+        return self.create_response(request, {
+            'success': True,
+        })
+
     def dehydrate_data(self, bundle):
         if 'desc' in bundle.obj.data:
             bundle.obj.data['desc-html'] = markdown(bundle.obj.data['desc'])
