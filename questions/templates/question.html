@@ -4,7 +4,7 @@
 		<div class="row-fluid">
 			<div style="vertical-align:middle;" class="span2 btn-group-vertical">
 				{% if user == question.target%}
-				<a href="#" class="btn"><i class="icon-ok"></i> Answer</a>
+				<a href="#" class="btn" onclick="$('#answer-form-{{question.id}}').toggle();"><i class="icon-ok"></i> Answer</a>
 				{%else%}
 				<a href="#" id="upvote-{{question.id}}" data-question="{{question.id}}" class="btn upvote {%if question.vote == 1%}btn-success{%endif%}"><i class="icon-thumbs-up"></i></a>
 				{%endif%}
@@ -18,20 +18,31 @@
 			</div>
 			<div class="span10">
 				<blockquote>
-				<p>{{question.question}}</p>
-				<small>{{question.asker}}</small>
+					<p>{{question.question}}</p>
+					<small>{{question.asker}}</small>
 				</blockquote>
 			</div>
 		</div>
+		{% if user == question.target%}
+		<div id="answer-form-{{question.id}}" style="display:none">
+			<hr/>
+			<div class="row-fluid">
+				<form>
+						<textarea class="span9" id="answer-textarea-{{question.id}}" type="text">{{question.answer.response}}</textarea>
+						<button class="btn span2" onclick="answer({{question.id}})" type="button">Answer</button>
+				</form>
+			</div>
+		</div>
+		{%endif%}
 		<div id="answer-{{question.id}}" {%if not question.answer%}style="display:none"{%endif%}>
 			<hr/>
 			<div class="row-fluid">
 				<div class="span12">
-				<blockquote>
-					<p id="answer-text-{{question.id}}">{{question.answer.response}}</P>
-				</blockquote>
+					<blockquote>
+						<p id="answer-text-{{question.id}}">{{question.answer.response}}</P>
+						</blockquote>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>

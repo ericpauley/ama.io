@@ -128,7 +128,7 @@ class SessionResource(ModelResource):
         return [
             url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/ask%s$" %
                 (self._meta.resource_name, trailing_slash()),
-                self.wrap_view('ask'), name="api_login"),
+                self.wrap_view('ask'), name="api_ask"),
         ]
 
     def ask(self, request, pk, **kwargs):
@@ -202,8 +202,62 @@ class QuestionResource(ModelResource):
         return [
             url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/vote%s$" %
                 (self._meta.resource_name, trailing_slash()),
-                self.wrap_view('vote'), name="api_login"),
+                self.wrap_view('vote'), name="api_vote"),
+            url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/answer%s$" %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('submit_answer'), name="api_answer"),
         ]
+
+    def submit_answer(self, request, pk, **kwargs):
+        if not request.user.is_authenticated():
+            self.method_check(request, allowed=['post'])
+
+            return self.create_response(request, {
+                'success': False,
+                'reason': 'not_logged_in',
+                }, HttpUnauthorized )
+
+        try:
+            q = AMAQuestion.objects.get(pk=pk)
+        except AMAQuestion.DoesNotExist:
+            return self.create_response(request, {
+                'success': False,
+                'reason': 'no_question',
+                }, HttpBadRequest )
+
+        if q.target != request.user:
+            return self.create_response(request, {
+                'success': False,
+                'reason': 'not-target',
+                }, HttpForbidden )
+
+        a = request.POST.get('answer',"")
+        if a == "":
+            try:
+                q.answer.delete()
+                return self.create_response(request, {
+                    'success': True,
+                    'status': 'deleted'
+                })
+            except AMAAnswer.DoesNotExist:
+                return self.create_response(request, {
+                    'success': True,
+                    'status': 'deleted'
+                })
+        else:
+            try:
+                answer = q.answer
+                t = "edited"
+            except AMAAnswer.DoesNotExist:
+                answer = AMAAnswer(question=q)
+                t = "created"
+            answer.response = a
+            answer.save()
+            return self.create_response(request, {
+                'success': True,
+                'status': t,
+            })
+
 
     def vote(self, request, pk, **kwargs):
         self.method_check(request, allowed=['post'])

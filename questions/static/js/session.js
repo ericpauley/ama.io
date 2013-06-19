@@ -71,6 +71,13 @@ function sessionClicks(){
 
 sessionClicks()
 
+function answer(id){
+	text = $("#answer-textarea-"+id).val()
+	$.post("/api/v1/question/"+id+"/answer/",
+		{'answer': text})
+	$("#answer-form-"+id).hide()
+}
+
 $("#ask-submit").click(function(){
 	$.post("/api/v1/session/"+GLOBALS['session']+"/ask/",
 		{'question': $("#ask-question").val()},
@@ -109,6 +116,7 @@ $(function(){
 						}
 						$("#answer-"+id).show()
 						$("#answer-text-"+id).text(question['answer']['response'])
+						$("#answer-textarea-"+id).text(question['answer']['response'])
 					}
 					if(!$("#question-"+id).hasClass("lock")){
 						$("#score-"+id).text(question['score'])
