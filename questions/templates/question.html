@@ -2,7 +2,7 @@
 <div class="question row-fluid" data-question="{{question.id}}" id="question-{{question.id}}">
 	<div class="span12 thumbnail">
 		<div class="row-fluid">
-			<div style="vertical-align:middle;" class="span2 btn-group-vertical">
+			<div style="vertical-align:middle;" class="btn-group-vertical question-options">
 				{% if user == question.target%}
 				<a href="#" class="btn" onclick="$('#answer-form-{{question.id}}').toggle();"><i class="icon-ok"></i> Answer</a>
 				{%else%}
@@ -16,20 +16,22 @@
 				{%endif%}
 				
 			</div>
-			<div class="span10">
-				<blockquote>
-					<p>{{question.question}}</p>
-					<small>{{question.asker}}</small>
-				</blockquote>
+			<div class="question-area">
+				<h4>{{question.question}}</h4>
+				<p>More information about the question goes here.  Concise question above. Filling with text to see how it handles multiple lines.<br/><br/>				
+				Line break!
+				</p>
+				<small>&mdash;Asked by {{question.asker}}</small>
 			</div>
 		</div>
 		{% if user == question.target%}
-		<div id="answer-form-{{question.id}}" style="display:none">
+		<div class="answer-area" id="answer-form-{{question.id}}" style="display:none">
 			<hr/>
 			<div class="row-fluid">
 				<form>
-						<textarea class="span9" id="answer-textarea-{{question.id}}" type="text">{{question.answer.response}}</textarea>
-						<button class="btn span2" onclick="answer({{question.id}})" type="button">Answer</button>
+						<textarea class="answer-textarea" id="answer-textarea-{{question.id}}" type="text">{{question.answer.response}}</textarea><br/>
+						<button class="btn answer-confirm-btn btn-primary" onclick="answer({{question.id}})" type="button">Confirm</button>
+						<button class="btn answer-confirm-btn btn-default" onclick="answer({{question.id}})" type="button">Close</button>
 				</form>
 			</div>
 		</div>

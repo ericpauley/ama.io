@@ -16,6 +16,9 @@ GLOBALS['session'] = "{{session.slug}}"
 		{{session.data.title}}
 	</h1>
 </div>
+<div id ="session-img">
+	<img src="{% static 'images/img-temp.png' %}" class="img-rounded"/>
+</div>
 <div id="session-desc" class="row-fluid">
 	{{session.data.desc|markdown:"safe"}}
 </div>
