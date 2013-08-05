@@ -64,3 +64,38 @@
 		<button class="btn btn-primary">Login</button>
 	</div>
 </div>
+<div id="settingsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="settingsModalLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		<h3 id="settingsModalLabel">
+			Settings
+		</h3>
+	</div>
+	<div class="modal-body container-fluid">
+		<form id="reg_form" class="form-horizontal">
+			<div id="reg_password_group" class="control-group">
+				<label class="control-label" for="reg_password">Current Password</label>
+				<div class="controls">
+					<input type="password" name="password" id="reg_password" placeholder="Password">
+				</div>
+			</div>
+			<div id="reg_password_group" class="control-group">
+				<label class="control-label" for="reg_password">New Password</label>
+				<div class="controls">
+					<input type="password" name="password" id="reg_password" placeholder="Password">
+				</div>
+			</div>
+			<div id="reg_password_group" class="control-group">
+				<label class="control-label" for="reg_password">Confirm Password</label>
+				<div class="controls">
+					<input type="password" name="password" id="reg_password" placeholder="Password">
+				</div>
+			</div>
+			<hr>
+
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> <button id="reg_submit" class="btn btn-primary btn-success">Save Changes</button>
+	</div>
+</div>
