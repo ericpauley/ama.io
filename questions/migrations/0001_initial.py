@@ -1,0 +1,157 @@
+# -*- coding: utf-8 -*-
+import datetime
+from south.db import db
+from south.v2 import SchemaMigration
+from django.db import models
+
+
+class Migration(SchemaMigration):
+
+    def forwards(self, orm):
+        # Adding model 'AMASession'
+        db.create_table(u'questions_amasession', (
+            ('slug', self.gf('django.db.models.fields.SlugField')(unique=True, max_length=50, primary_key=True)),
+            ('owner', self.gf('django.db.models.fields.related.ForeignKey')(related_name='sessions', to=orm['auth.User'])),
+            ('start_time', self.gf('django.db.models.fields.DateTimeField')()),
+            ('end_time', self.gf('django.db.models.fields.DateTimeField')()),
+            ('data', self.gf('jsonfield.fields.JSONField')(default={}, blank=True)),
+            ('created', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('edited', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
+        ))
+        db.send_create_signal(u'questions', ['AMASession'])
+
+        # Adding model 'AMAQuestion'
+        db.create_table(u'questions_amaquestion', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('asker', self.gf('django.db.models.fields.related.ForeignKey')(related_name='own_questions', to=orm['auth.User'])),
+            ('target', self.gf('django.db.models.fields.related.ForeignKey')(related_name='asked_questions', to=orm['auth.User'])),
+            ('question', self.gf('django.db.models.fields.TextField')()),
+            ('data', self.gf('jsonfield.fields.JSONField')(default={}, blank=True)),
+            ('session', self.gf('django.db.models.fields.related.ForeignKey')(related_name='questions', to=orm['questions.AMASession'])),
+            ('created', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('edited', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
+        ))
+        db.send_create_signal(u'questions', ['AMAQuestion'])
+
+        # Adding model 'AMAAnswer'
+        db.create_table(u'questions_amaanswer', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('question', self.gf('django.db.models.fields.related.OneToOneField')(related_name='answer', unique=True, to=orm['questions.AMAQuestion'])),
+            ('response', self.gf('django.db.models.fields.TextField')()),
+            ('data', self.gf('jsonfield.fields.JSONField')(default={}, blank=True)),
+            ('created', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('edited', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
+        ))
+        db.send_create_signal(u'questions', ['AMAAnswer'])
+
+        # Adding model 'AMAVote'
+        db.create_table(u'questions_amavote', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(related_name='votes', to=orm['auth.User'])),
+            ('question', self.gf('django.db.models.fields.related.ForeignKey')(related_name='votes', to=orm['questions.AMAQuestion'])),
+            ('value', self.gf('django.db.models.fields.IntegerField')()),
+            ('created', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('edited', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
+        ))
+        db.send_create_signal(u'questions', ['AMAVote'])
+
+        # Adding unique constraint on 'AMAVote', fields ['user', 'question']
+        db.create_unique(u'questions_amavote', ['user_id', 'question_id'])
+
+
+    def backwards(self, orm):
+        # Removing unique constraint on 'AMAVote', fields ['user', 'question']
+        db.delete_unique(u'questions_amavote', ['user_id', 'question_id'])
+
+        # Deleting model 'AMASession'
+        db.delete_table(u'questions_amasession')
+
+        # Deleting model 'AMAQuestion'
+        db.delete_table(u'questions_amaquestion')
+
+        # Deleting model 'AMAAnswer'
+        db.delete_table(u'questions_amaanswer')
+
+        # Deleting model 'AMAVote'
+        db.delete_table(u'questions_amavote')
+
+
+    models = {
+        u'auth.group': {
+            'Meta': {'object_name': 'Group'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '80'}),
+            'permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'})
+        },
+        u'auth.permission': {
+            'Meta': {'ordering': "(u'content_type__app_label', u'content_type__model', u'codename')", 'unique_together': "((u'content_type', u'codename'),)", 'object_name': 'Permission'},
+            'codename': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['contenttypes.ContentType']"}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
+        },
+        u'auth.user': {
+            'Meta': {'object_name': 'User'},
+            'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
+            'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
+            'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
+            'groups': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.Group']", 'symmetrical': 'False', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'is_staff': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'is_superuser': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
+            'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
+            'password': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
+            'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'}),
+            'username': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '30'})
+        },
+        u'contenttypes.contenttype': {
+            'Meta': {'ordering': "('name',)", 'unique_together': "(('app_label', 'model'),)", 'object_name': 'ContentType', 'db_table': "'django_content_type'"},
+            'app_label': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
+        },
+        u'questions.amaanswer': {
+            'Meta': {'object_name': 'AMAAnswer'},
+            'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'data': ('jsonfield.fields.JSONField', [], {'default': '{}', 'blank': 'True'}),
+            'edited': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'question': ('django.db.models.fields.related.OneToOneField', [], {'related_name': "'answer'", 'unique': 'True', 'to': u"orm['questions.AMAQuestion']"}),
+            'response': ('django.db.models.fields.TextField', [], {})
+        },
+        u'questions.amaquestion': {
+            'Meta': {'object_name': 'AMAQuestion'},
+            'asker': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'own_questions'", 'to': u"orm['auth.User']"}),
+            'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'data': ('jsonfield.fields.JSONField', [], {'default': '{}', 'blank': 'True'}),
+            'edited': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'question': ('django.db.models.fields.TextField', [], {}),
+            'session': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'questions'", 'to': u"orm['questions.AMASession']"}),
+            'target': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'asked_questions'", 'to': u"orm['auth.User']"})
+        },
+        u'questions.amasession': {
+            'Meta': {'object_name': 'AMASession'},
+            'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'data': ('jsonfield.fields.JSONField', [], {'default': '{}', 'blank': 'True'}),
+            'edited': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
+            'end_time': ('django.db.models.fields.DateTimeField', [], {}),
+            'owner': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'sessions'", 'to': u"orm['auth.User']"}),
+            'slug': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '50', 'primary_key': 'True'}),
+            'start_time': ('django.db.models.fields.DateTimeField', [], {})
+        },
+        u'questions.amavote': {
+            'Meta': {'unique_together': "(('user', 'question'),)", 'object_name': 'AMAVote'},
+            'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'edited': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'question': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'votes'", 'to': u"orm['questions.AMAQuestion']"}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'votes'", 'to': u"orm['auth.User']"}),
+            'value': ('django.db.models.fields.IntegerField', [], {})
+        }
+    }
+
+    complete_apps = ['questions']

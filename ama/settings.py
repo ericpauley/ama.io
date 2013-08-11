@@ -127,8 +127,10 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
 	# PIP Apps
 	'tastypie',
+    'south',
 	# Custom Apps
     'questions',
+
 )
 
 # A sample logging configuration. The only tangible logging
@@ -177,6 +179,7 @@ REST_FRAMEWORK = {
 
 try:
     from local_settings import *
+    print "Using local settings..."
 except ImportError:
     pass
     

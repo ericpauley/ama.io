@@ -3,3 +3,4 @@ django-menu
 django-tastypie
 jsonfield
 markdown
+south
