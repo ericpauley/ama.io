@@ -127,7 +127,6 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
 	# PIP Apps
 	'tastypie',
-    'south',
 	# Custom Apps
     'questions',
 

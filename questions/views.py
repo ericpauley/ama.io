@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db.models import Sum
 from django.http import Http404
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from questions.models import AMASession
 
 
@@ -26,7 +26,10 @@ def session(request, slug):
     return render(request, "session.html", {'session':s, 'unanswered': unanswered, 'answered': answered})
 
 def settings(request):
-    pass
+    if request.user.is_anonymous():
+        return redirect("home")
+    else:
+        return render(request, "settings.html")
 
 def settings_submit(request):
     pass
