@@ -24,3 +24,39 @@
 .answer-confirm-btn{
 
 }
+
+.response-area{
+	font-size: 15px;
+	padding-left: 25px;
+}
+
+@media (min-width: 768px){
+.ask-btn{
+	margin-left: 10px;
+	width: 65px;
+}
+.ask-btn-bottom{
+	display: none;
+}
+}
+
+@media (max-width: 767px){
+.ask-btn{
+	display: none;
+}
+
+.ask-btn-bottom{
+	margin-left: -40%;
+	left: 50%;
+	position: fixed;
+	bottom: 10px;
+	display: block;
+	width: 80%;
+	padding-right: 0;
+	padding-left: 0;
+	-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+         box-sizing: border-box;
+}
+}
+

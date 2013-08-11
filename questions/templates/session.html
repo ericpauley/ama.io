@@ -40,7 +40,10 @@ GLOBALS['session'] = "{{session.slug}}"
 				<div class="span10" id="unansweredlist">
 					{%for question in unanswered%} {%include "question.html"%} {%endfor%}
 				</div>
-				<a href="#askModal" class="btn btn-large btn-success span2" data-toggle="modal">
+				<a href="#askModal" class="btn btn-large btn-success ask-btn affix" data-toggle="modal" data-spy="affix" data-offset-top="450">
+					Ask
+				</a>
+				<a href="#askModal" class="btn btn-large btn-success ask-btn-bottom" data-toggle="modal">
 					Ask
 				</a>
 				<div id="askModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="askModelLabel" aria-hidden="true">

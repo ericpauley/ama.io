@@ -39,12 +39,10 @@
 		<div id="answer-{{question.id}}" {%if not question.answer%}style="display:none"{%endif%}>
 			<hr/>
 			<div class="row-fluid">
-				<div class="span12">
-					<blockquote>
-						<p id="answer-text-{{question.id}}">{{question.answer.response}}</P>
-						</blockquote>
-					</div>
+				<div class="response-area">
+					<p id="answer-text-{{question.id}}"><b>Response:&nbsp;&nbsp;&nbsp;&nbsp;</b>{{question.answer.response}}</p>
 				</div>
 			</div>
 		</div>
 	</div>
+</div>
