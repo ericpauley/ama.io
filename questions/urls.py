@@ -15,5 +15,7 @@ urlpatterns = patterns('',
     url(r'^session/(?P<slug>\w{4})/$', views.session),
     url(r'^u/(?P<username>\w{4,20})/$', views.user, name="user"),
     url(r'^user/(?P<username>\w{4,20})/$', views.user),
+    url(r'^settings/', views.settings),
+    url(r'^settings/submit/', views.settings_submit),
     url(r'^api/', include(v1_api.urls)),
 )

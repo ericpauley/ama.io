@@ -6,7 +6,10 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from jsonfield import JSONField
+from annoying.fields import AutoOneToOneField
+from south.modelsinspector import add_introspection_rules
 
+add_introspection_rules([], ["^annoying\.fields\.AutoOneToOneField"])
 
 class SluggedModel(models.Model):
     slug = models.SlugField(primary_key=True, unique=True, editable=False, blank=True)
@@ -20,6 +23,9 @@ class SluggedModel(models.Model):
 
     class Meta:
         abstract = True
+
+class UserMeta(models.Model):
+    user = AutoOneToOneField(User, primary_key=True, related_name="meta")
 
 class AMASession(SluggedModel):
     '''
@@ -80,7 +86,8 @@ class AMAQuestion(models.Model):
     asker = models.ForeignKey(User, related_name='own_questions')
     target = models.ForeignKey(User, related_name='asked_questions')
     question = models.TextField()
-    
+    desc = models.TextField(default="")
+
     data = JSONField(default={}, blank=True)
     
     session = models.ForeignKey(AMASession, related_name='questions')

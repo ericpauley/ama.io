@@ -7,7 +7,7 @@ from questions.models import AMASession
 
 def home(request):
     sessions = AMASession.objects.all().extra(order_by = ['-start_time'])
-    return render(request, "home.html", {'sessions': sessions})
+    return render(request, "home.html", {'sessions': sessions, 'title':'AMA'})
 
 def user(request, username):
     try:
@@ -24,3 +24,9 @@ def session(request, slug):
     except AMASession.DoesNotExist:
         raise Http404
     return render(request, "session.html", {'session':s, 'unanswered': unanswered, 'answered': answered})
+
+def settings(request):
+    pass
+
+def settings_submit(request):
+    pass

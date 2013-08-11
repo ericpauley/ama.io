@@ -1,6 +1,7 @@
 django
 django-menu
 django-tastypie
+django-annoying
 jsonfield
 markdown
 south
