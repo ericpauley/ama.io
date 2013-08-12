@@ -4,6 +4,7 @@
 
 .question-box{
 	background: #FFFFFF;
+	padding-bottom: 15px;
 }
 
 .question-area{
@@ -13,6 +14,10 @@
 .question-options{
 	float: left;
 	padding: 10px 0 0 10px;
+}
+
+#ask-question{
+	width: 80%;
 }
 
 .answer-area{
