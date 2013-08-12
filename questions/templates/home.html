@@ -1,7 +1,13 @@
 {%extends "base.html"%}
 
 {%block content%}
+<h1>Live Sessions</h1>
+<div class="clearfix">
 {%for session in sessions%}
 {%include "session_tile.html"%}
 {%endfor%}
+</div>
+<a href="#">Click here to see all live sessions.</a>
+<h1>Upcoming</h1>
+<h1>Top Requests</h1>
 {%endblock%}

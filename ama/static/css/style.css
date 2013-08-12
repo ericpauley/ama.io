@@ -7,3 +7,13 @@
 #footer-info{
 	margin-top: 25px;
 }
+
+.session-tile{
+	width: 30%;
+	padding-left: 15px;
+	margin-right: 15px;
+	margin-bottom: 15px;
+	float: left;
+	min-width: 225px;
+	background: #FFFFFF;
+}

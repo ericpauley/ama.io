@@ -1,6 +1,6 @@
 {%load markup%}
 <div class="question row-fluid" data-question="{{question.id}}" id="question-{{question.id}}">
-	<div class="span12 thumbnail">
+	<div class="span12 thumbnail question-box">
 		<div class="row-fluid">
 			<div style="vertical-align:middle;" class="btn-group-vertical question-options">
 				{% if user == question.target%}
@@ -39,7 +39,7 @@
 			<hr/>
 			<div class="row-fluid">
 				<div class="response-area">
-					<p id="answer-text-{{question.id}}"><b>Response:&nbsp;&nbsp;&nbsp;&nbsp;</b>{{question.answer.response}}</p>
+					<b>Response:&nbsp;&nbsp;&nbsp;&nbsp;</b><p id="answer-text-{{question.id}}">{{question.answer.response}}</p>
 				</div>
 			</div>
 		</div>
