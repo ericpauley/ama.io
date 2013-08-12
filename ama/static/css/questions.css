@@ -20,6 +20,14 @@
 	width: 80%;
 }
 
+#session-create-title{
+	width: 50%;
+}
+
+#session-desc{
+	width: 97%;
+}
+
 .answer-area{
 	text-align: center;
 }

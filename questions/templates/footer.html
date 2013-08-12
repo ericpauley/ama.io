@@ -103,17 +103,22 @@
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 		<h3 id="sessionModalLabel">
-			Create Session
+			Create QA Session
 		</h3>
 	</div>
 	<div class="modal-body container-fluid">
-		<form id="reg_form" class="form-horizontal">
-			Make it happen.
-			<hr>
-
+		<form id="create-session-form" class="form">
+			<fieldset>
+				<input type="text" placeholder="Title (max 30 characters, be concise!)" maxlength="30" id="session-create-title"/> e.g. I am (name), AMA!
+				<input type="text" placeholder="Subtitle (max 100 characters)" maxlength="30" id="session-create-title"/>
+				<input type="number" placeholder="Approx. length (hours)" min="0" max="100" id="session-create-title"/> 0 for less than one hour
+				<textarea id="session-desc" placeholder="Description" rows="5"></textarea>	
+				<input type="date" id="session-create-title"/> Schedule a Date<br/>
+				<input type="time" id="sesion-create-time"/> Schedule a Time
+			</fieldset>
 		</form>
 	</div>
 	<div class="modal-footer">
-		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> <button id="reg_submit" class="btn btn-primary btn-success">Start Session</button>
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> <button id="reg_submit" class="btn btn-primary btn-success">Schedule</button>
 	</div>
 </div>
