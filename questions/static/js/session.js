@@ -1,4 +1,5 @@
 function sessionClicks(){
+	$(".upvote").off("click")
 	$(".upvote").click(function(){
 		if(GLOBALS.auth){
 			var id = $(this).attr("data-question")
@@ -30,6 +31,7 @@ function sessionClicks(){
 		}
 	})
 
+	$(".downvote").off("click")
 	$(".downvote").click(function(){
 		if(GLOBALS.auth){
 			var id = $(this).attr("data-question")
@@ -61,12 +63,15 @@ function sessionClicks(){
 		}
 	})
 
+	$(".delete").off("click")
 	$(".delete").click(function(){
 		$.ajax("/api/v1/question/"+$(this).attr("data-question")+"/",
 			{
 				'type':"DELETE"
 			})
+		alert("test")
 	})
+
 }
 
 sessionClicks()
@@ -93,10 +98,12 @@ $(function(){
 				$("#session-title").text(data['data']['title'])
 				$("#session-desc").html(data['data']['desc-html'])
 				var ids = []
+				$(".question").css("display", "none")
 				for(var i=0; i<data['questions'].length;i++){
 					var question = data['questions'][i]
 					var id = question['id']
 					ids.push(id)
+					$("#question-"+id).css("display", "block")
 					if(!$("#question-"+id).length){
 						if(question['answer'] == null){
 							$("#unansweredlist").append(question['html'])
@@ -132,11 +139,6 @@ $(function(){
 						}
 					}
 				}
-				$(".question").each(function(){
-					if(ids.indexOf(parseInt($(this).attr('data-question'))) == -1){
-						$(this).remove()
-					}
-				})
 				sessionClicks()
 			})
 	}, 1000)
