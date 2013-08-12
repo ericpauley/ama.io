@@ -146,6 +146,7 @@ class SessionResource(ModelResource):
                 'reason': 'no_question',
                 }, HttpBadRequest )
         question = request.POST['question']
+        desc = request.POST['desc']
 
         s = AMASession.objects.get(pk=pk)
         q = AMAQuestion()
@@ -153,6 +154,7 @@ class SessionResource(ModelResource):
         q.session = s
         q.target = s.owner
         q.question = question
+        q.desc = desc
         q.save()
 
         return self.create_response(request, {

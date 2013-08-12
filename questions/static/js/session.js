@@ -80,7 +80,7 @@ function answer(id){
 
 $("#ask-submit").click(function(){
 	$.post("/api/v1/session/"+GLOBALS['session']+"/ask/",
-		{'question': $("#ask-question").val()},
+		{'question': $("#ask-question").val(), 'desc': $("#ask-desc").val()},
 		function(){
 			$("#askModal").modal("hide")
 		})

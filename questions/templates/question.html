@@ -18,8 +18,7 @@
 			</div>
 			<div class="question-area">
 				<h4>{{question.question}}</h4>
-				<p>More information about the question goes here.  Concise question above. Filling with text to see how it handles multiple lines.<br/><br/>				
-				Line break!
+				<p>{{question.desc|markdown:"safe"}}
 				</p>
 				<small>&mdash;Asked by {{question.asker}}</small>
 			</div>
