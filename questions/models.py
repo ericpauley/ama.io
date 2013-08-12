@@ -65,17 +65,21 @@ class AMASession(SluggedModel):
             })
         else:
             return answered
-        
-    def get_absolute_url(self):
+    
+    @property
+    def absolute_url(self):
         return '/s/%i/' % self.id
-        
-    def get_unanswered(self):
+    
+    @property
+    def unanswered(self):
         return self.questions.filter(answer=None).annotate(score=models.Sum('votes__value'))
-        
-    def get_answered(self):
+    
+    @property
+    def answered(self):
         return self.questions.exclude(answer=None).annotate(score=models.Sum('votes__value'))
-        
-    def is_running(self):
+    
+    @property
+    def running(self):
         return self.start_time.replace(tzinfo=None)<datetime.datetime.now()<self.end_time.replace(tzinfo=None)
     
 class AMAQuestion(models.Model):
