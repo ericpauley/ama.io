@@ -43,5 +43,12 @@
 				</div>
 			</div>
 		</div>
+		<a onclick="loadDisqus(jQuery('#comments-{{question.id}}'), 'question_{{question.id}}', '/s/{{question.session.slug}}');">
+      Show comments
+		
+		<div id="comments-{{ question.id }}">
+			
+		</div>
+
 	</div>
 </div>
