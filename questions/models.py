@@ -34,6 +34,10 @@ class AMASession(SluggedModel):
     owner = models.ForeignKey(User, related_name='sessions')
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
+
+    title = models.CharField(max_length=30)
+    subtitle = models.CharField(max_length=50)
+    desc = models.TextField()
     
     data = JSONField(default={}, blank=True)
     

@@ -16,7 +16,8 @@ from tastypie.http import HttpUnauthorized, HttpForbidden, HttpConflict, HttpBad
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie.utils import trailing_slash
 from django.template import RequestContext
-
+from dateutil import parser
+import datetime
 
 class UserResource(ModelResource):
     class Meta:
@@ -129,7 +130,30 @@ class SessionResource(ModelResource):
             url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/ask%s$" %
                 (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('ask'), name="api_ask"),
+            url(r"^(?P<resource_name>%s)/create%s$" %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('create'), name="api_create"),
         ]
+
+    def create(self, request, **kwargs):
+        self.method_check(request, allowed=['post'])
+        if not request.user.is_authenticated():
+            return self.create_response(request, {
+                'success': False,
+                'reason': 'not_logged_in',
+                }, HttpUnauthorized )
+        s = AMASession()
+        s.owner = request.user
+        s.title = request.POST['title']
+        s.subtitle = request.POST['subtitle']
+        s.desc = request.POST['desc']
+        s.start_time = parser.parse('%s %s' % (request.POST['date'], request.POST['time']))
+        s.end_time = s.start_time + datetime.timedelta(hours=float(request.POST['duration']))
+        s.save()
+        return self.create_response(request, {
+            'success': True,
+            'slug': s.slug,
+        })
 
     def ask(self, request, pk, **kwargs):
         self.method_check(request, allowed=['post'])
@@ -163,7 +187,7 @@ class SessionResource(ModelResource):
 
     def dehydrate_data(self, bundle):
         if 'desc' in bundle.obj.data:
-            bundle.obj.data['desc-html'] = markdown(bundle.obj.data['desc'])
+            bundle.obj.desc_html = markdown(bundle.obj.desc)
         return bundle.obj.data
 
 class QuestionResource(ModelResource):

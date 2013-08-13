@@ -93,10 +93,10 @@ $("#ask-submit").click(function(){
 
 $(function(){
 	setInterval(function(){
-		$.get("/api/v1/session/"+GLOBALS['session'],
+		$.get("/api/v1/session/"+GLOBALS['session']+"/",
 			function(data){
-				$("#session-title").text(data['data']['title'])
-				$("#session-desc").html(data['data']['desc-html'])
+				$("#session-title").text(data['title'])
+				$("#session-desc").html(data['desc-html'])
 				var ids = []
 				$(".question").css("display", "none")
 				for(var i=0; i<data['questions'].length;i++){

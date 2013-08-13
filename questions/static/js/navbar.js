@@ -49,3 +49,22 @@ $("#reg_form").submit(function(event){
 $("#reg_submit").click(function(){
 	$("#reg_form").submit()
 })
+
+$("#create-session-form").submit(function(event){
+	event.preventDefault()
+	$(".form-alert").hide()
+	$.ajax({
+		type: "POST",
+		url: "/api/v1/session/create/",
+		data: $("#create-session-form").serialize()
+	}).done(function(data) {
+		location.reload()
+	}).fail(function(xhr){
+		var err = eval("(" + xhr.responseText + ")")
+		if(err.reason == "exists"){
+			$("#reg_exists").show()
+		}else if(err.reason == "pass_match"){
+			$("#reg_passmatch").show()
+		}
+	})
+})
