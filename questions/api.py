@@ -197,7 +197,7 @@ class QuestionResource(ModelResource):
     score = fields.IntegerField(attribute='score', default=0, readonly=True)
 
     class Meta:
-        queryset = AMAQuestion.objects.all().annotate(_score=Sum('votes__value'))
+        queryset = AMAQuestion.objects.all().annotate(_score=Sum('votes__value')).order_by("-starred", "-score")
         resource_name = 'question'
         filtering = {
             'session': ALL_WITH_RELATIONS,
@@ -232,6 +232,9 @@ class QuestionResource(ModelResource):
             url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/answer%s$" %
                 (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('submit_answer'), name="api_answer"),
+            url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/star%s$" %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('star'), name="api_star"),
         ]
 
     def submit_answer(self, request, pk, **kwargs):
@@ -284,6 +287,32 @@ class QuestionResource(ModelResource):
                 'status': t,
             })
 
+    def star(self, request, pk, **kwargs):
+        self.method_check(request, allowed=['post'])
+        if not request.user.is_authenticated():
+            return self.create_response(request, {
+                'success': False,
+                'reason': 'not_logged_in',
+                }, HttpUnauthorized )
+
+        if AMAQuestion.objects.filter(pk=pk).count() == 0:
+            return self.create_response(request, {
+                'success': False,
+                'reason': 'no_question',
+                }, HttpBadRequest )
+
+        vote = int(request.POST.get('star', 0))
+        if not vote in (0,1):
+            return self.create_response(request, {
+                'success': False,
+                'reason': 'bad_status',
+                }, HttpBadRequest )
+        question = AMAQuestion.objects.get(pk=pk)
+        question.starred = bool(vote)
+        question.save()
+        return self.create_response(request, {
+            'success': True,
+        })
 
     def vote(self, request, pk, **kwargs):
         self.method_check(request, allowed=['post'])

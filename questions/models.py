@@ -57,7 +57,7 @@ class AMASession(SluggedModel):
             FROM questions_amavote
             WHERE questions_amavote.question_id = questions_amaquestion.id
             """
-        }).order_by("-_score")
+        }).order_by("-starred","-_score")
         if user.is_authenticated():
             return answered.extra(select = {
                 "_vote" : """
@@ -76,16 +76,17 @@ class AMASession(SluggedModel):
     
     @property
     def unanswered(self):
-        return self.questions.filter(answer=None).annotate(score=models.Sum('votes__value'))
+        return self.questions.filter(answer=None).annotate(score=models.Sum('votes__value')).order_by("-starred","-_score")
     
     @property
     def answered(self):
-        return self.questions.exclude(answer=None).annotate(score=models.Sum('votes__value'))
+        return self.questions.exclude(answer=None).annotate(score=models.Sum('votes__value')).order_by("-starred","-_score")
     
     @property
     def running(self):
         return self.start_time.replace(tzinfo=None)<datetime.datetime.now()<self.end_time.replace(tzinfo=None)
     
+
 class AMAQuestion(models.Model):
     '''
     Questions asked by users are represented by this model.
@@ -95,6 +96,7 @@ class AMAQuestion(models.Model):
     target = models.ForeignKey(User, related_name='asked_questions')
     question = models.TextField()
     desc = models.TextField(default="")
+    starred = models.BooleanField(default = False)
 
     data = JSONField(default={}, blank=True)
     

@@ -16,6 +16,9 @@
 				{%endif%}
 				
 			</div>
+			{% if user == question.target%}
+			<a href="#" id="star-{{question.id}}" class="star btn {% if question.starred%}btn-info{%endif%}" data-question="{{question.id}}"><i class="icon-star"></i> star</a>
+			{%endif%}
 			<div class="question-area">
 				<h4>{{question.question}}</h4>
 				<p>{{question.desc|markdown:"safe"}}
