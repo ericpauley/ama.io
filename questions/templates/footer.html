@@ -107,7 +107,7 @@
 		</h3>
 	</div>
 	<div class="modal-body container-fluid">
-		<form id="create-session-form" class="form">
+		<form method="POST" action="/api/v1/session/create/?format=json" id="create-session-form" class="form" enctype="multipart/form-data" target="session-upload-iframe">
 			<fieldset>
 				<input type="text" placeholder="Title (max 30 characters, be concise!)" name="title" maxlength="30" id="session-create-title"/> e.g. I am (name), AMA!
 				<input type="text" name="subtitle" placeholder="Subtitle (max 100 characters)" maxlength="30" id="session-create-title"/>
@@ -115,10 +115,12 @@
 				<textarea id="session-desc" name="desc" placeholder="Description" rows="5"></textarea>	
 				<input type="date" name="date" id="session-create-title"/> Schedule a Date<br/>
 				<input type="time" name="time" id="sesion-create-time"/> Schedule a Time
+				<input type="file" name="image" id="session-create-image"> Set the image.
 			</fieldset>
 		</form>
 	</div>
 	<div class="modal-footer">
 		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> <button id="reg_submit" class="btn btn-primary btn-success" onclick="$('#create-session-form').submit()">Schedule</button>
 	</div>
+	<iframe id="session-upload-iframe" style="display:none"></iframe>
 </div>

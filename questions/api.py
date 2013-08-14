@@ -150,10 +150,16 @@ class SessionResource(ModelResource):
         s.start_time = parser.parse('%s %s' % (request.POST['date'], request.POST['time']))
         s.end_time = s.start_time + datetime.timedelta(hours=float(request.POST['duration']))
         s.save()
+        try:
+            file=request.FILES['image']
+            s.image.save(s.slug+"."+file.name.split(".")[-1], file)
+        except:
+            pass
         return self.create_response(request, {
             'success': True,
             'slug': s.slug,
         })
+        s.save()
 
     def ask(self, request, pk, **kwargs):
         self.method_check(request, allowed=['post'])

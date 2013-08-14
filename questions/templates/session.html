@@ -1,6 +1,7 @@
 {%extends "base.html"%}
 {%load markup%}
 {%load staticfiles%}
+{% load thumbnail %}
 {%block prescript%}
 <script type="text/javascript">
 GLOBALS['session'] = "{{session.slug}}"
@@ -12,16 +13,19 @@ GLOBALS['session'] = "{{session.slug}}"
 {%endblock%}
 {%block content%}
 <div class="page-header row-fluid">
-	<h1 id="session-title">
+	<h1 id="session-title" onclick="$(this).hide();$('#session-title-edit').show().focus()">
 		{{session.title}}
 	</h1>
+	<input style="display:none" type="text" id="session-title-edit" value="{{session.title}}">
 	<h3 id="session-subtitle">
 		{{session.subtitle}}
 	</h3>
 </div>
+{%if session.image%}
 <div id ="session-img">
-	<img src="{% static 'images/img-temp.png' %}" class="img-rounded"/>
+	<img src="{{session.image|thumbnail_with_max_side:'220'}}" class="img-rounded"/>
 </div>
+{%endif%}
 <div id="session-desc" class="row-fluid">
 	{{session.desc|markdown:"safe"}}
 </div>

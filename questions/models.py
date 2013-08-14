@@ -38,6 +38,7 @@ class AMASession(SluggedModel):
     title = models.CharField(max_length=30)
     subtitle = models.CharField(max_length=50)
     desc = models.TextField()
+    image = models.ImageField(upload_to="session_images")
     
     data = JSONField(default={}, blank=True)
     
