@@ -1,0 +1,13 @@
+{%extends "base.html"%}
+{%load cache%}
+
+{%block content%}
+{%cache 10 session_list title%}
+<h1>{{title}}</h1>
+<div class="clearfix">
+{%for session in sessions%}
+{%include "session_tile.html"%}
+{%endfor%}
+</div>
+{%endcache%}
+{%endblock%}

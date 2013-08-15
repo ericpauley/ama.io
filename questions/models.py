@@ -1,4 +1,5 @@
-import datetime
+from datetime import *
+from dateutil.tz import *
 import random
 import string
 
@@ -84,9 +85,24 @@ class AMASession(SluggedModel):
         return self.questions.exclude(answer=None).annotate(score=models.Sum('votes__value')).order_by("-starred","-_score")
     
     @property
+    def time_left(self):
+        return timedelta(seconds=int((self.end_time - datetime.now(tzlocal())).total_seconds()))
+
+    @property
+    def time_until(self):
+        return timedelta(seconds=int((self.start_time - datetime.now(tzlocal())).total_seconds()))
+
+    @property
     def running(self):
-        return self.start_time.replace(tzinfo=None)<datetime.datetime.now()<self.end_time.replace(tzinfo=None)
+        return self.start_time<=datetime.now(tzlocal())<=self.end_time
+
+    @property
+    def after(self):
+        return datetime.now(tzlocal())>self.end_time
     
+    @property
+    def before(self):
+        return self.start_time>datetime.now(tzlocal())
 
 class AMAQuestion(models.Model):
     '''

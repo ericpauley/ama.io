@@ -1,8 +1,15 @@
 <a href="{%url 'session' slug=session.slug%}">
 	<div class="thumbnail session-tile">
 		<h3>{{session.title}}</h3>
+		{% if not session.before%}
 		<h6>Questions asked: {{session.questions.count}}</h6>
 		<h6>Questions answered: {{session.answered.count}}</h6>
-		<h6>Time left:</h6>
+		{%endif%}
+		{% if session.running %}
+		<h6>Time left: {{session.time_left}}</h6>
+		{%endif%}
+		{%if session.before%}
+		<h6>Time until: {{session.time_until}}</h6>
+		{%endif%}
 	</div>
 </a>

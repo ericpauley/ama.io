@@ -31,7 +31,7 @@
 	<ul class="dropdown-menu">
 		<li><a tabindex="-1" href="{%url 'user' user.username%}"><i class="icon-user"></i> Profile</a></li>
 		<li class="divider"></li>
-		<li><a tabindex="-1" href="#"><i class="icon-th-list"></i> My Sessions</a></li>
+		<li><a tabindex="-1" href="{%url 'user_sessions' user.username%}"><i class="icon-th-list"></i> My Sessions</a></li>
 		<li><a tabindex="-1" href="#sessionModal" data-toggle="modal"><i class="icon-plus"></i> Create Session</a></li>
 		{% if recent_sessions%}
 			<li class="divider"></li>

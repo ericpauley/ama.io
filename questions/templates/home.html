@@ -1,13 +1,22 @@
 {%extends "base.html"%}
+{%load cache%}
 
 {%block content%}
+{%cache 10 homepage%}
 <h1>Live Sessions</h1>
 <div class="clearfix">
-{%for session in sessions%}
+{%for session in live_sessions%}
 {%include "session_tile.html"%}
 {%endfor%}
 </div>
-<a href="#">Click here to see all live sessions.</a>
+<a href="/live">Click here to see all live sessions.</a>
 <h1>Upcoming</h1>
+<div class="clearfix">
+{%for session in upcoming_sessions%}
+{%include "session_tile.html"%}
+{%endfor%}
+</div>
+<a href="/upcoming">Click here to see all upcoming sessions.</a>
 <h1>Top Requests</h1>
+{%endcache%}
 {%endblock%}
