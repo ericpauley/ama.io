@@ -1,4 +1,5 @@
 {%load markup%}
+{%load cache%}
 <div class="question row-fluid" data-question="{{question.id}}" id="question-{{question.id}}">
 	<div class="span12 thumbnail question-box">
 		<div class="row-fluid">
@@ -19,12 +20,14 @@
 			{% if user == question.target%}
 			<a href="#" id="star-{{question.id}}" class="star btn {% if question.starred%}btn-info{%endif%}" data-question="{{question.id}}"><i class="icon-star"></i> star</a>
 			{%endif%}
+			{%cache 60 question question.id%}
 			<div class="question-area">
 				<h4>{{question.question}}</h4>
 				<p>{{question.desc|markdown:"safe"}}
 				</p>
 				<small>&mdash;Asked by {{question.asker}}</small>
 			</div>
+			{%endcache%}
 		</div>
 		{% if user == question.target%}
 		<div class="answer-area" id="answer-form-{{question.id}}" style="display:none">
@@ -42,7 +45,10 @@
 			<hr/>
 			<div class="row-fluid">
 				<div class="response-area">
-					<b>Response:&nbsp;&nbsp;&nbsp;&nbsp;</b><p id="answer-text-{{question.id}}">{{question.answer.response}}</p>
+					<b>Response:&nbsp;&nbsp;&nbsp;&nbsp;</b><div id="answer-text-{{question.id}}">
+					{{question.answer.response|markdown:"safe"}}
+					
+					</div>
 				</div>
 			</div>
 		</div>

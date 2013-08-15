@@ -143,7 +143,7 @@ $(function(){
 							$("#answeredlist").append($("#question-"+id))
 						}
 						$("#answer-"+id).show()
-						$("#answer-text-"+id).text(question['answer']['response'])
+						$("#answer-text-"+id).html(markdown.toHTML(question['answer']['response']))
 						$("#answer-textarea-"+id).text(question['answer']['response'])
 					}
 					if(!$("#question-"+id).hasClass("lock")){
