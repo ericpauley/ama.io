@@ -93,6 +93,10 @@ class AMASession(SluggedModel):
         return timedelta(seconds=int((self.start_time - datetime.now(tzlocal())).total_seconds()))
 
     @property
+    def near_end(self):
+        return self.end_time - datetime.now(tzlocal()) < timedelta(minutes=30)
+
+    @property
     def running(self):
         return self.start_time<=datetime.now(tzlocal())<=self.end_time
 

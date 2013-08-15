@@ -6,7 +6,7 @@
 		<h6>Questions answered: {{session.answered.count}}</h6>
 		{%endif%}
 		{% if session.running %}
-		<h6>Time left: {{session.time_left}}</h6>
+		<h6 {% if session.near_end %}class="near_end"{%endif%}>Time left: {{session.time_left}}</h6>
 		{%endif%}
 		{%if session.before%}
 		<h6>Time until: {{session.time_until}}</h6>
