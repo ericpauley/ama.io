@@ -27,6 +27,13 @@ class SluggedModel(models.Model):
 
 class UserMeta(models.Model):
     user = AutoOneToOneField(User, primary_key=True, related_name="meta")
+    verified = models.BooleanField(default=False)
+
+    @property
+    def full_name(self):
+        name = "%s %s" % (self.user.first_name, self.user.last_name)
+        name = name.strip()
+        return name if name else self.user.username
 
 class AMASession(SluggedModel):
     '''

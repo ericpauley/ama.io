@@ -1,9 +1,13 @@
 from django.contrib import admin
-from questions.models import AMASession, AMAQuestion, AMAAnswer, AMAVote
+from questions.models import *
 
 class SessionAdmin(admin.ModelAdmin):
     pass
 admin.site.register(AMASession, SessionAdmin)
+
+class MetaAdmin(admin.ModelAdmin):
+    pass
+admin.site.register(UserMeta, MetaAdmin)
 
 class QuestionAdmin(admin.ModelAdmin):
     fields = ["question", "score"]

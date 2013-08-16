@@ -5,4 +5,10 @@ django-annoying
 jsonfield
 markdown
 south
-pil
+pillow
+django-all-access
+pycrypto
+requests
+requests_oauthlib
+oauthlib
+python-mimeparse

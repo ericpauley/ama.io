@@ -49,7 +49,7 @@ USE_TZ = True
 
 # Auto-generated for local dev purposes
 PROJECT_PATH = os.path.realpath(os.path.join(os.path.dirname(__file__), os.pardir))
-print PROJECT_PATH
+print(PROJECT_PATH)
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
@@ -129,7 +129,7 @@ INSTALLED_APPS = (
 	'tastypie',
 	# Custom Apps
     'questions',
-
+    'allaccess',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -176,6 +176,13 @@ REST_FRAMEWORK = {
     ]
 }
 
+AUTHENTICATION_BACKENDS = (
+    # Default backend
+    'django.contrib.auth.backends.ModelBackend',
+    # Additional backend
+    'allaccess.backends.AuthorizedServiceBackend',
+)
+
 TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.auth.context_processors.auth",
     "django.core.context_processors.debug",
@@ -186,9 +193,11 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.messages.context_processors.messages",
     "questions.template_processors.recent_sessions")
 
+LOGIN_REDIRECT_URL = "/"
+
 try:
     from local_settings import *
-    print "Using local settings..."
+    print("Using local settings...")
 except ImportError:
     pass
     

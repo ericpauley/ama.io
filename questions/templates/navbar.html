@@ -26,7 +26,7 @@
 {%else%}
 <div class="navbar-text pull-right btn-group">
 	<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-		{{user}} <b class="caret"></b>
+		{{user.meta.full_name}} <b class="caret"></b>
 	</a>
 	<ul class="dropdown-menu">
 		<li><a tabindex="-1" href="{%url 'user' user.username%}"><i class="icon-user"></i> Profile</a></li>
