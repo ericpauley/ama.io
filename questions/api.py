@@ -203,6 +203,7 @@ class QuestionResource(ModelResource):
     answer = fields.OneToOneField('questions.api.AnswerResource', 'answer', related_name='question', null=True, full=True)
     session = fields.OneToOneField('questions.api.SessionResource', 'session', null=True)
     score = fields.IntegerField(attribute='score', default=0, readonly=True)
+    vote = fields.IntegerField(attribute="vote")
 
     class Meta:
         queryset = AMAQuestion.objects.all().order_by("-starred", "-score")
@@ -213,10 +214,6 @@ class QuestionResource(ModelResource):
             'score': ALL
         }
         authorization = QuestionAuthorization()
-
-    def dehydrate(self, bundle):
-        bundle.data['vote'] = bundle.obj.vote
-        return bundle
 
     def get_object_list(self, request):
         if request.user.is_authenticated():
@@ -235,7 +232,7 @@ class QuestionResource(ModelResource):
         return [
             url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/vote%s$" %
                 (self._meta.resource_name, trailing_slash()),
-                self.wrap_view('vote'), name="api_vote"),
+                self.wrap_view('set_vote'), name="api_vote"),
             url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/answer%s$" %
                 (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('submit_answer'), name="api_answer"),
@@ -321,7 +318,7 @@ class QuestionResource(ModelResource):
             'success': True,
         })
 
-    def vote(self, request, pk, **kwargs):
+    def set_vote(self, request, pk, **kwargs):
         self.method_check(request, allowed=['post'])
 
         if not request.user.is_authenticated():
@@ -359,9 +356,31 @@ class AnswerResource(ModelResource):
         resource_name = 'answer'
 
 class RequestResource(ModelResource):
+
+    provider = fields.CharField()
+    score = fields.IntegerField(attribute="score")
+    vote = fields.IntegerField(attribute="vote")
+
     class Meta:
         queryset = Request.objects.all().order_by("-score")
-        resource_name = 'question'
+        resource_name = 'request'
         filtering = {
-            'score': ALL
         }
+
+    def dehydrate_provider(self, bundle):
+        print(bundle.obj.vote)
+        return bundle.obj.provider.name
+
+
+    def get_object_list(self, request):
+        if request.user.is_authenticated():
+            return super(RequestResource, self).get_object_list(request).extra(select = {
+                "vote" : """
+                SELECT IFNULL(SUM(value), 0)
+                FROM questions_requestvote
+                WHERE questions_requestvote.request_id = questions_request.id
+                AND questions_requestvote.user_id = (%d)
+                """ % request.user.id
+            })
+        else:
+            return super(RequestResource, self).get_object_list(request)

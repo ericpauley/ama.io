@@ -1,0 +1,7 @@
+{%extends "base.html"%}
+{%block content%}
+<h1>Requests</h1>
+{% for request in top_requests%}
+{%include "request_tile.html"%}
+{%endfor%}
+{%endblock%}

@@ -25,6 +25,10 @@ def home(request):
     top_requests = Request.objects.all()[:15]
     return render(request, "home.html", {'live_sessions': live_sessions, 'upcoming_sessions': upcoming_sessions, 'top_requests': top_requests, 'title':'AMA'})
 
+def requests(request):
+    top_requests = top_requests = Request.objects.all()
+    return render(request, "request_list.html", {'top_requests': top_requests, 'title':'Requests'})
+
 def user(request, username):
     try:
         user = User.objects.get(username=username)
