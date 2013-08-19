@@ -1,0 +1,4 @@
+<div class="thumbnail">
+	<a href="#" id="upvote-{{question.id}}" data-question="{{question.id}}" class="btn upvote {%if question.vote == 1%}btn-success{%endif%}"><i class="icon-thumbs-up"></i></a><h3>{{request.provider.name}}: {{request.person}}</h3>
+	{{request.score}}
+</div>

@@ -9,7 +9,7 @@ from django.db.models import Sum
 from django.template.loader import render_to_string
 from markdown import markdown
 from questions.authorization import SessionAuthorization, QuestionAuthorization
-from questions.models import AMASession,AMAQuestion,AMAAnswer,AMAVote
+from questions.models import *
 from tastypie import fields
 from tastypie.authorization import ReadOnlyAuthorization
 from tastypie.http import HttpUnauthorized, HttpForbidden, HttpConflict, HttpBadRequest, HttpApplicationError
@@ -18,6 +18,7 @@ from tastypie.utils import trailing_slash
 from django.template import RequestContext
 from dateutil import parser
 import datetime
+import re
 
 class UserResource(ModelResource):
     class Meta:
@@ -51,6 +52,12 @@ class UserResource(ModelResource):
         email = request.POST.get('email', '')
         password = request.POST.get('password', '')
         confirm = request.POST.get('confirm', '')
+
+        if not re.match(r"^\w{4,30}", username):
+            return self.create_response(request, {
+                    'success': False,
+                    'reason': 'bad_username',
+                }, HttpBadRequest)
 
         if password != confirm:
             return self.create_response(request, {
@@ -191,11 +198,6 @@ class SessionResource(ModelResource):
             'success': True,
         })
 
-    def dehydrate_data(self, bundle):
-        if 'desc' in bundle.obj.data:
-            bundle.obj.desc_html = markdown(bundle.obj.desc)
-        return bundle.obj.data
-
 class QuestionResource(ModelResource):
 
     answer = fields.OneToOneField('questions.api.AnswerResource', 'answer', related_name='question', null=True, full=True)
@@ -203,7 +205,7 @@ class QuestionResource(ModelResource):
     score = fields.IntegerField(attribute='score', default=0, readonly=True)
 
     class Meta:
-        queryset = AMAQuestion.objects.all().annotate(_score=Sum('votes__value')).order_by("-starred", "-score")
+        queryset = AMAQuestion.objects.all().order_by("-starred", "-score")
         resource_name = 'question'
         filtering = {
             'session': ALL_WITH_RELATIONS,
@@ -214,7 +216,6 @@ class QuestionResource(ModelResource):
 
     def dehydrate(self, bundle):
         bundle.data['vote'] = bundle.obj.vote
-        bundle.data['html'] = render_to_string("question.html", {'question': bundle.obj}, RequestContext(bundle.request))
         return bundle
 
     def get_object_list(self, request):
@@ -356,3 +357,11 @@ class AnswerResource(ModelResource):
     class Meta:
         queryset = AMAAnswer.objects.all()
         resource_name = 'answer'
+
+class RequestResource(ModelResource):
+    class Meta:
+        queryset = Request.objects.all().order_by("-score")
+        resource_name = 'question'
+        filtering = {
+            'score': ALL
+        }

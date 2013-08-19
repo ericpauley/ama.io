@@ -18,5 +18,8 @@
 </div>
 <a href="/upcoming">Click here to see all upcoming sessions.</a>
 <h1>Top Requests</h1>
+{% for request in top_requests%}
+{%include "request_tile.html"%}
+{%endfor%}
 {%endcache%}
 {%endblock%}

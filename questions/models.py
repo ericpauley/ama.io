@@ -9,6 +9,7 @@ from django.db import models
 from jsonfield import JSONField
 from annoying.fields import AutoOneToOneField
 from south.modelsinspector import add_introspection_rules
+from allaccess.models import Provider
 
 add_introspection_rules([], ["^annoying\.fields\.AutoOneToOneField"])
 
@@ -60,13 +61,7 @@ class AMASession(SluggedModel):
             return u"%s's AMA Session" % (self.owner.username)
 
     def get_marked_questions(self, user):
-        answered = self.questions.all().extra(select={
-            "_score":"""
-            SELECT IFNULL(SUM(value), 0)
-            FROM questions_amavote
-            WHERE questions_amavote.question_id = questions_amaquestion.id
-            """
-        }).order_by("-starred","-_score")
+        answered = self.questions.all()
         if user.is_authenticated():
             return answered.extra(select = {
                 "_vote" : """
@@ -115,11 +110,23 @@ class AMASession(SluggedModel):
     def before(self):
         return self.start_time>datetime.now(tzlocal())
 
+class AMAQuestionManager(models.Manager):
+    def get_query_set(self):
+        return super(AMAQuestionManager, self).get_query_set().extra(select={
+            "score":"""
+            SELECT IFNULL(SUM(value), 0)
+            FROM questions_amavote
+            WHERE questions_amavote.question_id = questions_amaquestion.id
+            """
+        }).order_by("-starred","-score")
+
 class AMAQuestion(models.Model):
     '''
     Questions asked by users are represented by this model.
     '''
     
+    objects = AMAQuestionManager()
+
     asker = models.ForeignKey(User, related_name='own_questions')
     target = models.ForeignKey(User, related_name='asked_questions')
     question = models.TextField()
@@ -137,13 +144,6 @@ class AMAQuestion(models.Model):
     def vote(self):
         try:
             return self._vote if self._vote is not None else 0
-        except AttributeError:
-            return 0
-
-    @property
-    def score(self):
-        try:
-            return self._score if self._score is not None else 0
         except AttributeError:
             return 0
     
@@ -192,3 +192,61 @@ class AMAVote(models.Model):
     
     class Meta:
         unique_together = ('user', 'question')
+
+class RequestManager(models.Manager):
+    def get_query_set(self):
+        return super(RequestManager, self).get_query_set().extra(select={
+            "score":"""
+            SELECT IFNULL(SUM(value), 0)
+            FROM questions_requestvote
+            WHERE questions_requestvote.request_id = questions_request.id
+            """
+        }).order_by("-score")
+
+    def vote_marked(self, user):
+        requests = self.all()
+        if user.is_authenticated():
+            return answered.extra(select = {
+                "vote" : """
+                SELECT IFNULL(value, 0)
+                FROM questions_requestvote
+                WHERE questions_requestvote.request_id = questions_request.id
+                AND questions_requestvote.user_id = (%d)
+                """ % user.id
+            })
+        else:
+            return answered
+
+class Request(models.Model):
+
+    objects = RequestManager()
+
+    person = models.CharField(max_length=255)
+    provider = models.ForeignKey(Provider, related_name="requests")
+    desc = models.TextField()
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    edited = models.DateTimeField(auto_now=True, editable=False)
+
+    class Meta:
+        unique_together = ('person', 'provider')
+
+class RequestVote(models.Model):
+
+    '''
+    Users' votes on requests are represented here.
+    '''
+    
+    user = models.ForeignKey(User, related_name='request_votes', editable=False)
+    request = models.ForeignKey(Request, related_name='votes', editable=False)
+    
+    VOTE_CHOICES = (
+        (1, 'Upvote'),
+    )
+    
+    value = models.IntegerField(choices=VOTE_CHOICES)
+    
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    edited = models.DateTimeField(auto_now=True, editable=False)
+    
+    class Meta:
+        unique_together = ('user', 'request')

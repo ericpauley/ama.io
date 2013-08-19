@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.db.models import Sum
 from django.http import Http404
 from django.shortcuts import render,redirect
-from questions.models import AMASession
+from questions.models import AMASession, Request
 from datetime import datetime
 
 def live(request):
@@ -22,7 +22,8 @@ def home(request):
         end_time__gt=datetime.now()).order_by('-start_time')[:15]
     upcoming_sessions = AMASession.objects.all().filter(
         start_time__gt=datetime.now()).order_by('-start_time')[:15]
-    return render(request, "home.html", {'live_sessions': live_sessions, 'upcoming_sessions': upcoming_sessions, 'title':'AMA'})
+    top_requests = Request.objects.all()[:15]
+    return render(request, "home.html", {'live_sessions': live_sessions, 'upcoming_sessions': upcoming_sessions, 'top_requests': top_requests, 'title':'AMA'})
 
 def user(request, username):
     try:

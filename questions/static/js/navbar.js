@@ -42,6 +42,8 @@ $("#reg_form").submit(function(event){
 			$("#reg_exists").show()
 		}else if(err.reason == "pass_match"){
 			$("#reg_passmatch").show()
+		}else if(err.reason == "bad_username"){
+			$("#bad_username").show()
 		}
 	})
 })

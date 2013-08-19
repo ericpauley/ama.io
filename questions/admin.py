@@ -25,3 +25,7 @@ admin.site.register(AMAQuestion, SessionAdmin)
 class AnswerAdmin(admin.ModelAdmin):
     pass
 admin.site.register(AMAAnswer, SessionAdmin)
+
+class RequestAdmin(admin.ModelAdmin):
+    pass
+admin.site.register(Request, RequestAdmin)

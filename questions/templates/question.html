@@ -25,7 +25,7 @@
 				<h4>{{question.question}}</h4>
 				<p>{{question.desc|markdown:"safe"}}
 				</p>
-				<small>&mdash;Asked by {{question.asker}}</small>
+				<small>&mdash;Asked by {{question.asker.meta.full_name}}</small>
 			</div>
 			{%endcache%}
 		</div>
