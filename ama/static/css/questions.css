@@ -16,6 +16,11 @@
 	padding: 10px 0 0 10px;
 }
 
+.star{
+	float: right;
+	margin: 10px 10px 0 0;
+}
+
 #ask-question{
 	width: 80%;
 }
