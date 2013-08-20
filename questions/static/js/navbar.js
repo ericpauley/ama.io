@@ -57,11 +57,14 @@ $("#reg_submit").click(function(){
 })
 
 $("#create-session-form").submit(function(event){
+	$(".form-alert").hide()
     $("#session-upload-iframe").off("load")
 	$("#session-upload-iframe").load(function(){
 		var resp = eval("("+$("#session-upload-iframe").contents().text()+")")
 		if(resp['success']){
 			document.location="/s/"+resp.slug
+		}else{
+			$("#"+resp.reason).show()
 		}
 	})
 })

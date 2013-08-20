@@ -175,10 +175,31 @@ class SessionResource(ModelResource):
         s = AMASession()
         s.owner = request.user
         s.title = request.POST['title']
+        if s.title == "":
+            return self.create_response(request, {
+                    'success': False,
+                    'reason': 'no_title',
+                }, HttpBadRequest)
         s.subtitle = request.POST['subtitle']
+        if s.subtitle == "":
+            return self.create_response(request, {
+                    'success': False,
+                    'reason': 'no_subtitle',
+                }, HttpBadRequest)
         s.desc = request.POST['desc']
-        s.start_time = parser.parse('%s %s' % (request.POST['date'], request.POST['time']))
-        s.end_time = s.start_time + datetime.timedelta(hours=float(request.POST['duration']))
+        if s.desc == "":
+            return self.create_response(request, {
+                    'success': False,
+                    'reason': 'no_desc',
+                }, HttpBadRequest)
+        try:
+            s.start_time = parser.parse('%s %s' % (request.POST['date'], request.POST['time']))
+            s.end_time = s.start_time + datetime.timedelta(hours=float(request.POST['duration']))
+        except:
+            return self.create_response(request, {
+                    'success': False,
+                    'reason': 'bad_timing',
+                }, HttpBadRequest)
         s.save()
         try:
             file=request.FILES['image']

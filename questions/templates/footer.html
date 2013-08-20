@@ -111,6 +111,10 @@
 	</div>
 	<div class="modal-body container-fluid">
 		<form method="POST" action="/api/v1/session/create/?format=json" id="create-session-form" class="form" enctype="multipart/form-data" target="session-upload-iframe">
+			{%include "error.html" with id="no_title" message="Please enter a title." only%}
+			{%include "error.html" with id="no_subtitle" message="Please enter a subtitle." only%}
+			{%include "error.html" with id="no_desc" message="Please enter a description." only%}
+			{%include "error.html" with id="bad_timing" message="Check your start time and duration." only%}
 			<fieldset>
 				<input type="text" placeholder="Title (max 30 characters, be concise!)" name="title" maxlength="30" id="session-create-title"/> e.g. I am (name), AMA!
 				<input type="text" name="subtitle" placeholder="Subtitle (max 100 characters)" maxlength="30" id="session-create-title"/>
