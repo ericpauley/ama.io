@@ -52,12 +52,12 @@
 				</div>
 			</div>
 		</div>
-		<a onclick="loadDisqus(jQuery('#comments-{{question.id}}'), 'question_{{question.id}}', '/s/{{question.session.slug}}');">
-      Show comments
-		
-		<div id="comments-{{ question.id }}">
+		<a onclick="$('#comments-{{ question.id }}').toggle()">
+      Show comments</a>
+		<div>
+		<iframe style="width:100%;display:None" src="/api/v1/question/{{question.id}}/comments" id="comments-{{ question.id }}">
 			
-		</div>
-
+		</iframe>
+	</div>
 	</div>
 </div>
