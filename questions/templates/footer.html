@@ -1,3 +1,5 @@
+{% load now %}
+
 <p id="footer-info">
 &nbsp;
 </p>
@@ -121,8 +123,8 @@
 				<input type="text" name="subtitle" placeholder="Subtitle (max 100 characters)" maxlength="30" id="session-create-title"/>
 				<input type="number" name="duration" placeholder="Approx. length (hours)" min="0" max="100" id="session-create-title"/> 0 for less than one hour
 				<textarea id="session-desc" name="desc" placeholder="Description" rows="5"></textarea>	
-				<input type="date" name="date" id="session-create-title"/> Schedule a Date<br/>
-				<input type="time" name="time" id="sesion-create-time"/> Schedule a Time
+				<input type="date" name="date" value="{% now '%Y-%m-%d' %}" id="session-create-date"/> Schedule a Date<br/>
+				<input type="time" name="time" value="{% now '%H:%M' %}" id="sesion-create-time"/> Schedule a Time
 				<input type="file" name="image" id="session-create-image"> Set the image.
 			</fieldset>
 		</form>
