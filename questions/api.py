@@ -248,6 +248,7 @@ class QuestionResource(ModelResource):
     session = fields.OneToOneField('questions.api.SessionResource', 'session', null=True)
     score = fields.IntegerField(attribute='score', default=0, readonly=True)
     vote = fields.IntegerField(attribute="vote")
+    html = fields.CharField(use_in = "detail")
 
     class Meta:
         queryset = AMAQuestion.objects.all().order_by("-starred", "-score")
@@ -258,6 +259,9 @@ class QuestionResource(ModelResource):
             'score': ALL
         }
         authorization = QuestionAuthorization()
+
+    def dehydrate_html(self, bundle):
+        return render_to_string("question.html", {'question': bundle.obj}, RequestContext(bundle.request))
 
     def get_object_list(self, request):
         if request.user.is_authenticated():
