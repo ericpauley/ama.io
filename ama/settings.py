@@ -182,7 +182,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 LOGIN_REDIRECT_URL = "/"
 
 try:
-    from local_settings import *
+    from ama.settings_local import *
     print("Using local settings...")
 except ImportError:
     pass

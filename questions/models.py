@@ -10,6 +10,7 @@ from jsonfield import JSONField
 from annoying.fields import AutoOneToOneField
 from south.modelsinspector import add_introspection_rules
 from allaccess.models import Provider
+import django.contrib.sessions.models
 
 add_introspection_rules([], ["^annoying\.fields\.AutoOneToOneField"])
 
@@ -36,6 +37,17 @@ class UserMeta(models.Model):
         name = name.strip()
         return name if name else self.user.username
 
+class AMASessionManager(models.Manager):
+    def get_query_set(self):
+        return super(AMASessionManager, self).get_query_set().extra(select={
+            "viewers":"""
+            SELECT Count(*)
+            FROM questions_sessionview
+            WHERE questions_sessionview.session_id = questions_amasession.slug
+            AND questions_sessionview.timestamp > '%s'
+            """ % str(datetime.now() - timedelta(minutes=1000))
+        })
+
 class AMASession(SluggedModel):
     '''
     Question answering sessions are represented by this model.
@@ -53,6 +65,8 @@ class AMASession(SluggedModel):
     
     created = models.DateTimeField(auto_now_add=True, editable=False)
     edited = models.DateTimeField(auto_now=True, editable=False)
+
+    objects = AMASessionManager()
     
     def __unicode__(self):
         if self.owner.get_full_name():
@@ -109,6 +123,30 @@ class AMASession(SluggedModel):
     @property
     def before(self):
         return self.start_time>datetime.now(tzlocal())
+
+    def mark_viewed(self, request):
+        if(request.user.is_authenticated()):
+            try:
+                obj = self.viewers.get(user=request.user)
+            except SessionView.DoesNotExist:
+                obj = SessionView(session = self, user = request.user)
+            obj.save()
+        else:
+            if not request.session.exists(request.session.session_key):
+                request.session.create() 
+            session = django.contrib.sessions.models.Session.objects.get(session_key=request.session.session_key)
+            try:
+                obj = self.viewers.get(user_session=session)
+            except SessionView.DoesNotExist:
+                obj = SessionView(session = self, user_session = session)
+            obj.save()
+
+
+class SessionView(models.Model):
+    session = models.ForeignKey(AMASession, related_name='viewers')
+    user = models.ForeignKey(User, related_name='views', null=True)
+    user_session = models.ForeignKey(django.contrib.sessions.models.Session, related_name='views', null=True)
+    timestamp = models.DateTimeField(auto_now = True)
 
 class AMAQuestionManager(models.Manager):
     def get_query_set(self):

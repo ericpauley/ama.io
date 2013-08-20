@@ -17,6 +17,7 @@ class SessionAuthorization(Authorization):
 
     @permcheck
     def read_detail(self, object_list, bundle):
+        bundle.obj.mark_viewed(bundle.request)
         return True
 
     @permcheck

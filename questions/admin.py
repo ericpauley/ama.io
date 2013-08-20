@@ -29,3 +29,15 @@ admin.site.register(AMAAnswer, SessionAdmin)
 class RequestAdmin(admin.ModelAdmin):
     pass
 admin.site.register(Request, RequestAdmin)
+
+class SessionViewAdmin(admin.ModelAdmin):
+    fields = ['session', 'user']
+
+    def timestamp(self, obj):
+        return obj.timestamp
+
+    timestamp.short_description = "timestamp"
+    timestamp.admin_order_field = "timestamp"
+
+    list_display = ('session', 'user', 'user_session', 'timestamp')
+admin.site.register(SessionView, SessionViewAdmin)
