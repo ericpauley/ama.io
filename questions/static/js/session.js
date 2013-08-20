@@ -112,63 +112,68 @@ $("#ask-submit").click(function(){
 		})
 })
 
-$(function(){
-	setInterval(function(){
-		$.get("/api/v1/session/"+GLOBALS['session']+"/",
-			function(data){
-				$("#session-title").text(data['title'])
-				$("#session-desc").html(markdown.toHTML(data['desc']))
-				$("#current-viewers").text(data['num_viewers']+" people currently viewing this AMA.")
-				var ids = []
-				$(".question").css("display", "none")
-				for(var i=0; i<data['questions'].length;i++){
-					var question = data['questions'][i]
-					var id = question['id']
-					ids.push(id)
-					$("#question-"+id).css("display", "block")
-					if(!$("#question-"+id).length){
-						if(question['answer'] == null){
-							$("#unansweredlist").append(question['html'])
-						}else{
-							$("#answeredlist").append(question['html'])
-						}
-						return
-					}
+function check(){
+	$.ajax({
+		type:"GET",
+		url:"/api/v1/session/"+GLOBALS['session']+"/"
+	}).done(
+		function(data){
+			$("#session-title").text(data['title'])
+			$("#session-desc").html(markdown.toHTML(data['desc']))
+			$("#current-viewers").text(data['num_viewers']+" people currently viewing this AMA.")
+			var ids = []
+			$(".question").css("display", "none")
+			for(var i=0; i<data['questions'].length;i++){
+				var question = data['questions'][i]
+				var id = question['id']
+				ids.push(id)
+				$("#question-"+id).css("display", "block")
+				if(!$("#question-"+id).length){
 					if(question['answer'] == null){
-						if($("#unansweredlist").has("#question-"+id).length == 0){
-							$("#unansweredlist").append($("#question-"+id))
-						}
-						$("#answer-"+id).hide()
+						$("#unansweredlist").append(question['html'])
 					}else{
-						if($("#answeredlist").has("#question-"+id).length == 0){
-							$("#answeredlist").append($("#question-"+id))
-						}
-						$("#answer-"+id).show()
-						$("#answer-text-"+id).html(markdown.toHTML(question['answer']['response']))
-						$("#answer-textarea-"+id).text(question['answer']['response'])
+						$("#answeredlist").append(question['html'])
 					}
-					if(!$("#question-"+id).hasClass("lock")){
-						$("#score-"+id).text(question['score'])
-						if(question['vote'] == 1){
-							$("#upvote-"+id).addClass("btn-success")
-						}else{
-							$("#upvote-"+id).removeClass("btn-success")
-						}
-						if(question['vote'] == -1){
-							$("#downvote-"+id).addClass("btn-danger")
-						}else{
-							$("#downvote-"+id).removeClass("btn-danger")
-						}
-						if(question['starred'] == 1){
-							$("#star-"+id).addClass("btn-info")
-						}else{
-							$("#star-"+id).removeClass("btn-info")
-						}
+					return
+				}
+				if(question['answer'] == null){
+					if($("#unansweredlist").has("#question-"+id).length == 0){
+						$("#unansweredlist").append($("#question-"+id))
+					}
+					$("#answer-"+id).hide()
+				}else{
+					if($("#answeredlist").has("#question-"+id).length == 0){
+						$("#answeredlist").append($("#question-"+id))
+					}
+					$("#answer-"+id).show()
+					$("#answer-text-"+id).html(markdown.toHTML(question['answer']['response']))
+					$("#answer-textarea-"+id).text(question['answer']['response'])
+				}
+				if(!$("#question-"+id).hasClass("lock")){
+					$("#score-"+id).text(question['score'])
+					if(question['vote'] == 1){
+						$("#upvote-"+id).addClass("btn-success")
+					}else{
+						$("#upvote-"+id).removeClass("btn-success")
+					}
+					if(question['vote'] == -1){
+						$("#downvote-"+id).addClass("btn-danger")
+					}else{
+						$("#downvote-"+id).removeClass("btn-danger")
+					}
+					if(question['starred'] == 1){
+						$("#star-"+id).addClass("btn-info")
+					}else{
+						$("#star-"+id).removeClass("btn-info")
 					}
 				}
-				sessionClicks()
-			})
-	}, 1000)
+			}
+			sessionClicks()
+		})
+}
+
+$(function(){
+	setInterval(check, 1000)
 })
 
 //global vars used by disqus
