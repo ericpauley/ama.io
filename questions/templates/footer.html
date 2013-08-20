@@ -142,8 +142,10 @@
 		</h3>
 	</div>
 	<div class="modal-body container-fluid">
-		<form method="POST" action="#" id="request-form" class="form-horizontal" enctype="multipart/form-data" target="session-upload-iframe">
-			{%include "error.html" with id="no_title" message="Please enter a title." only%}
+		<form method="POST" action="#" id="request-form" class="form-horizontal" >{% csrf_token %}
+			{%include "error.html" with id="req_bad_provider" message="Please select a valid Social Media service." only%}
+			{%include "error.html" with id="req_bad_username" message="Invalid username" only%}
+			{%include "error.html" with id="req_duplicate" message="That person has already recieved a request." only%}
 			<div class="control-group">
 				<label class="control-label" for="request_provider">Service</label>
 				<div class="controls">
@@ -157,7 +159,7 @@
 			<div class="control-group">
 				<label class="control-label" for="request_person">Username</label>
 				<div class="controls">
-					<input type="text" name="person" id="request_person"></input>
+					<input type="text" name="username" id="request_username"></input>
 				</div>
 			</div>
 			<div class="control-group">
@@ -169,6 +171,6 @@
 		</form>
 	</div>
 	<div class="modal-footer">
-		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> <button id="request_submit" class="btn btn-primary btn-success" onclick="">Request</button>
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> <button id="request_submit" class="btn btn-primary btn-success" onclick="$('#request-form').submit()">Request</button>
 	</div>
 </div>

@@ -69,3 +69,17 @@ $("#create-session-form").submit(function(event){
 	})
 })
 
+$("#request-form").submit(function(event){
+	event.preventDefault()
+	$(".form-alert").hide()
+	$.ajax({
+		type: "POST",
+		url: "/api/v1/request/create/",
+		data: $("#request-form").serialize()
+	}).done(function(data) {
+		location.reload()
+	}).fail(function(xhr){
+		var err = eval("(" + xhr.responseText + ")")
+		$("#req_"+err.reason).show()
+	})
+})

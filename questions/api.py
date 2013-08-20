@@ -23,6 +23,7 @@ from tastypie.cache import NoCache
 from django.db import connection
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
+from allaccess.models import Provider
 
 class UserResource(ModelResource):
     class Meta:
@@ -424,6 +425,13 @@ class RequestResource(ModelResource):
         filtering = {
         }
 
+    def prepend_urls(self):
+        return [
+            url(r"^(?P<resource_name>%s)/create%s$" %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('create'), name="api_create"),
+        ]
+
     def dehydrate_provider(self, bundle):
         print(bundle.obj.vote)
         return bundle.obj.provider.name
@@ -441,3 +449,43 @@ class RequestResource(ModelResource):
             })
         else:
             return super(RequestResource, self).get_object_list(request)
+
+    def create(self, request, **kwargs):
+        self.method_check(request, allowed=['post'])
+        if not request.user.is_authenticated():
+            return self.create_response(request, {
+                'success': False,
+                'reason': 'not_logged_in',
+                }, HttpUnauthorized )
+        provider = request.POST['provider']
+        if not provider:
+            return self.create_response(request, {
+                'success': False,
+                'reason': 'bad_provider',
+                }, HttpBadRequest )
+        try:
+            provider = Provider.objects.get(name=provider)
+        except (KeyError, Provider.DoesNotExist):
+            return self.create_response(request, {
+                'success': False,
+                'reason': 'bad_provider',
+                }, HttpBadRequest )
+        username = request.POST['username'].lower()
+        if not username:
+            return self.create_response(request, {
+                'success': False,
+                'reason': 'bad_username',
+                }, HttpBadRequest )
+        if Request.objects.filter(provider=provider, username=username).count():
+            return self.create_response(request, {
+                'success': False,
+                'reason': 'duplicate',
+                }, HttpBadRequest )
+
+        desc = request.POST.get('desc',"")
+
+        ama_request = Request(provider=provider, username=username, desc=desc)
+        ama_request.save()
+        return self.create_response(request, {
+                'success': True,
+                })

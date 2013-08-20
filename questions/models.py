@@ -259,14 +259,14 @@ class Request(models.Model):
 
     objects = RequestManager()
 
-    person = models.CharField(max_length=255)
+    username = models.CharField(max_length=255)
     provider = models.ForeignKey(Provider, related_name="requests")
     desc = models.TextField()
     created = models.DateTimeField(auto_now_add=True, editable=False)
     edited = models.DateTimeField(auto_now=True, editable=False)
 
     class Meta:
-        unique_together = ('person', 'provider')
+        unique_together = ('username', 'provider')
 
 class RequestVote(models.Model):
 
