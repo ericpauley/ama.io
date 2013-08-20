@@ -47,6 +47,7 @@ def session(request, slug):
     try:
         s = AMASession.objects.get(slug=slug.lower())
         s.mark_viewed(request)
+        print(s.num_viewers)
         answered = s.get_marked_questions(request.user).exclude(answer=None)
         unanswered = s.get_marked_questions(request.user).filter(answer=None)
     except AMASession.DoesNotExist:

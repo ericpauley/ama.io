@@ -19,6 +19,8 @@ from django.template import RequestContext
 from dateutil import parser
 import datetime
 import re
+from tastypie.cache import NoCache
+from django.db import connection
 
 class UserResource(ModelResource):
     class Meta:
@@ -120,7 +122,8 @@ class UserResource(ModelResource):
 
 class SessionResource(ModelResource):
     owner = fields.ForeignKey(UserResource, 'owner')
-    questions = fields.ToManyField('questions.api.QuestionResource', lambda bundle:bundle.obj.get_marked_questions(bundle.request.user), use_in='detail', full='true', related_name='session')
+    questions = fields.ToManyField('questions.api.QuestionResource', lambda bundle:bundle.obj.get_marked_questions(bundle.request.user), null=True, use_in='detail', full='true', related_name='session')
+    num_viewers = fields.IntegerField(attribute="num_viewers")
 
     class Meta:
         queryset = AMASession.objects.all()
@@ -131,6 +134,11 @@ class SessionResource(ModelResource):
             'start_time': ALL,
             'end_time': ALL
         }
+        cache = NoCache()
+
+    def get_object_list(self, request):
+        connection.close()
+        return ModelResource.get_object_list(self, request)
 
     def prepend_urls(self):
         return [

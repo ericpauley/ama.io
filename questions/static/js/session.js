@@ -117,7 +117,8 @@ $(function(){
 		$.get("/api/v1/session/"+GLOBALS['session']+"/",
 			function(data){
 				$("#session-title").text(data['title'])
-				$("#session-desc").html(data['desc-html'])
+				$("#session-desc").html(markdown.toHTML(data['desc']))
+				$("#current-viewers").text(data['num_viewers']+" people currently viewing this AMA.")
 				var ids = []
 				$(".question").css("display", "none")
 				for(var i=0; i<data['questions'].length;i++){

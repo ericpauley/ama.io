@@ -39,13 +39,13 @@ class UserMeta(models.Model):
 
 class AMASessionManager(models.Manager):
     def get_query_set(self):
-        return super(AMASessionManager, self).get_query_set().extra(select={
-            "viewers":"""
+        return super(AMASessionManager,self).get_query_set().extra(select={
+            "num_viewers":"""
             SELECT Count(*)
             FROM questions_sessionview
             WHERE questions_sessionview.session_id = questions_amasession.slug
-            AND questions_sessionview.timestamp > '%s'
-            """ % str(datetime.now() - timedelta(minutes=1000))
+            AND questions_sessionview.timestamp > DATETIME('%s')
+            """ % (datetime.utcnow() - timedelta(minutes=.1)).isoformat()
         })
 
 class AMASession(SluggedModel):

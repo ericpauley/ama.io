@@ -29,6 +29,9 @@ GLOBALS['session'] = "{{session.slug}}"
 <div id="session-desc" class="row-fluid">
 	{{session.desc|markdown:"safe"}}
 </div>
+<div id="current-viewers">
+{{session.num_viewers}} people currently viewing this AMA.
+</div>
 <div class="row-fluid">
 	<ul id="sessiontabs" class="nav nav-tabs">
 		<li class="active">
