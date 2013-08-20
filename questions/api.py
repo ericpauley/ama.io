@@ -63,9 +63,14 @@ class UserResource(ModelResource):
                     'reason': 'bad_username',
                 }, HttpBadRequest)
 
+        if not re.match(r"^\w{6,50}", password):
+            return self.create_response(request, {
+                    'success': False,
+                    'reason': 'bad_password',
+                }, HttpBadRequest)
+
         try:
             validate_email(email)
-            return True
         except ValidationError:
             return self.create_response(request, {
                     'success': False,
@@ -86,12 +91,11 @@ class UserResource(ModelResource):
 
         user = User.objects.create_user(username, email, password)
         user = authenticate(username=username, password=password)
-        if user:
-            if user.is_active:
-                login(request, user)
-                return self.create_response(request, {
-                    'success': True
-                })
+        if user and user.is_active:
+            login(request, user)
+            return self.create_response(request, {
+                'success': True
+            })
         else:
             return self.create_response(request, {
                 'success': False,
