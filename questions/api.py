@@ -21,6 +21,8 @@ import datetime
 import re
 from tastypie.cache import NoCache
 from django.db import connection
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 
 class UserResource(ModelResource):
     class Meta:
@@ -59,6 +61,15 @@ class UserResource(ModelResource):
             return self.create_response(request, {
                     'success': False,
                     'reason': 'bad_username',
+                }, HttpBadRequest)
+
+        try:
+            validate_email(email)
+            return True
+        except ValidationError:
+            return self.create_response(request, {
+                    'success': False,
+                    'reason': 'bad_email',
                 }, HttpBadRequest)
 
         if password != confirm:
@@ -138,7 +149,7 @@ class SessionResource(ModelResource):
 
     def get_object_list(self, request):
         connection.close()
-        return ModelResource.get_object_list(self, request)
+        return ModelResource.get_object_list(self, request).exclude()
 
     def prepend_urls(self):
         return [

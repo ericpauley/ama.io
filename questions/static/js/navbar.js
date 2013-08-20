@@ -44,6 +44,8 @@ $("#reg_form").submit(function(event){
 			$("#reg_passmatch").show()
 		}else if(err.reason == "bad_username"){
 			$("#bad_username").show()
+		}else if(err.reason == "bad_email"){
+			$("#bad_email").show()
 		}
 	})
 })
