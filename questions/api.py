@@ -7,6 +7,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.db.models import Sum
 from django.template.loader import render_to_string
+from django.shortcuts import render
 from markdown import markdown
 from questions.authorization import SessionAuthorization, QuestionAuthorization
 from questions.models import *
@@ -297,7 +298,13 @@ class QuestionResource(ModelResource):
             url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/star%s$" %
                 (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('star'), name="api_star"),
+            url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/comments%s$" %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('comments'), name="api_comments"),
         ]
+
+    def comments(self, request, pk, **kwargs):
+        return render(request, "comments.html")
 
     def submit_answer(self, request, pk, **kwargs):
         if not request.user.is_authenticated():
