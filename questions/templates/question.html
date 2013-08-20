@@ -55,7 +55,7 @@
 		<a onclick="$('#comments-{{ question.id }}').toggle()">
       Show comments</a>
 		<div>
-		<iframe style="width:100%;display:None" src="/api/v1/question/{{question.id}}/comments" id="comments-{{ question.id }}">
+		<iframe class="comment-frame" style="width:100%;display:None" src="/api/v1/question/{{question.id}}/comments" id="comments-{{ question.id }}">
 			
 		</iframe>
 	</div>
