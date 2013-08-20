@@ -170,7 +170,7 @@ function check(){
 			}
 			sessionClicks()
 		})
-	$("comment-frame").each(function(){
+	$(".comment-frame").each(function(){
 		$(this).height($(this).contents().height())
 	})
 }
