@@ -418,9 +418,6 @@ class RequestResource(ModelResource):
     score = fields.IntegerField(attribute="score")
     vote = fields.IntegerField(attribute="vote")
 
-    #Something happened.
-    #Again.
-
     class Meta:
         queryset = Request.objects.all().order_by("-score")
         resource_name = 'request'

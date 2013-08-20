@@ -177,7 +177,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.static",
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages",
-    "questions.template_processors.recent_sessions")
+    "questions.template_processors.recent_sessions",
+    "questions.template_processors.oauth_providers")
 
 LOGIN_REDIRECT_URL = "/"
 
