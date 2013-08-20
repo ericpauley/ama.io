@@ -200,6 +200,15 @@ class SessionResource(ModelResource):
                     'success': False,
                     'reason': 'bad_timing',
                 }, HttpBadRequest)
+        if not request.user.is_staff:
+            last = request.user.sessions.order_by("-created")[:1]
+            print(last[0].created)
+            print(datetime.datetime.now() - datetime.timedelta(hours=1))
+            if last and last[0].created.replace(tzinfo=None) > datetime.datetime.utcnow() - datetime.timedelta(hours=1):
+                return self.create_response(request, {
+                    'success': False,
+                    'reason': 'too_soon',
+                }, HttpBadRequest)
         s.save()
         try:
             file=request.FILES['image']
