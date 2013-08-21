@@ -193,6 +193,11 @@ class SessionResource(ModelResource):
                     'success': False,
                     'reason': 'no_desc',
                 }, HttpBadRequest)
+        if float(request.POST['duration']) < .5:
+            return self.create_response(request, {
+                    'success': False,
+                    'reason': 'too_short',
+                }, HttpBadRequest)
         try:
             s.start_time = parser.parse('%s %s' % (request.POST['date'], request.POST['time']))
             s.end_time = s.start_time + datetime.timedelta(hours=float(request.POST['duration']))
