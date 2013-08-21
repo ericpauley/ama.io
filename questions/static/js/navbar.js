@@ -1,14 +1,34 @@
 $("#login_form").submit(function(event) {
 	event.preventDefault()
+	$("#login-modal-username").val($("#username").val())
+	$("#login-modal-password").val($("#password").val())
+	$("#login-modal-form").submit()
+})
+
+$("#login-modal-form").submit(function(event) {
+	event.preventDefault()
+	$(".form-alert").hide()
 	$.ajax({
 		type: "POST",
 		url: "/api/v1/user/login/",
-		data: $("#login_form").serialize()
+		data: $("#login-modal-form").serialize()
 	}).done(function(data) {
 		location.reload()
-	}).fail(function(data){
-		$("#login").addClass("btn-danger")
+	}).fail(function(xhr){
+		$("#loginModal").modal()
+		var err = eval("(" + xhr.responseText + ")")
+		$("#login-"+err.reason).show()
 	})
+})
+
+$('input').keydown(function(e) {
+    if (e.keyCode == 13) {
+        $(this).closest('form').submit();
+    }
+});
+
+$("#login-modal-submit").click(function(){
+	$("#login-modal-form").submit()
 })
 
 $("#reg_confirm").change(function() {
