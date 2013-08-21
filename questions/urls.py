@@ -24,4 +24,7 @@ urlpatterns = patterns('',
     url(r'^settings/', views.settings),
     url(r'^settings/submit/', views.settings_submit),
     url(r'^api/', include(v1_api.urls)),
+
+    #Static pages
+    url(r'about/', views.static_page("about.html", "About"))
 )

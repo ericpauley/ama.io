@@ -60,5 +60,8 @@ def settings(request):
     else:
         return render(request, "settings.html")
 
+def static_page(page, title):
+    return lambda request: render(request, page, {"title": title})
+
 def settings_submit(request):
     pass
