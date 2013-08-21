@@ -44,9 +44,9 @@ class AMASessionManager(models.Manager):
             SELECT Count(*)
             FROM questions_sessionview
             WHERE questions_sessionview.session_id = questions_amasession.slug
-            AND questions_sessionview.timestamp > DATETIME('%s')
-            """ % (datetime.utcnow() - timedelta(minutes=.1)).isoformat()
-        })
+            AND questions_sessionview.timestamp > DATETIME(%s)
+            """
+        }, select_params = [datetime.now() - timedelta(seconds=10)])
 
 class AMASession(SluggedModel):
     '''
@@ -74,19 +74,8 @@ class AMASession(SluggedModel):
         else:
             return u"%s's AMA Session" % (self.owner.username)
 
-    def get_marked_questions(self, user):
-        answered = self.questions.all()
-        if user.is_authenticated():
-            return answered.extra(select = {
-                "_vote" : """
-                SELECT value
-                FROM questions_amavote
-                WHERE questions_amavote.question_id = questions_amaquestion.id
-                AND questions_amavote.user_id = (%d)
-                """ % user.id
-            })
-        else:
-            return answered
+    def get_marked_questions(self, request):
+        return AMAQuestion.objects.vote_marked(request).filter(session=self)
     
     @property
     def absolute_url(self):
@@ -158,6 +147,22 @@ class AMAQuestionManager(models.Manager):
             """
         }).order_by("-starred","-score")
 
+    def vote_marked(self, request):
+        if request.user.is_authenticated():
+            return self.all().extra(select = {
+                "vote" : """
+                SELECT value
+                FROM questions_amavote
+                WHERE questions_amavote.question_id = questions_amaquestion.id
+                AND questions_amavote.user_id = (%s)
+                """
+            }, select_params=[request.user.id])
+        else:
+            return self.all().extra(select = {
+                "vote" : "0"
+            })
+
+
 class AMAQuestion(models.Model):
     '''
     Questions asked by users are represented by this model.
@@ -178,12 +183,12 @@ class AMAQuestion(models.Model):
     created = models.DateTimeField(auto_now_add=True, editable=False)
     edited = models.DateTimeField(auto_now=True, editable=False)
     
-    @property
+    '''@property
     def vote(self):
         try:
             return self._vote if self._vote is not None else 0
         except AttributeError:
-            return 0
+            return 0'''
     
     def __unicode__(self):
         try:
@@ -249,11 +254,22 @@ class RequestManager(models.Manager):
                 SELECT IFNULL(value, 0)
                 FROM questions_requestvote
                 WHERE questions_requestvote.request_id = questions_request.id
-                AND questions_requestvote.user_id = (%d)
-                """ % user.id
-            })
+                AND questions_requestvote.user_id = %s
+                """
+            }, select_params=[user.id])
         else:
             return answered
+
+    def for_user(self, user):
+        requests = self.all()
+        requests = requests.extra(where = ["""
+            (SELECT COUNT(*)
+            FROM allaccess_accountaccess
+            WHERE allaccess_accountaccess.identifier LIKE questions_request.username
+            AND allaccess_accountaccess.provider_id = questions_request.provider_id
+            AND allaccess_accountaccess.user_id = %s) > 0
+            """], params = [user.id])
+        return requests
 
 class Request(models.Model):
 
@@ -262,6 +278,7 @@ class Request(models.Model):
     username = models.CharField(max_length=255)
     provider = models.ForeignKey(Provider, related_name="requests")
     desc = models.TextField()
+    session = models.ForeignKey(AMASession, related_name="requests", null=True, on_delete=models.SET_NULL)
     created = models.DateTimeField(auto_now_add=True, editable=False)
     edited = models.DateTimeField(auto_now=True, editable=False)
 

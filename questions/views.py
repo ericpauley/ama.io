@@ -19,7 +19,7 @@ def upcoming(request):
 def home(request):
     live_sessions = AMASession.objects.all().filter(
         start_time__lt=datetime.now(),
-        end_time__gt=datetime.now()).order_by('-start_time')[:15]
+        end_time__gt=datetime.now()).order_by('-num_viewers')[:15]
     upcoming_sessions = AMASession.objects.all().filter(
         start_time__gt=datetime.now()).order_by('-start_time')[:15]
     top_requests = Request.objects.all()[:15]
@@ -48,8 +48,8 @@ def session(request, slug):
         s = AMASession.objects.get(slug=slug.lower())
         s.mark_viewed(request)
         print(s.num_viewers)
-        answered = s.get_marked_questions(request.user).exclude(answer=None)
-        unanswered = s.get_marked_questions(request.user).filter(answer=None)
+        answered = s.get_marked_questions(request).exclude(answer=None)
+        unanswered = s.get_marked_questions(request).filter(answer=None)
     except AMASession.DoesNotExist:
         raise Http404
     return render(request, "session.html", {'session':s, 'unanswered': unanswered, 'answered': answered})

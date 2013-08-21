@@ -21,7 +21,7 @@ from dateutil import parser
 import datetime
 import re
 from tastypie.cache import NoCache
-from django.db import connection
+from django.db import transaction
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from allaccess.models import Provider
@@ -139,7 +139,7 @@ class UserResource(ModelResource):
 
 class SessionResource(ModelResource):
     owner = fields.ForeignKey(UserResource, 'owner')
-    questions = fields.ToManyField('questions.api.QuestionResource', lambda bundle:bundle.obj.get_marked_questions(bundle.request.user), null=True, use_in='detail', full='true', related_name='session')
+    questions = fields.ToManyField('questions.api.QuestionResource', lambda bundle:bundle.obj.get_marked_questions(bundle.request), null=True, use_in='detail', full='true', related_name='session')
     num_viewers = fields.IntegerField(attribute="num_viewers")
 
     class Meta:
@@ -153,9 +153,8 @@ class SessionResource(ModelResource):
         }
         cache = NoCache()
 
-    def get_object_list(self, request):
-        connection.close()
-        return ModelResource.get_object_list(self, request).exclude()
+    def dehydrate_num_viewers(self, bundle):
+        return bundle.obj.viewers.filter(timestamp__gte=datetime.datetime.now() - datetime.timedelta(seconds=10)).count()
 
     def prepend_urls(self):
         return [
@@ -204,14 +203,13 @@ class SessionResource(ModelResource):
                 }, HttpBadRequest)
         if not request.user.is_staff:
             last = request.user.sessions.order_by("-created")[:1]
-            print(last[0].created)
-            print(datetime.datetime.now() - datetime.timedelta(hours=1))
             if last and last[0].created.replace(tzinfo=None) > datetime.datetime.utcnow() - datetime.timedelta(hours=1):
                 return self.create_response(request, {
                     'success': False,
                     'reason': 'too_soon',
                 }, HttpBadRequest)
         s.save()
+        Request.objects.for_user(request.user).filter(session=None).update(session=s)
         try:
             file=request.FILES['image']
             s.image.save(s.slug+"."+file.name.split(".")[-1], file)
