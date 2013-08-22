@@ -151,7 +151,7 @@ function check(){
 				}
 				if(!$("#question-"+id).hasClass("lock")){
 					$("#score-"+id).text(question['score'])
-					if(question['vote'] == 1){
+					/*if(question['vote'] == 1){
 						$("#upvote-"+id).addClass("btn-success")
 					}else{
 						$("#upvote-"+id).removeClass("btn-success")
@@ -160,7 +160,7 @@ function check(){
 						$("#downvote-"+id).addClass("btn-danger")
 					}else{
 						$("#downvote-"+id).removeClass("btn-danger")
-					}
+					}*/
 					if(question['starred'] == 1){
 						$("#star-"+id).addClass("btn-info")
 					}else{

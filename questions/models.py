@@ -46,7 +46,7 @@ class AMASessionManager(models.Manager):
             WHERE questions_sessionview.session_id = questions_amasession.slug
             AND questions_sessionview.timestamp > DATETIME(%s)
             """
-        }, select_params = [datetime.now() - timedelta(seconds=10)])
+        }, select_params = [datetime.now() - timedelta(seconds=30)])
 
 class AMASession(SluggedModel):
     '''
@@ -83,11 +83,11 @@ class AMASession(SluggedModel):
     
     @property
     def unanswered(self):
-        return self.questions.filter(answer=None).annotate(score=models.Sum('votes__value')).order_by("-starred","-_score")
+        return self.questions.filter(answer=None)
     
     @property
     def answered(self):
-        return self.questions.exclude(answer=None).annotate(score=models.Sum('votes__value')).order_by("-starred","-_score")
+        return self.questions.exclude(answer=None)
     
     @property
     def time_left(self):

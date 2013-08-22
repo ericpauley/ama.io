@@ -5,7 +5,8 @@ from django.contrib import admin
 admin.autodiscover()
 from django.conf import settings
 from django.conf.urls.static import static
-import questions.oauth
+from questions.oauth import CustomCallback
+from allaccess.views import OAuthRedirect
 
 urlpatterns = patterns('',
     # Examples:
@@ -21,6 +22,6 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^accounts/callback/(?P<provider>(\w|-)+)/$', questions.oauth.CustomCallback.as_view()),
-    url(r'^accounts/', include('allaccess.urls')),
+    url(r'^accounts/callback/(?P<provider>(\w|-)+)/$', CustomCallback.as_view(), name='allaccess-callback'),
+    url(r'^accounts/login/(?P<provider>(\w|-)+)/$', OAuthRedirect.as_view(), name='allaccess-login'),
 )+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

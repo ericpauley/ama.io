@@ -20,7 +20,7 @@ from django.template import RequestContext
 from dateutil import parser
 import datetime
 import re
-from tastypie.cache import NoCache
+from tastypie.cache import NoCache, SimpleCache
 from django.db import transaction
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
@@ -151,7 +151,7 @@ class SessionResource(ModelResource):
             'start_time': ALL,
             'end_time': ALL
         }
-        cache = NoCache()
+        cache = SimpleCache(timeout=10)
 
     def dehydrate_num_viewers(self, bundle):
         return bundle.obj.viewers.filter(timestamp__gte=datetime.datetime.now() - datetime.timedelta(seconds=10)).count()
@@ -261,7 +261,6 @@ class QuestionResource(ModelResource):
     answer = fields.OneToOneField('questions.api.AnswerResource', 'answer', related_name='question', null=True, full=True)
     session = fields.OneToOneField('questions.api.SessionResource', 'session', null=True)
     score = fields.IntegerField(attribute='score', default=0, readonly=True)
-    vote = fields.IntegerField(attribute="vote")
     html = fields.CharField(use_in = "detail")
 
     class Meta:
@@ -273,22 +272,10 @@ class QuestionResource(ModelResource):
             'score': ALL
         }
         authorization = QuestionAuthorization()
+        cache = SimpleCache(timeout=10)
 
     def dehydrate_html(self, bundle):
         return render_to_string("question.html", {'question': bundle.obj}, RequestContext(bundle.request))
-
-    def get_object_list(self, request):
-        if request.user.is_authenticated():
-            return super(QuestionResource, self).get_object_list(request).extra(select = {
-                    "_vote" : """
-                    SELECT value
-                    FROM questions_amavote
-                    WHERE questions_amavote.question_id = questions_amaquestion.id
-                    AND questions_amavote.user_id = (%d)
-                    """ % request.user.id
-                })
-        else:
-            return super(QuestionResource, self).get_object_list(request)
 
     def prepend_urls(self):
         return [

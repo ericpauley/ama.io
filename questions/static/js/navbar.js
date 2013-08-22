@@ -1,8 +1,13 @@
 $("#login_form").submit(function(event) {
 	event.preventDefault()
-	$("#login-modal-username").val($("#username").val())
+	if($("#username").val() || $("#password").val()){
+		$("#login-modal-username").val($("#username").val())
 	$("#login-modal-password").val($("#password").val())
 	$("#login-modal-form").submit()
+	} else {
+		$("#loginModal").modal()
+	}
+	
 })
 
 $("#login-modal-form").submit(function(event) {
@@ -22,7 +27,7 @@ $("#login-modal-form").submit(function(event) {
 })
 
 $('input').keydown(function(e) {
-    if (e.keyCode == 13) {
+    if (e.keyCode == 13 && !$(this).closest('form').find(":submit")) {
         $(this).closest('form').submit();
     }
 });
