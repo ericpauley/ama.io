@@ -45,6 +45,11 @@ class AMASessionManager(models.Manager):
             FROM questions_sessionview
             WHERE questions_sessionview.session_id = questions_amasession.slug
             AND questions_sessionview.timestamp > DATETIME(%s)
+            """,
+            "num_views":"""
+            SELECT Count(*)
+            FROM questions_sessionview
+            WHERE questions_sessionview.session_id = questions_amasession.slug
             """
         }, select_params = [datetime.now() - timedelta(seconds=30)])
 

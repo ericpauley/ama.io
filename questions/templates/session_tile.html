@@ -8,6 +8,8 @@
 		{% if session.running %}
 		<h6 {% if session.near_end %}class="near_end"{%endif%}>Time left: {{session.time_left}}</h6>
 		<h6>Viewers: {{session.num_viewers}}</h6>
+		{%else%}
+		<h6>Views: {{session.viewers.count}}</h6>
 		{%endif%}
 		{%if session.before%}
 		<h6>Time until: {{session.time_until}}</h6>

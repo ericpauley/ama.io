@@ -8,12 +8,17 @@ from datetime import datetime
 def live(request):
     live_sessions = AMASession.objects.all().filter(
         start_time__lt=datetime.now(),
-        end_time__gt=datetime.now()).order_by('-start_time')
+        end_time__gt=datetime.now()).order_by('-num_viewers')
     return render(request, "session_list.html", {'sessions': live_sessions, 'title':'Live Sessions'})
+
+def past(request):
+    sessions = AMASession.objects.all().filter(
+        end_time__lt=datetime.now()).order_by('-num_views')
+    return render(request, "session_list.html", {'sessions': sessions, 'title':'Past Sessions'})
 
 def upcoming(request):
     upcoming_sessions = AMASession.objects.all().filter(
-        start_time__gt=datetime.now()).order_by('-start_time')
+        start_time__gt=datetime.now()).order_by('-num_views')
     return render(request, "session_list.html", {'sessions': upcoming_sessions, 'title':'Upcoming Sessions'})
 
 def home(request):
