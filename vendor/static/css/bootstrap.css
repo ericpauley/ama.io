@@ -4361,16 +4361,16 @@ input[type="submit"].btn.btn-mini {
 }
 
 .navbar-inner {
-  min-height: 40px;
+  min-height: 55px;
   padding-right: 20px;
   padding-left: 20px;
-  background-color: #fafafa;
-  background-image: -moz-linear-gradient(top, #ffffff, #f2f2f2);
+  background-color: rgba(0,0,0,.6);
+  /*background-image: -moz-linear-gradient(top, #ffffff, #f2f2f2);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#f2f2f2));
   background-image: -webkit-linear-gradient(top, #ffffff, #f2f2f2);
   background-image: -o-linear-gradient(top, #ffffff, #f2f2f2);
   background-image: linear-gradient(to bottom, #ffffff, #f2f2f2);
-  background-repeat: repeat-x;
+  background-repeat: repeat-x;*/
   border: 1px solid #d4d4d4;
   -webkit-border-radius: 4px;
      -moz-border-radius: 4px;
@@ -4420,7 +4420,7 @@ input[type="submit"].btn.btn-mini {
 
 .navbar-text {
   margin-bottom: 0;
-  line-height: 40px;
+  line-height: 55px;
   color: #777777;
 }
 
@@ -4590,6 +4590,7 @@ input[type="submit"].btn.btn-mini {
   display: block;
   float: left;
   margin: 0 10px 0 0;
+  padding-top: 8px;
 }
 
 .navbar .nav.pull-right {
@@ -4637,6 +4638,7 @@ input[type="submit"].btn.btn-mini {
   padding: 7px 10px;
   margin-right: 5px;
   margin-left: 5px;
+  margin-top: 13px;
   color: #ffffff;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
   background-color: #ededed;
@@ -4782,14 +4784,13 @@ input[type="submit"].btn.btn-mini {
 }
 
 .navbar-inverse .navbar-inner {
-  background-color: #1b1b1b;
-  background-image: -moz-linear-gradient(top, #222222, #111111);
+  background-color: rgba(0,0,0,.6);
+  /*background-image: -moz-linear-gradient(top, #222222, #111111);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#222222), to(#111111));
   background-image: -webkit-linear-gradient(top, #222222, #111111);
   background-image: -o-linear-gradient(top, #222222, #111111);
   background-image: linear-gradient(to bottom, #222222, #111111);
-  background-repeat: repeat-x;
-  border-color: #252525;
+  background-repeat: repeat-x;*/
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff222222', endColorstr='#ff111111', GradientType=0);
 }
 
