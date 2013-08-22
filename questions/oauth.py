@@ -1,10 +1,27 @@
-from allaccess.views import OAuthCallback
+from allaccess.views import OAuthCallback, OAuthRedirect
 from allaccess.models import Provider, AccountAccess
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect
 from django.contrib.auth.models import User
 
+class CustomRedirect(OAuthRedirect):
+
+    def get_additional_parameters(self, provider):
+        if provider.name == 'facebook':
+            # Request permission to see user's email
+            return {'scope': 'email'}
+        if provider.name == 'youtube':
+            # Request permission to see user's profile and email
+            perms = ['userinfo.profile', 'youtube.readonly']
+            scope = ' '.join(['https://www.googleapis.com/auth/' + p for p in perms])
+            return {'scope': scope}
+        return super(CustomRedirect, self).get_additional_parameters(provider)
+
 class CustomCallback(OAuthCallback):
+
+    def get(*args, **kwargs):
+        import pdb; pdb.set_trace()
+        return OAuthCallback.get(*args, **kwargs)
 
     def get_or_create_user(self, provider, access, info):
         "Create a shell auth.User."
@@ -18,7 +35,7 @@ class CustomCallback(OAuthCallback):
 
 
     def handle_new_user(self, provider, access, info):
-        print(info)
+        print("WOrks")
         "Create a shell auth.User and redirect."
         user = self.get_or_create_user(provider, access, info)
         access.user = user
