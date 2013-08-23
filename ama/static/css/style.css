@@ -1,3 +1,24 @@
+@media (max-width: 767px){
+	.navbar-wrapper{
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		z-index: 10;
+		margin-top: 20px;
+	}
+}
+@media (min-width: 768px){
+	.navbar-wrapper {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		z-index: 10;
+		margin-top: 20px;
+	}
+}
+
 #session-img{
 	float: left;
 	margin-bottom: 15px;
@@ -6,6 +27,16 @@
 
 #footer-info{
 	margin-top: 25px;
+}
+
+#login-form{
+	padding-top: 10px;
+}
+
+@media(max-width: 1199px){
+	.user-field, .pass-field{
+		display: none;
+	}
 }
 
 .main{
@@ -47,11 +78,3 @@
 	background: #FFFFFF;
 }
 
-.navbar-wrapper {
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	z-index: 10;
-	margin-top: 20px;
-}

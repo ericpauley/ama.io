@@ -1,4 +1,4 @@
-$("#login_form").submit(function(event) {
+$("#login-form").submit(function(event) {
 	event.preventDefault()
 	if($("#username").val() || $("#password").val()){
 		$("#login-modal-username").val($("#username").val())
