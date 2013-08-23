@@ -1,5 +1,12 @@
 {% if num_requests%}
 <div class="alert alert-success">
- Someone has requested that you do an AMA! Why not <b><a href="#sessionModal" data-toggle="modal">schedule one?</a></b>
+ 	Someone has requested that you do an AMA! Why not <b><a href="#sessionModal" data-toggle="modal">schedule one?</a></b>
 </div>
 {%endif%}
+
+{% for message in messages %}
+<div class="alert alert-{{message.level.lower}}">
+	{{message}}
+	<a class="close" data-dismiss="alert" href="#">&times;</a>
+</div>
+{% endfor %}
