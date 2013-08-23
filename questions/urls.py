@@ -11,7 +11,7 @@ v1_api.register(AnswerResource())
 v1_api.register(RequestResource())
 
 urlpatterns = patterns('',
-    url(r'^$', views.home),
+    url(r'^$', views.home, name="home"),
     url(r'^live/$', views.live, name="live"),
     url(r'^upcoming/$', views.upcoming, name="upcoming"),
     url(r'^past/$', views.past, name="past"),

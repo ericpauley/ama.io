@@ -3,6 +3,7 @@ from allaccess.models import Provider, AccountAccess
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 
 class CustomRedirect(OAuthRedirect):
 
@@ -22,6 +23,10 @@ class CustomCallback(OAuthCallback):
     def get(*args, **kwargs):
         import pdb; pdb.set_trace()
         return OAuthCallback.get(*args, **kwargs)
+
+    def get_error_redirect(self, provider, reason):
+        "Return url to redirect on login failure."
+        return reverse("home")
 
     def get_or_create_user(self, provider, access, info):
         "Create a shell auth.User."
