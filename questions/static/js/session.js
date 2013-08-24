@@ -90,6 +90,10 @@ $("#ask-submit").click(function(){
 		})
 })
 
+$.ajax("/api/v1/session/"+GLOBALS['session']+"/", {
+	type:"PATCH",
+})
+
 function check(){
 	GLOBALS.lock = false
 	$.ajax("/api/v1/session/"+GLOBALS['session']+"/", {
@@ -99,10 +103,10 @@ function check(){
 			if(GLOBALS.lock){
 				return
 			}
-			$("#session-title").text(data['title'])
-			$("#session-subtitle").text(data['subtitle'])
-			$("#session-desc").text(data['desc'])
-			$("#session-desc").html(markdown.toHTML(data['desc']))
+			$("#session-title").filter(":selected").text(data['title'])
+			$("#session-subtitle").filter(":selected").text(data['subtitle'])
+			$("#session-desc").filter(":selected").text(data['desc'])
+			$("#session-desc").filter(":selected").html(markdown.toHTML(data['desc']))
 			$("#current-viewers").text(data['num_viewers']+" people currently viewing this AMA.")
 			$("#session-title-edit:hidden").val(data['title'])
 			$("#session-subtitle-edit:hidden").val(data['subtitle'])

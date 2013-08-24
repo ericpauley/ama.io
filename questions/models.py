@@ -139,7 +139,7 @@ class AMASession(SluggedModel):
 class SessionView(models.Model):
     session = models.ForeignKey(AMASession, related_name='viewers')
     user = models.ForeignKey(User, related_name='views', null=True)
-    user_session = models.ForeignKey(django.contrib.sessions.models.Session, related_name='views', null=True)
+    user_session = models.ForeignKey(django.contrib.sessions.models.Session, related_name='views', null=True, on_delete=models.SET_NULL)
     timestamp = models.DateTimeField(auto_now = True)
 
 class AMAQuestionManager(models.Manager):
