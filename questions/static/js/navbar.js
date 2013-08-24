@@ -27,7 +27,7 @@ $("#login-modal-form").submit(function(event) {
 })
 
 $('input').keydown(function(e) {
-    if (e.keyCode == 13 && !$(this).closest('form').find(":submit")) {
+    if (e.keyCode == 13 && !$(this).closest('form').find(":submit").length) {
         $(this).closest('form').submit();
     }
 });
