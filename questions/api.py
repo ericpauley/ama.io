@@ -138,9 +138,9 @@ class UserResource(ModelResource):
             return self.create_response(request, { 'success': False }, HttpUnauthorized)
 
 class SessionResource(ModelResource):
-    owner = fields.ForeignKey(UserResource, 'owner')
-    questions = fields.ToManyField('questions.api.QuestionResource', lambda bundle:bundle.obj.get_marked_questions(bundle.request), null=True, use_in='detail', full='true', related_name='session')
-    num_viewers = fields.IntegerField(attribute="num_viewers")
+    owner = fields.ForeignKey(UserResource, 'owner', readonly=True)
+    questions = fields.ToManyField('questions.api.QuestionResource', readonly=True, attribute='questions', null=True, use_in='detail', full='true', related_name='session')
+    num_viewers = fields.IntegerField(attribute="num_viewers", readonly=True)
 
     class Meta:
         queryset = AMASession.objects.all()
@@ -151,7 +151,6 @@ class SessionResource(ModelResource):
             'start_time': ALL,
             'end_time': ALL
         }
-        cache = SimpleCache(timeout=10)
 
     def dehydrate_num_viewers(self, bundle):
         return bundle.obj.viewers.filter(timestamp__gte=datetime.datetime.now() - datetime.timedelta(seconds=10)).count()

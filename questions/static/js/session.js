@@ -1,9 +1,11 @@
+GLOBALS.lock = false
+
 function sessionClicks(){
 	$(".upvote").off("click")
 	$(".upvote").click(function(){
 		if(GLOBALS.auth){
 			var id = $(this).attr("data-question")
-			$("#question-"+id).addClass("lock")
+			GLOBALS.lock = true
 			if($(this).hasClass("btn-success")){
 				$(this).removeClass("btn-success");
 				$.post("/api/v1/question/"+id+"/vote/",
@@ -11,9 +13,6 @@ function sessionClicks(){
 					function(data){
 						$("#score-"+id).text(data['score'])
 					})
-					setTimeout(function(){
-						$("#question-"+id).removeClass("lock")
-					}, 1000)
 			}else{
 				$(this).addClass("btn-success");
 				$("#downvote-"+id).removeClass("btn-danger")
@@ -22,9 +21,6 @@ function sessionClicks(){
 					function(data){
 						$("#score-"+id).text(data['score'])
 					})
-					setTimeout(function(){
-						$("#question-"+id).removeClass("lock")
-					}, 1000)
 			}
 		}else{
 			$("#loginModal").modal()
@@ -35,7 +31,7 @@ function sessionClicks(){
 	$(".downvote").click(function(){
 		if(GLOBALS.auth){
 			var id = $(this).attr("data-question")
-			$("#question-"+id).addClass("lock")
+			GLOBALS.lock = true
 			if($(this).hasClass("btn-danger")){
 				$(this).removeClass("btn-danger");
 				$.post("/api/v1/question/"+id+"/vote/",
@@ -43,9 +39,6 @@ function sessionClicks(){
 					function(data){
 						$("#score-"+id).text(data['score'])
 					})
-					setTimeout(function(){
-						$("#question-"+id).removeClass("lock")
-					}, 1000)
 			}else{
 				$(this).addClass("btn-danger");
 				$("#upvote-"+id).removeClass("btn-success")
@@ -54,21 +47,9 @@ function sessionClicks(){
 					function(data){
 						$("#score-"+id).text(data['score'])
 					})
-					setTimeout(function(){
-						$("#question-"+id).removeClass("lock")
-					}, 1000)
 			}
 		}else{
-			var id = $(this).attr("data-question")
 			$("#loginModal").modal()
-			$.post("/api/v1/question/"+id+"/vote/",
-					{'vote': -1},
-					function(data){
-						$("#score-"+id).text(data['score'])
-					})
-					setTimeout(function(){
-						$("#question-"+id).removeClass("lock")
-					}, 1000)
 		}
 	})
 
@@ -83,15 +64,12 @@ function sessionClicks(){
 	$(".star").click(function(){
 		$(this).toggleClass("btn-info")
 		var id = $(this).attr("data-question")
-		$("#question-"+id).addClass("lock")
+		GLOBALS.lock = true
 		$.post("/api/v1/question/"+id+"/star/",
 					{'star': $(this).hasClass("btn-info")? 1: 0},
 					function(data){
 						
 					})
-					setTimeout(function(){
-						$("#question-"+id).removeClass("lock")
-					}, 1000)
 	})
 }
 
@@ -113,14 +91,22 @@ $("#ask-submit").click(function(){
 })
 
 function check(){
-	$.ajax({
+	GLOBALS.lock = false
+	$.ajax("/api/v1/session/"+GLOBALS['session']+"/", {
 		type:"GET",
-		url:"/api/v1/session/"+GLOBALS['session']+"/"
 	}).done(
 		function(data){
+			if(GLOBALS.lock){
+				return
+			}
 			$("#session-title").text(data['title'])
+			$("#session-subtitle").text(data['subtitle'])
+			$("#session-desc").text(data['desc'])
 			$("#session-desc").html(markdown.toHTML(data['desc']))
 			$("#current-viewers").text(data['num_viewers']+" people currently viewing this AMA.")
+			$("#session-title-edit:hidden").val(data['title'])
+			$("#session-subtitle-edit:hidden").val(data['subtitle'])
+			$("#session-desc-edit:hidden").val(data['desc'])
 			var ids = []
 			$(".question").css("display", "none")
 			for(var i=0; i<data['questions'].length;i++){
@@ -169,6 +155,8 @@ function check(){
 				}
 			}
 			sessionClicks()
+		}).fail(function(a,b,c){
+			d = a
 		})
 	$(".comment-frame").each(function(){
 		$(this).height($(this).contents().height())

@@ -5,21 +5,33 @@
 {%block prescript%}
 <script type="text/javascript">
 GLOBALS['session'] = "{{session.slug}}"
+{%if session.owner == user%}
+GLOBALS['owner'] = true
+{%endif%}
 </script>
 {%endblock%}
 {%block postscript%}
 <script type="text/javascript" src="{% static 'js/session.js' %}">
 </script>
+{%if session.owner == user%}
+<script type="text/javascript" src="{% static 'js/session-owner.js' %}">
+</script>
+{%endif%}
 {%endblock%}
 {%block content%}
 <div class="page-header row-fluid">
-	<h1 id="session-title" onclick="$(this).hide();$('#session-title-edit').show().focus()">
+	<h1 id="session-title">
 		{{session.title}}
 	</h1>
-	<input style="display:none" type="text" id="session-title-edit" value="{{session.title}}">
+	{%if session.owner == user%}
+	<input style="display:none" x-autoblur type="text" id="session-title-edit" value="{{session.title}}">
+	{%endif%}
 	<h3 id="session-subtitle">
 		{{session.subtitle}}
 	</h3>
+	{%if session.owner == user%}
+	<input style="display:none" x-autoblur type="text" id="session-subtitle-edit" value="{{session.subtitle}}">
+	{%endif%}
 </div>
 {%if session.image%}
 <div id ="session-img">
@@ -29,6 +41,11 @@ GLOBALS['session'] = "{{session.slug}}"
 <div id="session-desc" class="row-fluid">
 	{{session.desc|markdown:"safe"}}
 </div>
+{%if session.owner == user%}
+<textarea id="session-desc-edit" style="display:None">
+
+</textarea>
+{%endif%}
 <div id="current-viewers">
 {{session.num_viewers}} people currently viewing this AMA.
 </div>
