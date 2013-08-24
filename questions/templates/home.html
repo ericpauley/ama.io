@@ -4,7 +4,7 @@
 {%block content%}
 {%cache 10 homepage%}
 <h1>Live Sessions</h1>
-<div class="clearfix">
+<div class="clearfix tile-wrap">
 {%for session in live_sessions%}
 {%include "session_tile.html"%}
 {%endfor%}

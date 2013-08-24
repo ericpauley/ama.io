@@ -5,7 +5,15 @@
 		left: 0;
 		right: 0;
 		z-index: 10;
-		margin-top: 20px;
+		margin-top: 0px;
+	}
+	
+	.navbar-inner{
+		border-radius: 0px;
+	}
+	
+	.btn#login, .btn#register{
+		display: none;
 	}
 }
 @media (min-width: 768px){
@@ -16,6 +24,16 @@
 		right: 0;
 		z-index: 10;
 		margin-top: 20px;
+	}
+	
+	.mobile-menu-item{
+		display: none;
+	}
+}
+
+@media (max-width: 1199px){
+	.user-field, .pass-field{
+		display: none;
 	}
 }
 
@@ -31,12 +49,6 @@
 
 #login-form{
 	padding-top: 10px;
-}
-
-@media(max-width: 1199px){
-	.user-field, .pass-field{
-		display: none;
-	}
 }
 
 .main{
@@ -68,13 +80,66 @@
 	height: 36px;
 }
 
-.session-tile{
-	width: 30%;
-	padding-left: 15px;
+
+.session-tile-wrapper{
+	position: relative;
+	text-align: center;
+	width: 227px;
+	padding: 0px;
 	margin-right: 15px;
-	margin-bottom: 15px;
+	margin-top: 15px;
 	float: left;
 	min-width: 225px;
-	background: #FFFFFF;
+	height: 217px;
+	background: #A8AEC2;
 }
 
+@media (max-width: 480px) {
+	.session-tile-wrapper{
+		margin-left: 15px;
+	}
+}
+
+.session-title{
+	text-align: left;
+	font-family: Helvetica, arial, sans-serif;
+	font-size: 20px;
+	font-weight: bold;
+	overflow: hidden;
+	margin-bottom: 75px;
+	padding: 10px;
+	color: #000;
+	-o-transition:.2s;
+	-ms-transition:.2s;
+	-moz-transition:.2s;
+	-webkit-transition:.2s;
+	transition:.2s;
+}
+
+.session-title:hover{
+	color: #fff;
+}
+
+.session-stats{
+	width: 100%;
+	position: absolute;
+	bottom: 0;
+	font-family: Helvetica, arial, sans-serif;
+	font-size: 13px;
+	font-weight: normal;
+	background: rgba(0,0,0,.5);
+	color: #fff;
+	-o-transition:.2s;
+	-ms-transition:.2s;
+	-moz-transition:.2s;
+	-webkit-transition:.2s;
+	transition:.2s;
+}
+
+.session-stats:hover{
+	background: rgba(0,0,0,.7);
+}
+
+.session-stats-text{
+	padding: 10px;
+}

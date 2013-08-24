@@ -18,7 +18,7 @@
 		<button id="login" class="btn">
 			Sign in
 		</button>
-		<a href="#registerModal" data-toggle="modal" class="btn">
+		<a href="#registerModal" data-toggle="modal" class="btn" id="register">
 			Register
 		</a>
 	</div>
@@ -64,8 +64,14 @@
 				</li>
 			</ul>
 		</li>
-		<li>
+		<li class="mobile-menu-item">
 			<a href="{%url 'requests'%}">Requests</a>
+		</li>
+		<li class="mobile-menu-item">
+			<a id="login">Sign In</a>
+		</li>
+		<li>
+			<a href="#registerModal" data-toggle="modal">Register</a>
 		</li>
 	</ul>
 </div>
