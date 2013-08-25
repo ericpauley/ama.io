@@ -80,6 +80,9 @@
 	height: 36px;
 }
 
+.tile-wrap{
+	padding-bottom: 5px;
+}
 
 .session-tile-wrapper{
 	position: relative;
