@@ -129,7 +129,12 @@ INSTALLED_APPS = (
 	'tastypie',
 	# Custom Apps
     'questions',
-    'allaccess',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.twitter',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -165,8 +170,8 @@ LOGGING = {
 AUTHENTICATION_BACKENDS = (
     # Default backend
     'django.contrib.auth.backends.ModelBackend',
-    # Additional backend
-    'allaccess.backends.AuthorizedServiceBackend',
+    # `allauth` specific authentication methods, such as login by e-mail
+    "allauth.account.auth_backends.AuthenticationBackend",
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -177,7 +182,16 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.static",
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages",
-    "questions.template_processors.run_processors")
+    "questions.template_processors.run_processors",
+    "allauth.account.context_processors.account",
+    "allauth.socialaccount.context_processors.socialaccount",)
+
+SOCIALACCOUNT_PROVIDERS = \
+    { 'facebook':
+        { 'SCOPE': ['email', 'publish_stream'],
+          'AUTH_PARAMS': { 'auth_type': 'reauthenticate' },
+          'METHOD': 'oauth2' ,
+          'LOCALE_FUNC': 'path.to.callable'} }
 
 LOGIN_REDIRECT_URL = "/"
 

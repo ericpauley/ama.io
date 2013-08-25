@@ -1,5 +1,5 @@
-from allaccess.models import Provider
 from questions.models import Request
+from allauth.socialaccount import providers
 
 processors = []
 
@@ -21,7 +21,7 @@ def recent_sessions(request):
 
 @process
 def oauth_providers(request):
-	return {"oauth_providers": Provider.objects.order_by("name")}
+	return {"oauth_providers": providers.registry.as_choices()}
 
 @process
 def has_requests(request):

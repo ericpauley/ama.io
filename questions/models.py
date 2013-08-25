@@ -9,8 +9,9 @@ from django.db import models
 from jsonfield import JSONField
 from annoying.fields import AutoOneToOneField
 from south.modelsinspector import add_introspection_rules
-from allaccess.models import Provider
 import django.contrib.sessions.models
+from allauth.socialaccount import providers
+from json import loads
 
 add_introspection_rules([], ["^annoying\.fields\.AutoOneToOneField"])
 
@@ -266,26 +267,34 @@ class RequestManager(models.Manager):
             return answered
 
     def for_user(self, user):
-        requests = self.all()
-        requests = requests.extra(where = ["""
-            (SELECT COUNT(*)
-            FROM allaccess_accountaccess
-            WHERE allaccess_accountaccess.identifier LIKE questions_request.username
-            AND allaccess_accountaccess.provider_id = questions_request.provider_id
-            AND allaccess_accountaccess.user_id = %s) > 0
-            """], params = [user.id])
-        return requests
+        auths = user.socialaccount_set.all()
+        if auths:
+            requests = self.all()
+            query = None
+            for auth in auths:
+                if auth.provider == "twitter":
+                    part = models.Q(provider = "twitter") & models.Q(username__iexact=loads(auth.extra_data)['screen_name'])
+                query = part if query is None else query | part
+            requests = requests.filter(query)
+            print(requests.query)
+            return requests
+        else:
+            return self.none()
 
 class Request(models.Model):
 
     objects = RequestManager()
 
     username = models.CharField(max_length=255)
-    provider = models.ForeignKey(Provider, related_name="requests")
+    provider = models.CharField(max_length=30, choices=providers.registry.as_choices())
     desc = models.TextField()
     session = models.ForeignKey(AMASession, related_name="requests", null=True, on_delete=models.SET_NULL)
     created = models.DateTimeField(auto_now_add=True, editable=False)
     edited = models.DateTimeField(auto_now=True, editable=False)
+
+    @property
+    def provider_object(self):
+        return providers.registry.by_id(self.provider)
 
     class Meta:
         unique_together = ('username', 'provider')

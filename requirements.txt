@@ -6,7 +6,7 @@ jsonfield
 markdown
 south
 pillow
-django-all-access
+django-allauth
 pycrypto
 requests
 requests_oauthlib

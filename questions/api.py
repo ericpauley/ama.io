@@ -24,7 +24,7 @@ from tastypie.cache import NoCache, SimpleCache
 from django.db import transaction
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
-from allaccess.models import Provider
+from allauth.socialaccount import providers
 
 class UserResource(ModelResource):
     class Meta:
@@ -411,7 +411,6 @@ class AnswerResource(ModelResource):
 
 class RequestResource(ModelResource):
 
-    provider = fields.CharField()
     score = fields.IntegerField(attribute="score")
     vote = fields.IntegerField(attribute="vote")
 
@@ -427,11 +426,6 @@ class RequestResource(ModelResource):
                 (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('create'), name="api_create"),
         ]
-
-    def dehydrate_provider(self, bundle):
-        print(bundle.obj.vote)
-        return bundle.obj.provider.name
-
 
     def get_object_list(self, request):
         if request.user.is_authenticated():
@@ -454,14 +448,7 @@ class RequestResource(ModelResource):
                 'reason': 'not_logged_in',
                 }, HttpUnauthorized )
         provider = request.POST['provider']
-        if not provider:
-            return self.create_response(request, {
-                'success': False,
-                'reason': 'bad_provider',
-                }, HttpBadRequest )
-        try:
-            provider = Provider.objects.get(name=provider)
-        except (KeyError, Provider.DoesNotExist):
+        if not provider or not (provider in [provider.id for provider in providers.registry.get_list()]):
             return self.create_response(request, {
                 'success': False,
                 'reason': 'bad_provider',
