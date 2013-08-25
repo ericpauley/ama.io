@@ -19,9 +19,16 @@
 	<a href="{% url 'upcoming'%}">Click here to see all upcoming sessions.</a>
 	<h1>Top Requests</h1>
 	<div class="clearfix tile-wrap">
+	<table class="table table-striped requests-table">
+		<tr>
+			<th>Person</th>
+			<th>Votes</th>
+			<th>Vote Up</th>
+		</tr>
 	{% for request in top_requests%}
 	{%include "request_tile.html"%}
 	{%endfor%}
+	</table>
 	</div>
 	<a href="{% url 'requests'%}">Click here to see all requests.</a>
 	{%endcache%}

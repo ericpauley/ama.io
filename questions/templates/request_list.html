@@ -1,11 +1,20 @@
 {%extends "base.html"%}
 
 {%block content%}
+<div class="clearfix">
+<h1 class="pull-left">Requests</h1>
 {%if user.is_authenticated%}
-<div class="btn" href="#requestModal" data-toggle="modal">Request an AMA</div>
+<div class="btn btn-title-inline" href="#requestModal" data-toggle="modal">Request an AMA</div>
 {%endif%}
-<h1>Requests</h1>
+</div>
+<table class="table table-striped requests-table">
+<tr>
+<th>Person</th>
+<th>Votes</th>
+<th>Vote Up</th>
+</tr>
 {% for request in top_requests%}
 {%include "request_tile.html"%}
 {%endfor%}
+</table>
 {%endblock%}

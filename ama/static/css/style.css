@@ -6,6 +6,11 @@ body{
 	max-height: 500px;
 }
 
+.btn-title-inline{
+	margin-top: 18px;
+	margin-left: 25px;
+}
+
 .affix{
 	top: 50px;
 }
@@ -98,4 +103,8 @@ body{
 
 .session-stats-text{
 	padding: 10px;
+}
+
+.requests-table{
+	max-width: 50%;
 }
