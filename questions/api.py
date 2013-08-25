@@ -448,7 +448,7 @@ class RequestResource(ModelResource):
                 'reason': 'not_logged_in',
                 }, HttpUnauthorized )
         provider = request.POST['provider']
-        if not provider or not (provider in [provider.id for provider in providers.registry.get_list()]):
+        if not provider or not (provider in [p.id for p in providers.registry.get_list()]):
             return self.create_response(request, {
                 'success': False,
                 'reason': 'bad_provider',
