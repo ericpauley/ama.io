@@ -1,40 +1,13 @@
-@media (max-width: 767px){
-	.navbar-wrapper{
-		position: fixed;
-		top: 0;
-		left: 0;
-		right: 0;
-		z-index: 10;
-		margin-top: 0px;
-	}
-	
-	.navbar-inner{
-		border-radius: 0px;
-	}
-	
-	.btn#login, .btn#register{
-		display: none;
-	}
-}
-@media (min-width: 768px){
-	.navbar-wrapper {
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		z-index: 10;
-		margin-top: 20px;
-	}
-	
-	.mobile-menu-item{
-		display: none;
-	}
+body{
+	background-color: #F5FEFF;
 }
 
-@media (max-width: 1199px){
-	.user-field, .pass-field{
-		display: none;
-	}
+.modal-body{
+	max-height: 500px;
+}
+
+.affix{
+	top: 50px;
 }
 
 #session-img{
@@ -45,10 +18,6 @@
 
 #footer-info{
 	margin-top: 25px;
-}
-
-#login-form{
-	padding-top: 10px;
 }
 
 .main{
@@ -62,22 +31,6 @@
           border-bottom-left-radius: 4px !important;
   -moz-border-radius-topleft: 4px !important;
   -moz-border-radius-bottomleft: 4px !important;
-}
-
-.navbar .brand{
-	padding: 25px 25px 0px 15px;
-}
-
-.navbar .nav > li > a {
-	font-family: "Roboto Slab", "Calisto MT", "Bookman Old Style", Bookman, "Goudy Old Style", Garamond, "Hoefler Text", "Bitstream Charter", Georgia, serif;
-	font-weight: 800;
-	font-size: 1.3em;
-}
-
-.brand{
-	background: url('https://dl.dropboxusercontent.com/u/18936351/logo_ama2.png') no-repeat center;
-	width: 150px;
-	height: 36px;
 }
 
 .tile-wrap{
