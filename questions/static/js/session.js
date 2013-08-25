@@ -1,5 +1,17 @@
 GLOBALS.lock = false
 
+$.fn.smartText = function(val){
+	if(this.text() != val){
+		this.text(val)
+	}
+}
+
+$.fn.smartHtml = function(val){
+	if(this.html() != val){
+		this.html(val)
+	}
+}
+
 function sessionClicks(){
 	$(".upvote").off("click")
 	$(".upvote").click(function(){
@@ -103,11 +115,11 @@ function check(){
 			if(GLOBALS.lock){
 				return
 			}
-			$("#session-title").filter(":selected").text(data['title'])
-			$("#session-subtitle").filter(":selected").text(data['subtitle'])
-			$("#session-desc").filter(":selected").text(data['desc'])
-			$("#session-desc").filter(":selected").html(markdown.toHTML(data['desc']))
-			$("#current-viewers").text(data['num_viewers']+" people currently viewing this AMA.")
+			$("#session-title").smartText(data['title'])
+			$("#session-subtitle").smartText(data['subtitle'])
+			$("#session-desc").smartText(data['desc'])
+			$("#session-desc").smartHtml(markdown.toHTML(data['desc']))
+			$("#current-viewers").smartText(data['num_viewers']+" people currently viewing this AMA.")
 			$("#session-title-edit:hidden").val(data['title'])
 			$("#session-subtitle-edit:hidden").val(data['subtitle'])
 			$("#session-desc-edit:hidden").val(data['desc'])
