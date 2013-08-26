@@ -9,16 +9,25 @@
 	{%include "session_tile.html"%}
 	{%endfor%}
 	</div>
+	{%if live_sessions%}
 	<a href="{% url 'live'%}">Click here to see all live sessions.</a>
+	{%else%}
+	<a href="#sessionModal" data-toggle="modal">No live sessions currently running. Start your own?</a>
+	{%endif%}	
 	<h1>Upcoming</h1>
 	<div class="clearfix tile-wrap">
 	{%for session in upcoming_sessions%}
 	{%include "session_tile.html"%}
 	{%endfor%}
 	</div>
+	{%if upcoming_sessions%}
 	<a href="{% url 'upcoming'%}">Click here to see all upcoming sessions.</a>
+	{%else%}
+	<a href="#sessionModal" data-toggle="modal">No upcoming sessions. Schedule one?</a>	
+	{%endif%}
 	<h1>Top Requests</h1>
 	<div class="clearfix tile-wrap">
+	{%if top_requests%}
 	<table class="table table-striped table-bordered requests-table">
 		<tr>
 			<th>Person</th>
@@ -31,5 +40,8 @@
 	</table>
 	</div>
 	<a href="{% url 'requests'%}">Click here to see all requests.</a>
+	{%else%}
+	<a href="#requestModal" data-toggle="modal">No active requests.  Request someone?</a>
+	{%endif%}
 	{%endcache%}
 {%endblock%}

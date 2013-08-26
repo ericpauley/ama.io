@@ -21,6 +21,14 @@ body{
 	margin-right: 15px;
 }
 
+#session-create-image{
+	max-width: 200px;
+}
+
+.qa-section{
+	margin-top: 10px;
+}
+
 #footer-info{
 	margin-top: 25px;
 }

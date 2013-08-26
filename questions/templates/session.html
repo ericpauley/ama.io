@@ -49,7 +49,7 @@ GLOBALS['owner'] = true
 <div id="current-viewers">
 {{session.num_viewers}} people currently viewing this AMA.
 </div>
-<div class="row-fluid">
+<div class="row-fluid qa-section">
 	<ul id="sessiontabs" class="nav nav-tabs">
 		<li class="active">
 			<a href="#unanswered" data-toggle="tab">Unanswered Questions</a>
@@ -67,7 +67,7 @@ GLOBALS['owner'] = true
 				<div class="span10" id="unansweredlist">
 					{%for question in unanswered%} {%include "question.html"%} {%endfor%}
 				</div>
-				<a href="{%if user.is_authenticated%}#askModal{%else%}#loginModal{%endif%}" class="btn btn-large btn-success ask-btn affix" data-toggle="modal" data-spy="affix" data-offset-top="460">
+				<a href="{%if user.is_authenticated%}#askModal{%else%}#loginModal{%endif%}" class="btn btn-large btn-success ask-btn affix" data-toggle="modal" data-spy="affix" data-offset-top="330">
 					Ask
 				</a>
 				<a href="{%if user.is_authenticated%}#askModal{%else%}#loginModal{%endif%}" class="btn btn-large btn-success ask-btn-bottom" data-toggle="modal">
