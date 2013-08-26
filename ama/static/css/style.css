@@ -106,5 +106,11 @@ body{
 }
 
 .requests-table{
-	max-width: 50%;
+	width: 400px;
+}
+
+@media (max-width: 320px){
+.requests-table{
+	width: 270px;
+}
 }
