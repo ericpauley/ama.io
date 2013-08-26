@@ -54,6 +54,19 @@ class AMASessionManager(models.Manager):
             """
         }, select_params = [datetime.now() - timedelta(seconds=30)])
 
+    def live(self):
+        return self.all().filter(
+        start_time__lt=datetime.now(),
+        end_time__gt=datetime.now()).order_by('-num_viewers')
+
+    def past(self):
+        return self.all().filter(
+        end_time__lt=datetime.now()).order_by('-num_views')
+
+    def upcoming(self):
+        return self.all().filter(
+        start_time__gt=datetime.now()).order_by('-num_views')
+
 class AMASession(SluggedModel):
     '''
     Question answering sessions are represented by this model.
