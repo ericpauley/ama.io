@@ -1,28 +1,30 @@
 {%extends "base.html"%}
 {%block content%}
-<div>
-	Name: {{user.meta.full_name}}
-</div>
+<h2>{{user.meta.full_name}}</h2>
 <div>
 	Joined: {{user.date_joined}}
 </div>
-<div>
-	Questions asked: {{user.own_questions.count}}
-</div>
-<div>
+<div class="user-stats">
+	Questions asked: {{user.own_questions.count}}<br/>
 	Questions answered: {{user.meta.answers.count}}
 </div>
-<div>
-<h1>Past Sessions</h1>
-{%for session in past%}
-	{%include "session_tile.html"%}
-{%endfor%}
-<a href="{%url 'user_sessions' user.username%}">See more sessions</a>
+<!--todo: check upcoming -->
+<div class="upcoming-user">
+	<h1>Upcoming Sessions</h1>
+	<div class="clearfix tile-wrap">
+	{%for session in upcoming%}
+		{%include "session_tile.html"%}
+	{%endfor%}
 </div>
-<div>
-<h1>Upcoming Sessions</h1>
-{%for session in upcoming%}
-	{%include "session_tile.html"%}
-{%endfor%}
+{%if user_sessions%}
+<div class="past-user">
+	<h1>Past Sessions</h1>
+	<div class="clearfix tile-wrap">
+	{%for session in past%}
+		{%include "session_tile.html"%}
+	{%endfor%}
+	</div>
+<a href="{%url 'user_sessions' user.username%}">See more past sessions</a>
 </div>
+{%endif%}
 {%endblock%}
