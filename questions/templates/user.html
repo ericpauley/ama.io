@@ -8,7 +8,7 @@
 	Questions asked: {{user.own_questions.count}}<br/>
 	Questions answered: {{user.meta.answers.count}}
 </div>
-<!--todo: check upcoming -->
+{%if upcoming%}
 <div class="upcoming-user">
 	<h1>Upcoming Sessions</h1>
 	<div class="clearfix tile-wrap">
@@ -16,7 +16,8 @@
 		{%include "session_tile.html"%}
 	{%endfor%}
 </div>
-{%if user_sessions%}
+{%endif%}
+{%if past%}
 <div class="past-user">
 	<h1>Past Sessions</h1>
 	<div class="clearfix tile-wrap">
