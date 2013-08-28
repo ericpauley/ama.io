@@ -33,7 +33,9 @@ def user(request, username):
         user = User.objects.get(username=username)
     except User.DoesNotExist:
         raise Http404
-    return render(request, "user.html", {'user': user})
+    past = AMASession.objects.past().filter(owner=user)[:4]
+    upcoming = AMASession.objects.upcoming().filter(owner=user)[:4]
+    return render(request, "user.html", {'user': user, 'past':past, 'upcoming':upcoming})
 
 def user_sessions(request, username):
     try:

@@ -32,6 +32,9 @@ class UserMeta(models.Model):
     user = AutoOneToOneField(User, primary_key=True, related_name="meta")
     verified = models.BooleanField(default=False)
 
+    def answers(self):
+        return AMAAnswer.objects.filter(question__target=self)
+
     @property
     def full_name(self):
         name = "%s %s" % (self.user.first_name, self.user.last_name)
