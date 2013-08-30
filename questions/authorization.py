@@ -17,7 +17,6 @@ class SessionAuthorization(Authorization):
 
     @permcheck
     def read_detail(self, object_list, bundle):
-        bundle.obj.mark_viewed(bundle.request)
         return True
 
     @permcheck
@@ -34,8 +33,6 @@ class SessionAuthorization(Authorization):
 
     @permcheck
     def update_detail(self, object_list, bundle):
-        print(bundle.obj.owner)
-        print(bundle.request.user)
         return bundle.obj.owner == bundle.request.user
 
     @permcheck
@@ -47,6 +44,12 @@ class SessionAuthorization(Authorization):
     def delete_detail(self, object_list, bundle):
         return bundle.obj.owner == bundle.request.user
 
+class CommentAuthorization(ReadOnlyAuthorization):
+    def create_detail(self, object_list, bundle):
+        print(bundle.obj)
+        return bundle.request.user.is_authenticated()
+
 class QuestionAuthorization(ReadOnlyAuthorization):
+    @permcheck
     def delete_detail(self, object_list, bundle):
         return bundle.obj.target == bundle.request.user or bundle.obj.session.owner == bundle.request.user

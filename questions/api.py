@@ -9,7 +9,7 @@ from django.db.models import Sum
 from django.template.loader import render_to_string
 from django.shortcuts import render
 from markdown import markdown
-from questions.authorization import SessionAuthorization, QuestionAuthorization
+from questions.authorization import *
 from questions.models import *
 from tastypie import fields
 from tastypie.authorization import ReadOnlyAuthorization
@@ -27,6 +27,11 @@ from django.core.exceptions import ValidationError
 from allauth.socialaccount import providers
 
 class UserResource(ModelResource):
+    display = fields.CharField(readonly = True)
+
+    def dehydrate_display(self, bundle):
+        return bundle.obj.meta.full_name
+
     class Meta:
         queryset = User.objects.all()
         resource_name = 'user'
@@ -139,7 +144,7 @@ class UserResource(ModelResource):
 
 class SessionResource(ModelResource):
     owner = fields.ForeignKey(UserResource, 'owner', readonly=True)
-    questions = fields.ToManyField('questions.api.QuestionResource', readonly=True, attribute='questions', null=True, use_in='detail', full='true', related_name='session')
+    questions = fields.ToManyField('questions.api.QuestionResource', readonly=True, attribute='questions', null=True, use_in='detail', full=True, related_name='session')
     num_viewers = fields.IntegerField(attribute="num_viewers", readonly=True)
 
     class Meta:
@@ -151,6 +156,10 @@ class SessionResource(ModelResource):
             'start_time': ALL,
             'end_time': ALL
         }
+
+    def dehydrate(self, bundle):
+        bundle.obj.mark_viewed(bundle.request)
+        return bundle
 
     def dehydrate_num_viewers(self, bundle):
         return bundle.obj.viewers.filter(timestamp__gte=datetime.datetime.now() - datetime.timedelta(seconds=10)).count()
@@ -259,8 +268,9 @@ class QuestionResource(ModelResource):
 
     answer = fields.OneToOneField('questions.api.AnswerResource', 'answer', related_name='question', null=True, full=True)
     session = fields.OneToOneField('questions.api.SessionResource', 'session', null=True)
-    score = fields.IntegerField(attribute='score', default=0, readonly=True)
+    #comments = fields.ToManyField('questions.api.CommentResource', readonly=True, attribute='comments', null=True, use_in="detail", full=True, related_name='question')
     html = fields.CharField(use_in = "detail")
+    score = fields.IntegerField(attribute='score', default=0, readonly=True)
 
     class Meta:
         queryset = AMAQuestion.objects.all().order_by("-starred", "-score")
@@ -268,10 +278,10 @@ class QuestionResource(ModelResource):
         filtering = {
             'session': ALL_WITH_RELATIONS,
             'answer': ALL_WITH_RELATIONS,
+            'comments': ALL_WITH_RELATIONS,
             'score': ALL
         }
         authorization = QuestionAuthorization()
-        cache = SimpleCache(timeout=10)
 
     def dehydrate_html(self, bundle):
         return render_to_string("question.html", {'question': bundle.obj}, RequestContext(bundle.request))
@@ -289,10 +299,10 @@ class QuestionResource(ModelResource):
                 self.wrap_view('star'), name="api_star"),
             url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/comments%s$" %
                 (self._meta.resource_name, trailing_slash()),
-                self.wrap_view('comments'), name="api_comments"),
+                self.wrap_view('get_comments'), name="api_comments"),
         ]
 
-    def comments(self, request, pk, **kwargs):
+    def get_comments(self, request, pk, **kwargs):
         return render(request, "comments.html")
 
     def submit_answer(self, request, pk, **kwargs):
@@ -472,3 +482,22 @@ class RequestResource(ModelResource):
         return self.create_response(request, {
                 'success': True,
                 })
+
+class CommentResource(ModelResource):
+
+    user = fields.ForeignKey(UserResource, 'user', readonly=True, full=True)
+    question = fields.OneToOneField('questions.api.QuestionResource', 'question')
+
+    def hydrate(self, bundle):
+        if bundle.obj.user_id is None:
+            bundle.obj.user = bundle.request.user
+        return bundle
+
+    class Meta:
+        queryset = Comment.objects.all().order_by("-created")
+        resource_name = 'comment'
+        filtering = {
+            "question": ALL_WITH_RELATIONS,
+            "user": ALL_WITH_RELATIONS
+        }
+        authorization = CommentAuthorization()

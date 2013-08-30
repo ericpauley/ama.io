@@ -135,6 +135,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.twitter',
+    "jstemplate",
 )
 
 # A sample logging configuration. The only tangible logging

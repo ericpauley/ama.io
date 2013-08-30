@@ -12,3 +12,4 @@ requests
 requests_oauthlib
 oauthlib
 python-mimeparse
+django-jstemplate

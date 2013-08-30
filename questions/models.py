@@ -335,3 +335,13 @@ class RequestVote(models.Model):
     
     class Meta:
         unique_together = ('user', 'request')
+
+class Comment(models.Model):
+
+    question = models.ForeignKey(AMAQuestion, related_name = "comments")
+    user = models.ForeignKey(User, related_name = "comments")
+
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    edited = models.DateTimeField(auto_now=True, editable=False)
+
+    comment = models.TextField()

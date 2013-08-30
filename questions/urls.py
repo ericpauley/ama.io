@@ -9,6 +9,7 @@ v1_api.register(SessionResource())
 v1_api.register(QuestionResource())
 v1_api.register(AnswerResource())
 v1_api.register(RequestResource())
+v1_api.register(CommentResource())
 
 urlpatterns = patterns('',
     url(r'^$', views.home, name="home"),

@@ -52,12 +52,19 @@
 				</div>
 			</div>
 		</div>
-		<a onclick="$('#comments-{{ question.id }}').toggle()">
-      Show comments</a>
-		<div>
-		<iframe class="comment-frame" style="width:100%;display:None" src="/api/v1/question/{{question.id}}/comments" id="comments-{{ question.id }}">
-			
-		</iframe>
-	</div>
+		<a class="show-comments" data-question="{{question.id}}">
+      		Show comments
+      	</a>
+      	<div id="comment-wrapper-{{question.id}}" style="display:none">
+      		{%if user.is_authenticated%}
+      		<textarea id="comment-form-{{question.id}}"></textarea>
+      		<div class="btn add-comment" id="comment-submit-{{question.id}}">
+      			Add Comment
+      		</div>
+      		{%endif%}
+      		<div id="comments-{{question.id}}">
+		
+			</div>
+		</div>
 	</div>
 </div>

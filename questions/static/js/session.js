@@ -174,11 +174,25 @@ function check(){
 		}).fail(function(a,b,c){
 			d = a
 		})
-	$(".comment-frame").each(function(){
-		$(this).height($(this).contents().height())
-	})
 }
 
 $(function(){
 	setInterval(check, 1000)
+})
+
+$(".show-comments").click(function(){
+	question = $(this).attr("data-question")
+	if($("#comment-wrapper-"+question).is(":visible")){
+		$("#comments-"+question).html("")
+		$("#comment-wrapper-"+question).hide()
+	}else{
+		$("#comment-wrapper-"+question).show()
+		$.get("http://localhost:8000/api/v1/comment?question=1").done(function(data){
+		$.each(data.objects, function(i, val){
+			val.content = markdown.toHTML(val.comment)
+			$("#comments-"+question).append(Mustache.template("comment").render(val))
+		})
+	})
+	}
+	
 })

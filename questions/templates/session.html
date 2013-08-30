@@ -2,6 +2,7 @@
 {%load markup%}
 {%load staticfiles%}
 {% load thumbnail %}
+{% load jstemplate %}
 {%block prescript%}
 <script type="text/javascript">
 GLOBALS['session'] = "{{session.slug}}"
@@ -13,6 +14,7 @@ GLOBALS['owner'] = true
 {%block postscript%}
 <script type="text/javascript" src="{% static 'js/session.js' %}">
 </script>
+{%mustachejs "comment"%}
 {%if session.owner == user%}
 <script type="text/javascript" src="{% static 'js/session-owner.js' %}">
 </script>
