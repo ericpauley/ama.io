@@ -2,6 +2,10 @@ body{
 	background-color: #F5FEFF;
 }
 
+.navbar-form .input-append, .navbar-form .input-prepend{
+	margin-top: 0px;
+}
+
 .modal-body{
 	max-height: 500px;
 }
