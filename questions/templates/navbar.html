@@ -40,7 +40,7 @@
 			{%endfor%}
 		{%endif%}
 		<li class="divider"></li>
-		<li><a tabindex="-1" href="#settingsModal" data-toggle="modal"><i class="icon-cog"></i> Settings</a></li>
+		<li><a tabindex="-1" href="{% url 'account_change_password'%}" data-toggle="modal"><i class="icon-cog"></i> Change Password</a></li>
 	</ul>
 	<a class="btn" href="{%url 'logout'%}">Logout</a>
 </div>

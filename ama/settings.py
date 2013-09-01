@@ -20,6 +20,8 @@ DATABASES = {
     }
 }
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = ['localhost']
@@ -132,8 +134,6 @@ INSTALLED_APPS = (
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'allauth.socialaccount.providers.facebook',
-    'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.twitter',
     "jstemplate",
 )
@@ -182,6 +182,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.media",
     "django.core.context_processors.static",
     "django.core.context_processors.tz",
+    "django.core.context_processors.request",
     "django.contrib.messages.context_processors.messages",
     "questions.template_processors.run_processors",
     "allauth.account.context_processors.account",
@@ -192,7 +193,7 @@ SOCIALACCOUNT_PROVIDERS = \
         { 'SCOPE': ['email', 'publish_stream'],
           'AUTH_PARAMS': { 'auth_type': 'reauthenticate' },
           'METHOD': 'oauth2' ,
-          'LOCALE_FUNC': 'path.to.callable'} }
+          'LOCALE_FUNC': lambda request: 'en_US'} }
 
 LOGIN_REDIRECT_URL = "/"
 
