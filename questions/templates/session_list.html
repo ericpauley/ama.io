@@ -5,9 +5,13 @@
 {%cache 10 session_list title%}
 <h1>{{title}}</h1>
 <div class="clearfix">
+{%if sessions%}
 {%for session in sessions%}
 {%include "session_tile.html"%}
 {%endfor%}
+{%else%}
+<a href="#sessionModal" data-toggle="modal">No sessions here. Start or schedule your own?</a>
 </div>
+{%endif%}
 {%endcache%}
 {%endblock%}

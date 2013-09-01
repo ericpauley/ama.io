@@ -18,9 +18,9 @@
 				
 			</div>
 			{% if user == question.target%}
-			<a href="#" id="star-{{question.id}}" class="star btn {% if question.starred%}btn-info{%endif%}" data-question="{{question.id}}"><i class="icon-star"></i> star</a>
+			<a href="#" id="star-{{question.id}}" class="star btn {% if question.starred%}btn-info{%endif%}" data-question="{{question.id}}"><i class="icon-star"></i> Star</a>
 			{%endif%}
-			<a class="btn" href="{%url 'question' question.id%}" >Permalink</a>
+			<a class="btn permalink" href="{%url 'question' question.id%}" >Link</a>
 			{%cache 60 question question.id%}
 			<div class="question-area">
 				<h4>{{question.question}}</h4>
@@ -31,7 +31,7 @@
 			{%endcache%}
 		</div>
 		{% if user == question.target%}
-		<div class="answer-area" id="answer-form-{{question.id}}" style="display:none">
+		<div class="answer-area" id="answer-form-{{question.id}}" style="display: none">
 			<hr/>
 			<div class="row-fluid">
 				<form>
@@ -42,7 +42,7 @@
 			</div>
 		</div>
 		{%endif%}
-		<div id="answer-{{question.id}}" {%if not question.answer%}style="display:none"{%endif%}>
+		<div id="answer-{{question.id}}" {%if not question.answer%}style="display: none"{%endif%}>
 			<hr/>
 			<div class="row-fluid">
 				<div class="response-area">
@@ -53,24 +53,28 @@
 				</div>
 			</div>
 		</div>
-		<a class="show-comments" data-question="{{question.id}}">
-      		Show comments
-      	</a>
-      	<div id="comment-wrapper-{{question.id}}" style="display:none">
+		<div id="comment-show">
+			<a href="#" class="show-comments" data-question="{{question.id}}">
+	      		Show comments
+	      	</a>
+      	</div>
+      	<div class="comment-wrapper" id="comment-wrapper-{{question.id}}" style="display: none">
       		{%if user.is_authenticated%}
-      		<textarea id="comment-form-{{question.id}}"></textarea>
-      		<div class="btn add-comment" id="comment-submit-{{question.id}}">
-      			Add Comment
+      		<div class="comment-form-wrapper">
+	      		<textarea class="comment-form" id="comment-form-{{question.id}}"></textarea>
+	      		<div class="btn add-comment" id="comment-submit-{{question.id}}">
+	      			Add Comment
+	      		</div>
       		</div>
       		{%endif%}
       		<div id="comments-{{question.id}}">
 		
 			</div>
-			<div id="nocomments-{{question.id}}" style="display:none">
-				There are no comments. You should write one.
+			<div class="no-comments" id="nocomments-{{question.id}}" style="display: none">
+				There are no comments. Be the first!
 			</div>
-			<div class="btn view-more" style="display:none">
-      			View More...
+			<div class="btn view-more" style="display: none">
+      			See All...
       		</div>
 		</div>
 	</div>

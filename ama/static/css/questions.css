@@ -4,7 +4,6 @@
 
 .question-box{
 	background: #FFFFFF;
-	padding-bottom: 15px;
 }
 
 .question-area{
@@ -16,7 +15,42 @@
 	padding: 10px 0 0 10px;
 }
 
+#comment-show{
+	padding: 10px 0 10px 10px;
+}
+
+.comment-wrapper{
+	padding: 0 10px 0px 10px;
+}
+
+.comment-form-wrapper{
+	margin-bottom: 30px;
+}
+
+.comment-form{
+	width: 97.3%;
+	max-width: 97.3%;
+	height: 75px;
+}
+
+.add-comment{
+	float: right;
+}
+
+.view-more{
+	margin-bottom: 10px;
+}
+
+.no-comments{
+	margin-bottom: 10px;
+}
+
 .star{
+	float: right;
+	margin: 10px 10px 0 0;
+}
+
+.permalink{
 	float: right;
 	margin: 10px 10px 0 0;
 }

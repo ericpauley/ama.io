@@ -35,8 +35,8 @@ body{
 
 .main{
 	padding-top: 90px;
-	padding-left: 10px;
 }
+
 .btn-left-border{
   -webkit-border-top-left-radius: 4px !important;
           border-top-left-radius: 4px !important;
