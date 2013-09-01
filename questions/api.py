@@ -25,6 +25,7 @@ from django.db import transaction
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from allauth.socialaccount import providers
+from django.shortcuts import get_object_or_404
 
 class UserResource(ModelResource):
     display = fields.CharField(readonly = True)
@@ -435,7 +436,24 @@ class RequestResource(ModelResource):
             url(r"^(?P<resource_name>%s)/create%s$" %
                 (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('create'), name="api_create"),
+            url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/vote%s$" %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('set_vote'), name="vote"),
         ]
+
+    def set_vote(self, request, pk, **kwargs):
+        self.method_check(request, allowed=['post'])
+        if not request.user.is_authenticated():
+            return self.create_response(request, {
+                'success': False,
+                'reason': 'not_logged_in',
+                }, HttpUnauthorized )
+        ama_request = get_object_or_404(Request, id=pk)
+        ama_request.vote(request.user)
+        return self.create_response(request, {
+            'success': True,
+            'tweet_url': ama_request.tweet_url
+            })
 
     def get_object_list(self, request):
         if request.user.is_authenticated():
@@ -463,25 +481,31 @@ class RequestResource(ModelResource):
                 'success': False,
                 'reason': 'bad_provider',
                 }, HttpBadRequest )
-        username = request.POST['username'].lower()
+        username = request.POST['username']
         if not username:
             return self.create_response(request, {
                 'success': False,
                 'reason': 'bad_username',
                 }, HttpBadRequest )
-        if Request.objects.filter(provider=provider, username=username).count():
+        try:
+            ama_request = Request.objects.get(provider=provider, username__iexact=username)
+            ama_request.vote(request.user)
             return self.create_response(request, {
-                'success': False,
-                'reason': 'duplicate',
-                }, HttpBadRequest )
+                'success': True,
+                'tweet_url': ama_request.tweet_url
+                })
+        except Request.DoesNotExist:
+            pass
 
         desc = request.POST.get('desc',"")
 
         ama_request = Request(provider=provider, username=username, desc=desc)
         ama_request.save()
+        ama_request.vote(request.user)
         return self.create_response(request, {
-                'success': True,
-                })
+            'success': True,
+            'tweet_url': ama_request.tweet_url
+            })
 
 class CommentResource(ModelResource):
 

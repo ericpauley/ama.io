@@ -102,9 +102,18 @@ $("#request-form").submit(function(event){
 		url: "/api/v1/request/create/",
 		data: $("#request-form").serialize()
 	}).done(function(data) {
-		location.reload()
+		if(data['tweet_url'] && $("#request-send-tweet").prop("checked")){
+			document.location = data['tweet_url']
+		}else{
+			location.reload()
+		}
+
 	}).fail(function(xhr){
 		var err = eval("(" + xhr.responseText + ")")
 		$("#req_"+err.reason).show()
 	})
+})
+
+$(".tweet-button").click(function(){
+	$.post("/api/v1/request/"+$(this).attr("data-id")+"/vote/")
 })

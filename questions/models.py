@@ -12,6 +12,8 @@ from south.modelsinspector import add_introspection_rules
 import django.contrib.sessions.models
 from allauth.socialaccount import providers
 from json import loads
+import urllib
+from random import choice
 
 add_introspection_rules([], ["^annoying\.fields\.AutoOneToOneField"])
 
@@ -297,6 +299,11 @@ class RequestManager(models.Manager):
         else:
             return self.none()
 
+tweets = [
+"@%s You should do an AMA on http://ama.io.",
+"@%s I'd love it if you did an AMA on http://ama.io."
+]
+
 class Request(models.Model):
 
     objects = RequestManager()
@@ -309,9 +316,19 @@ class Request(models.Model):
     edited = models.DateTimeField(auto_now=True, editable=False)
 
     @property
+    def tweet_url(self):
+        return "https://twitter.com/intent/tweet?"+urllib.parse.urlencode({"text": choice(tweets) % self.username})
+        print()
+
+    @property
     def provider_object(self):
         return providers.registry.by_id(self.provider)
 
+    def vote(self, user):
+        try:
+            self.votes.get(user=user)
+        except RequestVote.DoesNotExist:
+            RequestVote(user=user, request=self, value=1).save()
     class Meta:
         unique_together = ('username', 'provider')
 
