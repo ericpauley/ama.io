@@ -82,4 +82,16 @@ function sessionClicks(){
 	})
 }
 
+$("#end-session").click(function(){
+	$.ajax("/api/v1/session/"+GLOBALS['session']+"/", {
+		type:"PATCH",
+		data:JSON.stringify({
+			end_time: new Date().toISOString()
+		}),
+		contentType: 'application/json; charset=utf-8',
+	}).done(function(){
+		location.reload()
+	})
+})
+
 console.log(sessionClicks)

@@ -34,6 +34,9 @@ GLOBALS['owner'] = true
 	</h3>
 	{%if session.owner == user%}
 	<input style="display:none" x-autoblur type="text" id="session-subtitle-edit" value="{{session.subtitle}}">
+	{%if session.running%}
+	<div id="end-session" class="btn">End Session</div>
+	{%endif%}
 	{%endif%}
 </div>
 {%if session.image%}
