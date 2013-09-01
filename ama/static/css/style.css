@@ -67,6 +67,14 @@ body{
 	background: #A8AEC2;
 }
 
+.session-tile-wrapper:hover .session-title{
+	color: #fff;	
+}
+
+.session-tile-wrapper:hover .session-stats{
+	background: rgba(0,0,0,.7);
+}
+
 @media (max-width: 480px) {
 	.session-tile-wrapper{
 		margin-left: 15px;
@@ -89,10 +97,6 @@ body{
 	transition:.2s;
 }
 
-.session-title:hover{
-	color: #fff;
-}
-
 .session-stats{
 	width: 100%;
 	position: absolute;
@@ -107,10 +111,6 @@ body{
 	-moz-transition:.2s;
 	-webkit-transition:.2s;
 	transition:.2s;
-}
-
-.session-stats:hover{
-	background: rgba(0,0,0,.7);
 }
 
 .session-stats-text{
