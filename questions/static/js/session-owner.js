@@ -83,15 +83,29 @@ function sessionClicks(){
 }
 
 $("#end-session").click(function(){
-	$.ajax("/api/v1/session/"+GLOBALS['session']+"/", {
-		type:"PATCH",
-		data:JSON.stringify({
-			end_time: new Date().toISOString()
-		}),
-		contentType: 'application/json; charset=utf-8',
-	}).done(function(){
-		location.reload()
+	confirm("Are you sure you want to end your AMA session?", function(){
+		$.ajax("/api/v1/session/"+GLOBALS['session']+"/", {
+			type:"PATCH",
+			data:JSON.stringify({
+				end_time: new Date().toISOString()
+			}),
+			contentType: 'application/json; charset=utf-8',
+		}).done(function(){
+			location.reload()
+		})
 	})
+
+})
+
+$("#delete-session").click(function(){
+	confirm("Are you sure you want to delete your AMA session? This CANNOT be undone.", function(){
+		$.ajax("/api/v1/session/"+GLOBALS['session']+"/", {
+			type:"DELETE",
+		}).done(function(){
+			document.location = "/"
+		})
+	})
+
 })
 
 console.log(sessionClicks)

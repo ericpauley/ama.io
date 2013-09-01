@@ -104,7 +104,11 @@ function check(){
 			$("#session-subtitle").smartText(data['subtitle'])
 			$("#session-desc").smartText(data['desc'])
 			$("#session-desc").smartHtml(markdown.toHTML(data['desc']))
-			$("#current-viewers").smartText(data['num_viewers']+" people currently viewing this AMA.")
+			if(data['num_viewers']==1){
+				$("#current-viewers").smartText(data['num_viewers']+" person currently viewing this AMA.")
+			}else{
+				$("#current-viewers").smartText(data['num_viewers']+" people currently viewing this AMA.")
+			}
 			$("#session-title-edit:hidden").val(data['title'])
 			$("#session-subtitle-edit:hidden").val(data['subtitle'])
 			$("#session-desc-edit:hidden").val(data['desc'])

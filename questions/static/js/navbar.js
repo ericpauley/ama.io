@@ -117,3 +117,11 @@ $("#request-form").submit(function(event){
 $(".tweet-button").click(function(){
 	$.post("/api/v1/request/"+$(this).attr("data-id")+"/vote/")
 })
+
+function confirm(div, callback){
+	$('#confirm-body').html(div)
+	$("#confirm-submit").off("click").click(function(){
+		callback()
+	})
+	$("#confirmModal").modal()
+}
