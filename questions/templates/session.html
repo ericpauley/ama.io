@@ -13,13 +13,13 @@ GLOBALS['owner'] = true
 </script>
 {%endblock%}
 {%block postscript%}
-<script type="text/javascript" src="{% static 'js/session.js' %}">
-</script>
-{%mustachejs "comment"%}
 {%if session.owner == user%}
 <script type="text/javascript" src="{% static 'js/session-owner.js' %}">
 </script>
 {%endif%}
+<script type="text/javascript" src="{% static 'js/session.js' %}">
+</script>
+{%mustachejs "comment"%}
 {%endblock%}
 {%block content%}
 <div class="page-header row-fluid">

@@ -12,8 +12,12 @@ from south.modelsinspector import add_introspection_rules
 import django.contrib.sessions.models
 from allauth.socialaccount import providers
 from json import loads
-import urllib
 from random import choice
+
+try:
+    from urllib import urlencode
+except ImportError:
+    from urllib.parse import urlencode
 
 add_introspection_rules([], ["^annoying\.fields\.AutoOneToOneField"])
 
@@ -317,7 +321,7 @@ class Request(models.Model):
 
     @property
     def tweet_url(self):
-        return "https://twitter.com/intent/tweet?"+urllib.parse.urlencode({"text": choice(tweets) % self.username})
+        return "https://twitter.com/intent/tweet?"+urlencode({"text": choice(tweets) % self.username})
         print()
 
     @property

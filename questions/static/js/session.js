@@ -12,77 +12,62 @@ $.fn.smartHtml = function(val){
 	}
 }
 
-function sessionClicks(){
-	$(".upvote").off("click")
-	$(".upvote").click(function(){
-		if(GLOBALS.auth){
-			var id = $(this).attr("data-question")
-			GLOBALS.lock = true
-			if($(this).hasClass("btn-success")){
-				$(this).removeClass("btn-success");
-				$.post("/api/v1/question/"+id+"/vote/",
-					{'vote': 0},
-					function(data){
-						$("#score-"+id).text(data['score'])
-					})
+console.log(!GLOBALS['owner'])
+if(!GLOBALS['owner']){
+	sessionClicks = function(){
+		$(".upvote").off("click")
+		$(".upvote").click(function(){
+			if(GLOBALS.auth){
+				var id = $(this).attr("data-question")
+				GLOBALS.lock = true
+				if($(this).hasClass("btn-success")){
+					$(this).removeClass("btn-success");
+					$.post("/api/v1/question/"+id+"/vote/",
+						{'vote': 0},
+						function(data){
+							$("#score-"+id).text(data['score'])
+						})
+				}else{
+					$(this).addClass("btn-success");
+					$("#downvote-"+id).removeClass("btn-danger")
+					$.post("/api/v1/question/"+id+"/vote/",
+						{'vote': 1},
+						function(data){
+							$("#score-"+id).text(data['score'])
+						})
+				}
 			}else{
-				$(this).addClass("btn-success");
-				$("#downvote-"+id).removeClass("btn-danger")
-				$.post("/api/v1/question/"+id+"/vote/",
-					{'vote': 1},
-					function(data){
-						$("#score-"+id).text(data['score'])
-					})
+				$("#loginModal").modal()
 			}
-		}else{
-			$("#loginModal").modal()
-		}
-	})
+		})
 
-	$(".downvote").off("click")
-	$(".downvote").click(function(){
-		if(GLOBALS.auth){
-			var id = $(this).attr("data-question")
-			GLOBALS.lock = true
-			if($(this).hasClass("btn-danger")){
-				$(this).removeClass("btn-danger");
-				$.post("/api/v1/question/"+id+"/vote/",
-					{'vote': 0},
-					function(data){
-						$("#score-"+id).text(data['score'])
-					})
+		$(".downvote").off("click")
+		$(".downvote").click(function(){
+			if(GLOBALS.auth){
+				var id = $(this).attr("data-question")
+				GLOBALS.lock = true
+				if($(this).hasClass("btn-danger")){
+					$(this).removeClass("btn-danger");
+					$.post("/api/v1/question/"+id+"/vote/",
+						{'vote': 0},
+						function(data){
+							$("#score-"+id).text(data['score'])
+						})
+				}else{
+					$(this).addClass("btn-danger");
+					$("#upvote-"+id).removeClass("btn-success")
+					$.post("/api/v1/question/"+id+"/vote/",
+						{'vote': -1},
+						function(data){
+							$("#score-"+id).text(data['score'])
+						})
+				}
 			}else{
-				$(this).addClass("btn-danger");
-				$("#upvote-"+id).removeClass("btn-success")
-				$.post("/api/v1/question/"+id+"/vote/",
-					{'vote': -1},
-					function(data){
-						$("#score-"+id).text(data['score'])
-					})
+				$("#loginModal").modal()
 			}
-		}else{
-			$("#loginModal").modal()
-		}
-	})
+		})
 
-	$(".delete").off("click")
-	$(".delete").click(function(){
-		$.ajax("/api/v1/question/"+$(this).attr("data-question")+"/",
-			{
-				'type':"DELETE"
-			})
-	})
-	$(".star").off("click")
-	$(".star").click(function(){
-		$(this).toggleClass("btn-info")
-		var id = $(this).attr("data-question")
-		GLOBALS.lock = true
-		$.post("/api/v1/question/"+id+"/star/",
-					{'star': $(this).hasClass("btn-info")? 1: 0},
-					function(data){
-						
-					})
-	})
+	}
 }
 
 sessionClicks()

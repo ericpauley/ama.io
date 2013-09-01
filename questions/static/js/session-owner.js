@@ -53,3 +53,33 @@ $("#session-desc-edit").blur(function(){
 		contentType: 'application/json; charset=utf-8',
 	})
 })
+
+function sessionClicks(){
+	$(".delete").off("click")
+	$(".delete").click(function(e){
+		e.preventDefault()
+		$.ajax("/api/v1/question/"+$(this).attr("data-question")+"/",
+			{
+				'type':"DELETE"
+			})
+	})
+	$(".star").off("click")
+	$(".star").click(function(e){
+		e.preventDefault()
+		$(this).toggleClass("btn-info")
+		var id = $(this).attr("data-question")
+		GLOBALS.lock = true
+		$.post("/api/v1/question/"+id+"/star/",
+					{'star': $(this).hasClass("btn-info")? 1: 0},
+					function(data){
+						
+					})
+	})
+	$(".answer-button").off("click")
+	$(".answer-button").click(function(e){
+		e.preventDefault()
+		$('#answer-form-'+$(this).closest(".question").attr("data-question")).toggle();
+	})
+}
+
+console.log(sessionClicks)
