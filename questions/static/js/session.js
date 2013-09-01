@@ -196,3 +196,27 @@ $(".show-comments").click(function(){
 	}
 	
 })
+
+$(".add-comment").click(function(){
+	var question = $(this).closest("[data-question]").attr("data-question")
+	var contents = $("#comment-form-"+question).val()
+	$.ajax({
+		type: "POST",
+		url: "/api/v1/comment/", 
+		data: JSON.stringify({
+		"question": "/api/v1/question/"+question+"/",
+		"comment":contents,
+		}),
+		contentType: "application/json; charset=utf-8",
+	}).done(function(data, text, jqXHR){
+		$("#comment-form-"+question).val("")
+		$.ajax({
+			type: "GET",
+			url: jqXHR.getResponseHeader("location")
+		}).done(function(val){
+			val.content = markdown.toHTML(val.comment)
+			$("#comments-"+question).prepend(Mustache.template("comment").render(val))
+		})
+	})
+
+})
