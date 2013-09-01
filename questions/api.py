@@ -247,10 +247,16 @@ class SessionResource(ModelResource):
         if AMASession.objects.filter(pk=pk).count() == 0:
             return self.create_response(request, {
                 'success': False,
-                'reason': 'no_question',
+                'reason': 'no_session',
                 }, HttpBadRequest )
         question = request.POST['question']
         desc = request.POST['desc']
+
+        if(len(question) < 15):
+            return self.create_response(request, {
+                'success': False,
+                'reason': 'question_short',
+                }, HttpBadRequest )
 
         s = AMASession.objects.get(pk=pk)
         q = AMAQuestion()

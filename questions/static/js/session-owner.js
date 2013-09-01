@@ -58,6 +58,7 @@ function sessionClicks(){
 	$(".delete").off("click")
 	$(".delete").click(function(e){
 		e.preventDefault()
+		$(this).closest(".question").remove()
 		$.ajax("/api/v1/question/"+$(this).attr("data-question")+"/",
 			{
 				'type':"DELETE"

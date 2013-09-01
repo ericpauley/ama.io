@@ -84,6 +84,10 @@ $("#ask-submit").click(function(){
 		{'question': $("#ask-question").val(), 'desc': $("#ask-desc").val()},
 		function(){
 			$("#askModal").modal("hide")
+			check()
+		}).fail(function(xhr){
+			var err = eval("(" + xhr.responseText + ")")
+			$("#ask-"+err.reason).show()
 		})
 })
 
