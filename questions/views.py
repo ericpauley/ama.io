@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.db.models import Sum
 from django.http import Http404
 from django.shortcuts import render,redirect
-from questions.models import AMASession, Request
+from questions.models import AMASession, Request, AMAQuestion
 from datetime import datetime
 
 def live(request):
@@ -23,6 +23,13 @@ def home(request):
         'top_requests': top_requests,
         'title':'AMA'
     })
+
+def question(request, question):
+    try:
+        question = AMAQuestion.objects.get(id=question)
+    except AMAQuestion.DoesNotExist:
+        raise Http404
+    return render(request, "question_page.html", {"question": question})
 
 def requests(request):
     top_requests = top_requests = Request.objects.all()

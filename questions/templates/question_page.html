@@ -1,0 +1,19 @@
+{%extends "base.html"%}
+{%load staticfiles%}
+{% load jstemplate %}
+
+{%block prescript%}
+<script type="text/javascript">
+GLOBALS['question_full'] = false
+</script>
+{%endblock%}
+
+{%block postscript%}
+<script type="text/javascript" src="{% static 'js/session.js' %}">
+</script>
+{%mustachejs "comment"%}
+{%endblock%}
+
+{%block content%}
+{%include "question.html"%}
+{%endblock%}

@@ -20,6 +20,7 @@
 			{% if user == question.target%}
 			<a href="#" id="star-{{question.id}}" class="star btn {% if question.starred%}btn-info{%endif%}" data-question="{{question.id}}"><i class="icon-star"></i> star</a>
 			{%endif%}
+			<a class="btn" href="{%url 'question' question.id%}" >Permalink</a>
 			{%cache 60 question question.id%}
 			<div class="question-area">
 				<h4>{{question.question}}</h4>
@@ -65,6 +66,12 @@
       		<div id="comments-{{question.id}}">
 		
 			</div>
+			<div id="nocomments-{{question.id}}" style="display:none">
+				There are no comments. You should write one.
+			</div>
+			<div class="btn view-more" style="display:none">
+      			View More...
+      		</div>
 		</div>
 	</div>
 </div>

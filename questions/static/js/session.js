@@ -176,9 +176,11 @@ function check(){
 		})
 }
 
-$(function(){
-	setInterval(check, 1000)
-})
+if(GLOBALS['session']){
+	$(function(){
+		setInterval(check, 1000)
+	})
+}
 
 $(".show-comments").click(function(){
 	question = $(this).attr("data-question")
@@ -187,14 +189,37 @@ $(".show-comments").click(function(){
 		$("#comment-wrapper-"+question).hide()
 	}else{
 		$("#comment-wrapper-"+question).show()
-		$.get("http://localhost:8000/api/v1/comment?question=1").done(function(data){
+		$.get("http://localhost:8000/api/v1/comment?question="+question).done(function(data){
+			if(data.objects.length != 0){
+				var last = 0
+				$.each(data.objects, function(i, val){
+					val.content = markdown.toHTML(val.comment)
+					$("#comments-"+question).append(Mustache.template("comment").render(val))
+					last = val.id
+				})
+				if(data.meta.next != null){
+					$("#question-"+question).find(".view-more").show().attr("data-next", last)
+				}
+			}else{
+				$("#nocomments-"+question).show()
+			}
+		})
+	}
+	
+})
+
+$(".view-more").click(function(){
+	question = $(this).closest(".question").attr("data-question")
+	$(this).hide()
+	$.get("http://localhost:8000/api/v1/comment?question="+question+"&id__lt="+$(this).attr("data-next")).done(function(data){
 		$.each(data.objects, function(i, val){
 			val.content = markdown.toHTML(val.comment)
 			$("#comments-"+question).append(Mustache.template("comment").render(val))
 		})
+		if(data.meta.next != null){
+			$("#question-"+question).find(".view-more").show().attr("data-next", data.meta.next)
+		}
 	})
-	}
-	
 })
 
 $(".add-comment").click(function(){
@@ -215,6 +240,7 @@ $(".add-comment").click(function(){
 			url: jqXHR.getResponseHeader("location")
 		}).done(function(val){
 			val.content = markdown.toHTML(val.comment)
+			$("#nocomments-"+question).hide()
 			$("#comments-"+question).prepend(Mustache.template("comment").render(val))
 		})
 	})

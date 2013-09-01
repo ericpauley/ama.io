@@ -498,6 +498,7 @@ class CommentResource(ModelResource):
         resource_name = 'comment'
         filtering = {
             "question": ALL_WITH_RELATIONS,
-            "user": ALL_WITH_RELATIONS
+            "user": ALL_WITH_RELATIONS,
+            "id": ALL
         }
         authorization = CommentAuthorization()

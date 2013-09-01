@@ -6,6 +6,7 @@
 {%block prescript%}
 <script type="text/javascript">
 GLOBALS['session'] = "{{session.slug}}"
+GLOBALS['question_full'] = false
 {%if session.owner == user%}
 GLOBALS['owner'] = true
 {%endif%}
