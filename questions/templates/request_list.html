@@ -5,6 +5,8 @@
 <h1 class="pull-left">Requests</h1>
 {%if user.is_authenticated%}
 <div class="btn btn-title-inline" href="#requestModal" data-toggle="modal">Request an AMA</div>
+{%else%}
+<div class="btn btn-title-inline" href="#loginModal" data-toggle="modal">Request an AMA</div>
 {%endif%}
 </div>
 <table class="table table-striped table-bordered requests-table">

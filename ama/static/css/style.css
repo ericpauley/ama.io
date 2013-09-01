@@ -15,6 +15,14 @@ body{
 	margin-left: 25px;
 }
 
+@media (max-width: 320px){
+.btn-title-inline{
+	margin-bottom: 30px;
+	margin-left: auto;
+	display: inline-block;
+}
+}
+
 .affix{
 	top: 50px;
 }
@@ -118,7 +126,7 @@ body{
 }
 
 .requests-table{
-	width: 400px;
+	width: 413px;
 }
 
 @media (max-width: 320px){
