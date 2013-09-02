@@ -19,4 +19,16 @@
 {%include "request_tile.html"%}
 {%endfor%}
 </table>
+<ul class="pager">
+  {%if prev%}
+  <li class="previous">
+    <a href="{{prev}}">&larr; Older</a>
+  </li>
+  {%endif%}
+  {%if next%}
+  <li class="next">
+    <a href="{{next}}">Newer &rarr;</a>
+  </li>
+  {%endif%}
+</ul>
 {%endblock%}

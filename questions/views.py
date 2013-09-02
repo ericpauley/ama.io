@@ -4,6 +4,7 @@ from django.http import Http404
 from django.shortcuts import render,redirect
 from questions.models import AMASession, Request, AMAQuestion
 from datetime import datetime
+from django.core.urlresolvers import reverse
 
 def live(request):
     return render(request, "session_list.html", {'sessions': AMASession.objects.live(), 'title':'Live Sessions'})
@@ -31,9 +32,16 @@ def question(request, question):
         raise Http404
     return render(request, "question_page.html", {"question": question})
 
-def requests(request):
-    top_requests = top_requests = Request.objects.all()
-    return render(request, "request_list.html", {'top_requests': top_requests, 'title':'Requests'})
+def requests(request, page="1"):
+    page = int(page)
+    num = Request.objects.all().count()
+    if num <= (page-1)*20:
+        raise Http404()
+    prev = None if page == 1 else reverse("requests", kwargs={"page":page-1})
+    next = None if 20*page >= num else reverse("requests", kwargs={"page":page+1})
+    top_requests = top_requests = Request.objects.all()[(page-1)*20:page*20]
+    title = "Requests"
+    return render(request, "request_list.html", locals())
 
 def user(request, username):
     try:
