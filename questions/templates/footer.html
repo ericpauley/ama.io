@@ -41,15 +41,6 @@
 					<input type="password" name="confirm" id="reg_confirm" placeholder="Confirm">
 				</div>
 			</div>
-			<div id="reg_terms_group" class="control-group">
-				<div class="controls">
-					<label class="checkbox">
-						<input id="reg_terms" type="checkbox" value="">
-						I agree to the Terms and Conditions.
-					</label>
-				</div>
-			</div>
-			
 		</form>
 	</div>
 	<div class="modal-footer">
@@ -75,14 +66,15 @@
 			<div class="control-group">
 				<label class="control-label" for="login-modal-password">Password</label>
 				<div class="controls">
-					<input type="password" name="password" id="login-modal-password" placeholder="Password">
+					<input type="password" name="password" id="login-modal-password" placeholder="Password"><br/>
+					<a href="{%url 'account_reset_password' %}" aria-hidden="true">Forgot pass?</a>
 				</div>
 			</div>
 		
 	</div>
 	</form>
 	<div class="modal-footer">
-		<a href="{%url 'account_reset_password'%}" class="btn" aria-hidden="true">Forgot?</a>
+		<div href="#registerModal" data-toggle="modal" data-dismiss="modal" class="btn pull-left">Register</div>
 		<div class="btn" data-dismiss="modal" aria-hidden="true">Close</div>
 		<div id="login-modal-submit" class="btn btn-success">Login</div>
 	</div>
