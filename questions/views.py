@@ -16,11 +16,11 @@ def upcoming(request):
     return render(request, "session_list.html", {'sessions': AMASession.objects.upcoming(), 'title':'Upcoming Sessions'})
 
 def home(request):
-    top_requests = Request.objects.all()[:15]
+    top_requests = Request.objects.all()[:10]
     return render(request, "home.html", {
-        'live_sessions': AMASession.objects.live(),
-        'upcoming_sessions': AMASession.objects.upcoming(),
-        'past_sessions': AMASession.objects.past(),
+        'live_sessions': AMASession.objects.live()[:8],
+        'upcoming_sessions': AMASession.objects.upcoming()[:8],
+        'past_sessions': AMASession.objects.past()[:8],
         'top_requests': top_requests,
         'title':'AMA'
     })
