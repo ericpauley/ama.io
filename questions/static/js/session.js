@@ -182,7 +182,15 @@ $(".show-comments").click(function(){
 		$("#comment-wrapper-"+question).hide()
 	}else{
 		$("#comment-wrapper-"+question).show()
-		$.get("http://localhost:8000/api/v1/comment?question="+question).done(function(data){
+		var limit = 10
+		if(GLOBALS['question_full']){
+			limit = 20
+		}
+		$.get("http://localhost:8000/api/v1/comment",
+			{
+				limit: limit,
+				question: question
+			}).done(function(data){
 			if(data.objects.length != 0){
 				var last = 0
 				$.each(data.objects, function(i, val){
