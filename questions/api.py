@@ -11,6 +11,7 @@ from django.shortcuts import render
 from markdown import markdown
 from questions.authorization import *
 from questions.models import *
+from questions.forms import *
 from tastypie import fields
 from tastypie.authorization import ReadOnlyAuthorization
 from tastypie.http import HttpUnauthorized, HttpForbidden, HttpConflict, HttpBadRequest, HttpApplicationError
@@ -26,6 +27,7 @@ from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from allauth.socialaccount import providers
 from django.shortcuts import get_object_or_404
+from tastypie.validation import *
 
 class UserResource(ModelResource):
     display = fields.CharField(readonly = True)
@@ -532,3 +534,4 @@ class CommentResource(ModelResource):
             "id": ALL
         }
         authorization = CommentAuthorization()
+        validation = FormValidation(form_class=CommentForm)
