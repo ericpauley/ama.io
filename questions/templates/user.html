@@ -8,14 +8,14 @@
 	Questions asked: {{user.own_questions.count}}<br/>
 	Questions answered: {{user.meta.answers.count}}
 </div>
-{% if live%}
+{%if live%}
 <div class="upcoming-user">
 <h2>Live Session!</h2>
 	<div class="clearfix tile-wrap">
 	{%include "session_tile.html" with session=live.0%}
-	{%endif%}
 	</div>
 </div>
+{%endif%}
 {%if upcoming%}
 <div class="upcoming-user">
 	<h2>Upcoming Sessions</h2>
@@ -23,6 +23,7 @@
 	{%for session in upcoming%}
 		{%include "session_tile.html"%}
 	{%endfor%}
+	</div>
 </div>
 {%endif%}
 {%if past%}

@@ -114,5 +114,9 @@
 		-moz-box-sizing: border-box;
          box-sizing: border-box;
 }
+
+.support{
+	display: none;
+}
 }
 

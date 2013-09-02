@@ -2,6 +2,28 @@ body{
 	background-color: #F5FEFF;
 }
 
+.support{
+	position: fixed;
+	width: 83px;
+	height: 32px;
+	bottom: 0px;
+	right: 10%;
+	float: right;
+	background: black;
+	overflow: hidden;
+	z-index: 1000;
+	display: block;
+	border-top-right-radius: 5px;
+	border-top-left-radius: 5px;
+	text-align: center;
+}
+
+#support-text{
+	line-height: 32px;
+	color: #ffffff;
+	font-weight: bold;
+}
+
 .form-horizontal{
 	margin-bottom: 0px;
 	margin-top: 10px;
