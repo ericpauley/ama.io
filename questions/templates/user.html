@@ -1,6 +1,10 @@
 {%extends "base.html"%}
 {%block content%}
 <h2>{{user.meta.full_name}}</h2>
+{% if live%}
+Live session!
+{%include "session_tile.html" with session=live.0%}
+{%endif%}
 <div>
 	Joined: {{user.date_joined}}
 </div>

@@ -42,7 +42,8 @@ def user(request, username):
         raise Http404
     past = AMASession.objects.past().filter(owner=user)[:4]
     upcoming = AMASession.objects.upcoming().filter(owner=user)[:4]
-    return render(request, "user.html", {'user': user, 'past':past, 'upcoming':upcoming})
+    live = AMASession.objects.live().filter(owner=user)[:1]
+    return render(request, "user.html", {'user': user, 'past':past, 'upcoming':upcoming, 'live':live})
 
 def user_sessions(request, username):
     try:
