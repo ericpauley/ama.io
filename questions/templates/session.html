@@ -23,9 +23,14 @@ GLOBALS['owner'] = true
 {%endblock%}
 {%block content%}
 <div class="page-header row-fluid">
-	<h1 id="session-title">
-		{{session.title}}
-	</h1>
+	<div class="clearfix">
+		<h1 id="session-title" class="pull-left">
+			{{session.title}}
+		</h1>
+		{%if session.running%}
+		<h6 id="live-now">[Live Now!]</h6>
+		{%endif%}
+	</div>
 	{%if session.owner == user%}
 	<input style="display:none" x-autoblur type="text" id="session-title-edit" value="{{session.title}}">
 	{%endif%}
