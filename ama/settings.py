@@ -136,6 +136,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount',
     'allauth.socialaccount.providers.twitter',
     "jstemplate",
+    'south',
 )
 
 # A sample logging configuration. The only tangible logging

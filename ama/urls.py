@@ -5,8 +5,6 @@ from django.contrib import admin
 admin.autodiscover()
 from django.conf import settings
 from django.conf.urls.static import static
-from questions.oauth import *
-from allaccess.views import OAuthRedirect
 
 urlpatterns = patterns('',
     # Examples:

@@ -167,3 +167,5 @@ sqlite.db
 #Django Stuff
 /static/
 /media/
+
+.elasticbeanstalk/
