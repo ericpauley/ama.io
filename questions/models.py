@@ -13,6 +13,7 @@ import django.contrib.sessions.models
 from allauth.socialaccount import providers
 from json import loads
 from random import choice
+from django import db
 
 try:
     from urllib import urlencode
@@ -49,13 +50,18 @@ class UserMeta(models.Model):
 
 class AMASessionManager(models.Manager):
     def get_query_set(self):
+        print(db.settings.DATABASES['default']['ENGINE'])
+        if db.settings.DATABASES['default']['ENGINE'] == "django.db.backends.mysql":
+            part = "DATE_SUB(NOW(), INTERVAL 30 second)"
+        elif db.settings.DATABASES['default']['ENGINE'] == "django.db.backends.sqlite3":
+            part = "datetime('now', '-30second')"
         return super(AMASessionManager,self).get_query_set().extra(select={
             "num_viewers":"""
             SELECT Count(*)
             FROM questions_sessionview
             WHERE questions_sessionview.session_id = questions_amasession.slug
-            AND questions_sessionview.timestamp > DATETIME(%s)
-            """,
+            AND questions_sessionview.timestamp > 
+            """+part,
             "num_views":"""
             SELECT Count(*)
             FROM questions_sessionview

@@ -44,14 +44,6 @@ $("#reg_confirm").change(function() {
 	}
 })
 
-$("#reg_terms").click(function(){
-	if($("#reg_terms").prop('checked')){
-		$("#reg_submit").prop("disabled", false)
-	}else{
-		$("#reg_submit").prop("disabled", true)
-	}
-})
-
 $("#reg_form").submit(function(event){
 	event.preventDefault()
 	$(".form-alert").hide()

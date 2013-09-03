@@ -1,4 +1,4 @@
-django
+Django==1.5.2
 django-menu
 django-tastypie
 django-annoying
