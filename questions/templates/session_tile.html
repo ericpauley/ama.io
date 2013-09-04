@@ -1,6 +1,6 @@
 {% load thumbnail %}
 <a href="{%url 'session' slug=session.slug%}">
-	<div class="thumbnail session-tile-wrapper" {%if session.image%}style="background-image: url('{{session.image|thumbnail_with_max_side:'225'}}'); background-repeat: no-repeat; background-size: 227px 219px; background-position: center;"{%endif%}>
+	<div class="thumbnail session-tile-wrapper" {%if session.image%}style="background-image: url('{{session.image.url}}'); background-repeat: no-repeat; background-size: 227px 219px; background-position: center;"{%endif%}>
 		<div class="session-title">{{session.title}}</div>
 		<div class="session-stats">
 			<div class="session-stats-text">
