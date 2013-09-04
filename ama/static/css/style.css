@@ -2,6 +2,11 @@ body{
 	background-color: #F5FEFF;
 }
 
+.max-size-image{
+	max-width: 250px;
+	max-height: 250px;
+}
+
 .support{
 	position: fixed;
 	width: 83px;
@@ -9,13 +14,19 @@ body{
 	bottom: 0px;
 	right: 10%;
 	float: right;
-	background: black;
+	background: rgba(0,0,0,.8);
 	overflow: hidden;
 	z-index: 1000;
 	display: block;
 	border-top-right-radius: 5px;
 	border-top-left-radius: 5px;
 	text-align: center;
+}
+
+.or-seperator{
+	font-size: 12px;
+	padding-top: 10px;
+	padding-bottom: 10px;
 }
 
 #support-text{
