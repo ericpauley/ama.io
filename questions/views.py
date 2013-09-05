@@ -5,6 +5,7 @@ from django.shortcuts import render,redirect
 from questions.models import AMASession, Request, AMAQuestion
 from datetime import datetime
 from django.core.urlresolvers import reverse
+from django.contrib import messages
 
 def live(request):
     return render(request, "session_list.html", {'sessions': AMASession.objects.live(), 'title':'Live Sessions'})
@@ -64,9 +65,13 @@ def session(request, slug):
     try:
         s = AMASession.objects.get(slug=slug.lower())
         s.mark_viewed(request)
-        print(s.num_viewers)
         answered = s.get_marked_questions(request).exclude(answer=None)
         unanswered = s.get_marked_questions(request).filter(answer=None)
+        if not s.owner.meta.is_verified:
+            if s.owner == request.user:
+                messages.add_message(request, messages.WARNING, 'You have not yet linked a verified Twitter account. You can do so <a href="/accounts/twitter/login/?process=connect">here</a>.')
+            else:
+                messages.add_message(request, messages.INFO, 'This user has not verified their account with Twitter. Beware of impersonators.')
     except AMASession.DoesNotExist:
         raise Http404
     return render(request, "session.html", {'session':s, 'unanswered': unanswered, 'answered': answered})

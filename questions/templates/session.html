@@ -63,6 +63,11 @@ GLOBALS['owner'] = true
 <div id="current-viewers">
 {{session.num_viewers}} {{session.num_viewers|pluralize:"person,people"}} currently viewing this AMA.
 </div>
+{% for account in session.owner.socialaccount_set.all%}
+{%with acc=account.get_provider_account%}
+{% if acc.extra_data.verified%}Verified {%endif%}Twitter: <a href="{{acc.get_profile_url}}">@{{acc.get_screen_name}}</a>
+{%endwith%}
+{%endfor%}
 <div class="row-fluid qa-section">
 	<ul id="sessiontabs" class="nav nav-tabs">
 		<li class="active">

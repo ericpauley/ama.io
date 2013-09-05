@@ -48,6 +48,13 @@ class UserMeta(models.Model):
         name = name.strip()
         return name if name else self.user.username
 
+    @property
+    def is_verified(self):
+        for account in self.user.socialaccount_set.all():
+            if account.provider == "twitter" and account.extra_data['verified']:
+                return True
+        return False
+
 class AMASessionManager(models.Manager):
     def get_query_set(self):
         print(db.settings.DATABASES['default']['ENGINE'])
@@ -301,7 +308,7 @@ class RequestManager(models.Manager):
             query = None
             for auth in auths:
                 if auth.provider == "twitter":
-                    part = models.Q(provider = "twitter") & models.Q(username__iexact=loads(auth.extra_data)['screen_name'])
+                    part = models.Q(provider = "twitter") & models.Q(username__iexact=auth.extra_data['screen_name'])
                 query = part if query is None else query | part
             requests = requests.filter(query)
             print(requests.query)
