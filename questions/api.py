@@ -224,10 +224,18 @@ class SessionResource(ModelResource):
                     'success': False,
                     'reason': 'too_soon',
                 }, HttpBadRequest)
+        try:
+            file=request.FILES['image']
+            if len(file.name.split(".")) < 2 or not file.name.split(".")[-1].lower() in ("jpg, png"):
+                return self.create_response(request, {
+                    'success': False,
+                    'reason': 'bad_image',
+                }, HttpBadRequest)
+        except KeyError:
+            pass
         s.save()
         Request.objects.for_user(request.user).filter(session=None).update(session=s)
         try:
-            file=request.FILES['image']
             s.image.save(s.slug+"."+file.name.split(".")[-1], file)
         except:
             pass
