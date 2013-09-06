@@ -3,6 +3,7 @@
 {%load staticfiles%}
 {% load thumbnail %}
 {% load jstemplate %}
+{% load thumbnail %}
 {%block prescript%}
 <script type="text/javascript">
 GLOBALS['session'] = "{{session.slug}}"
@@ -47,11 +48,12 @@ GLOBALS['owner'] = true
 	{%endif%}
 	{%endif%}
 </div>
-{%if session.image%}
+{{session.image}}
+{% thumbnail session.image "220x220" as img %}
 <div id ="session-img">
-	<img src="{{session.image.url}}" width="220" class="img-rounded max-size-image"/>
+	<img src="{{img.url}}" width="220" class="img-rounded max-size-image"/>
 </div>
-{%endif%}
+{% endthumbnail %}
 <div id="session-desc" class="row-fluid">
 	{{session.desc|markdown:"safe"}}
 </div>

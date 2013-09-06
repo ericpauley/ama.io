@@ -12,6 +12,13 @@ DATABASES = {
     }
 }
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': 'ama.uxft7n.cfg.use1.cache.amazonaws.com:11211',
+    }
+}
+
 INSTALLED_APPS += ('storages',)
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'

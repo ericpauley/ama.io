@@ -137,6 +137,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.twitter',
     "jstemplate",
     'south',
+    'sorl.thumbnail'
 )
 
 # A sample logging configuration. The only tangible logging
@@ -198,6 +199,13 @@ SOCIALACCOUNT_PROVIDERS = \
 
 LOGIN_REDIRECT_URL = "/"
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake'
+    }
+}
+
 try:
     from ama.settings_local import *
     print("Using local settings...")
@@ -205,5 +213,5 @@ except ImportError:
     pass
     
 TEMPLATE_DEBUG = DEBUG
-
+THUMBNAIL_DEBUG = DEBUG
 MANAGERS = ADMINS
