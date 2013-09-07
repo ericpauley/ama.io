@@ -17,5 +17,5 @@ path.py
 django-storages
 boto
 django-ses
-sorl-thumbnail
+easy-thumbnails
 python-memcached

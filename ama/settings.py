@@ -137,7 +137,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.twitter',
     "jstemplate",
     'south',
-    'sorl.thumbnail'
+    'easy_thumbnails',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -204,6 +204,12 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
         'LOCATION': 'unique-snowflake'
     }
+}
+
+THUMBNAIL_ALIASES = {
+    '': {
+        'session': {'size': (220, 220), 'crop': True},
+    },
 }
 
 try:

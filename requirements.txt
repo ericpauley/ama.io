@@ -17,6 +17,6 @@ MySQL-python==1.2.3
 django-storages
 boto
 django-ses
-sorl-thumbnail
+easy-thumbnails
 python-memcached
 pillow
