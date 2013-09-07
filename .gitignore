@@ -169,3 +169,4 @@ sqlite.db
 /media/
 
 /.elasticbeanstalk/
+*.komodoproject

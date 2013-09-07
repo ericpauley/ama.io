@@ -1,14 +1,14 @@
 $("#login-form").submit(function(event) {
 	event.preventDefault()
 	if($("#username").val() || $("#password").val()){
-		$("#login-modal-username").val($("#username").val())
-	$("#login-modal-password").val($("#password").val())
-	$("#login-modal-form").submit()
+		$("#login-modal-username").val($("#username").val());
+		$("#login-modal-password").val($("#password").val());
+		$("#login-modal-form").submit();
 	} else {
-		$("#loginModal").modal()
+		$("#loginModal").modal();
 	}
 	
-})
+});
 
 $("#login-modal-form").submit(function(event) {
 	event.preventDefault()
@@ -18,13 +18,13 @@ $("#login-modal-form").submit(function(event) {
 		url: "/api/v1/user/login/",
 		data: $("#login-modal-form").serialize()
 	}).done(function(data) {
-		location.reload()
+		location.reload();
 	}).fail(function(xhr){
-		$("#loginModal").modal()
-		var err = eval("(" + xhr.responseText + ")")
-		$("#login-"+err.reason).show()
+		$("#loginModal").modal();
+		var err = eval("(" + xhr.responseText + ")");
+		$("#login-"+err.reason).show();
 	})
-})
+});
 
 $('input').keydown(function(e) {
     if (e.keyCode == 13 && !$(this).closest('form').find(":submit").length) {
@@ -33,87 +33,87 @@ $('input').keydown(function(e) {
 });
 
 $("#login-modal-submit").click(function(){
-	$("#login-modal-form").submit()
-})
+	$("#login-modal-form").submit();
+});
 
 $("#reg_confirm").change(function() {
 	if($("#reg_confirm").val() === $("#reg_password").val()){
-		$("#reg_confirm_group").removeClass("error")
+		$("#reg_confirm_group").removeClass("error");
 	}else{
-		$("#reg_confirm_group").addClass("error")
+		$("#reg_confirm_group").addClass("error");
 	}
-})
+});
 
 $("#reg_form").submit(function(event){
-	event.preventDefault()
-	$(".form-alert").hide()
+	event.preventDefault();
+	$(".form-alert").hide();
 	$.ajax({
 		type: "POST",
 		url: "/api/v1/user/register/",
 		data: $("#reg_form").serialize()
 	}).done(function(data) {
-		location.reload()
+		location.reload();
 	}).fail(function(xhr){
-		var err = eval("(" + xhr.responseText + ")")
+		var err = eval("(" + xhr.responseText + ")");
 		if(err.reason == "exists"){
-			$("#reg_exists").show()
+			$("#reg_exists").show();
 		}else if(err.reason == "pass_match"){
-			$("#reg_passmatch").show()
+			$("#reg_passmatch").show();
 		}else if(err.reason == "bad_username"){
-			$("#bad_username").show()
+			$("#bad_username").show();
 		}else if(err.reason == "bad_email"){
-			$("#bad_email").show()
+			$("#bad_email").show();
 		}else if(err.reason == "bad_password"){
-			$("#bad_password").show()
+			$("#bad_password").show();
 		}
-	})
-})
+	});
+});
 
 $("#reg_submit").click(function(){
-	$("#reg_form").submit()
+	$("#reg_form").submit();
 })
 
 $("#create-session-form").submit(function(event){
-	$(".form-alert").hide()
-    $("#session-upload-iframe").off("load")
+	$(".form-alert").hide();
+	$("#session-upload-iframe").off("load");
 	$("#session-upload-iframe").load(function(){
-		var resp = eval("("+$("#session-upload-iframe").contents().text()+")")
+		var resp = eval("("+$("#session-upload-iframe").contents().text()+")");
 		if(resp['success']){
-			document.location="/s/"+resp.slug
+			document.location="/s/"+resp.slug;
 		}else{
-			$("#"+resp.reason).show()
+			$("#"+resp.reason).show();
 		}
-	})
-})
+	});
+});
 
 $("#request-form").submit(function(event){
-	event.preventDefault()
-	$(".form-alert").hide()
+	event.preventDefault();
+	$(".form-alert").hide();
 	$.ajax({
 		type: "POST",
 		url: "/api/v1/request/create/",
 		data: $("#request-form").serialize()
 	}).done(function(data) {
 		if(data['tweet_url'] && $("#request-send-tweet").prop("checked")){
-			document.location = data['tweet_url']
+			document.location = data['tweet_url'];
 		}else{
-			location.reload()
+			location.reload();
 		}
 
 	}).fail(function(xhr){
-		var err = eval("(" + xhr.responseText + ")")
-		$("#req_"+err.reason).show()
-	})
-})
+		var err = eval("(" + xhr.responseText + ")");
+		$("#req_"+err.reason).show();
+	});
+});
 
 $(".tweet-button").click(function(){
-	$.post("/api/v1/request/"+$(this).attr("data-id")+"/vote/")
-})
+	$.post("/api/v1/request/"+$(this).attr("data-id")+"/vote/");
+});
 
 function confirm(div, callback){
-	$('#confirm-body').html(div)
+	$('#confirm-body').html(div);
 	$("#confirm-submit").off("click").click(function(){
-		callback()
+		callback();
 	})
-	$("#confirmModal").modal()
+	$("#confirmModal").modal();
 }
