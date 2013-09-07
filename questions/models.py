@@ -329,6 +329,7 @@ class Request(models.Model):
     provider = models.CharField(max_length=30, choices=providers.registry.as_choices())
     desc = models.TextField()
     session = models.ForeignKey(AMASession, related_name="requests", null=True, on_delete=models.SET_NULL)
+    creator = models.ForeignKey(User, related_name="requests_created", null=True, on_delete=models.SET_NULL)
     created = models.DateTimeField(auto_now_add=True, editable=False)
     edited = models.DateTimeField(auto_now=True, editable=False)
 

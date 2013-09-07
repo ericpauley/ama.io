@@ -503,20 +503,17 @@ class RequestResource(ModelResource):
                 'success': False,
                 'reason': 'bad_username',
                 }, HttpBadRequest )
+        desc = request.POST.get('desc',"")
         try:
             ama_request = Request.objects.get(provider=provider, username__iexact=username)
-            ama_request.vote(request.user)
-            return self.create_response(request, {
-                'success': True,
-                'tweet_url': ama_request.tweet_url
-                })
         except Request.DoesNotExist:
-            pass
-
-        desc = request.POST.get('desc',"")
-
-        ama_request = Request(provider=provider, username=username, desc=desc)
-        ama_request.save()
+            if Request.objects.filter(creator=request.user, created__gte=datetime.datetime.now() - datetime.timedelta(hours=1)).count():
+                return self.create_response(request, {
+                    'success': False,
+                    'reason': 'bad_timing',
+                    }, HttpBadRequest )
+            ama_request = Request(provider=provider, username=username, desc=desc, creator = request.user)
+            ama_request.save()
         ama_request.vote(request.user)
         return self.create_response(request, {
             'success': True,
