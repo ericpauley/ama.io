@@ -168,4 +168,4 @@ sqlite.db
 /static/
 /media/
 
-.elasticbeanstalk/
+/.elasticbeanstalk/

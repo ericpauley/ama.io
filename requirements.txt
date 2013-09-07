@@ -5,7 +5,6 @@ django-annoying
 jsonfield
 markdown
 south
-pillow
 django-allauth
 pycrypto
 requests
@@ -19,3 +18,5 @@ django-storages
 boto
 django-ses
 sorl-thumbnail
+python-memcached
+pillow
