@@ -38,6 +38,7 @@ class SluggedModel(models.Model):
 class UserMeta(models.Model):
     user = AutoOneToOneField(User, primary_key=True, related_name="meta")
     verified = models.BooleanField(default=False)
+    new = models.BooleanField(default=True)
 
     def answers(self):
         return AMAAnswer.objects.filter(question__target=self)
@@ -54,6 +55,11 @@ class UserMeta(models.Model):
             if account.provider == "twitter" and account.extra_data['verified']:
                 return True
         return False
+    
+    @property
+    def is_new(self):
+        return new
+    
 
 class AMASessionManager(models.Manager):
     def get_query_set(self):

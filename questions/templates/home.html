@@ -57,6 +57,8 @@
 	<a href="{% url 'requests'%}">Click here to see all requests.</a>
 	{%else%}
 	<a href="#requestModal" data-toggle="modal">No active requests.  Request someone?</a>
+	<div>{{user}}</div>
 	{%endif%}
+	
 	{%endcache%}
 {%endblock%}
