@@ -1,4 +1,4 @@
-{% load thumbnail %}
+{% load ihatethumbnails %}
 <a href="{%url 'session' slug=session.slug%}">
 	<div class="thumbnail session-tile-wrapper" {% if session.image %}style="background-image: url('{{session.image|thumbnail_url:'session'}}'); background-repeat: no-repeat; background-size: 220px 220px; background-position: center;"{% endif %}>
 		<div class="session-title">{{session.title}}</div>
