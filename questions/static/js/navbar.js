@@ -1,5 +1,5 @@
 $("#login-form").submit(function(event) {
-	event.preventDefault()
+	event.preventDefault();
 	if($("#username").val() || $("#password").val()){
 		$("#login-modal-username").val($("#username").val());
 		$("#login-modal-password").val($("#password").val());
@@ -11,8 +11,8 @@ $("#login-form").submit(function(event) {
 });
 
 $("#login-modal-form").submit(function(event) {
-	event.preventDefault()
-	$(".form-alert").hide()
+	event.preventDefault();
+	$(".form-alert").hide();
 	$.ajax({
 		type: "POST",
 		url: "/api/v1/user/login/",
@@ -23,7 +23,7 @@ $("#login-modal-form").submit(function(event) {
 		$("#loginModal").modal();
 		var err = eval("(" + xhr.responseText + ")");
 		$("#login-"+err.reason).show();
-	})
+	});
 });
 
 $('input').keydown(function(e) {
