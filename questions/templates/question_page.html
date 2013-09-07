@@ -11,7 +11,12 @@ GLOBALS['question_full'] = true
 {%block postscript%}
 <script type="text/javascript" src="{% static 'js/session.js' %}">
 </script>
+{%if question.session.owner == user%}
+<script type="text/javascript" src="{% static 'js/session-owner.js' %}">
+</script>
+{%endif%}
 {%mustachejs "comment"%}
+{%mustachejs "question"%}
 {%endblock%}
 
 {%block content%}

@@ -12,7 +12,6 @@ $.fn.smartHtml = function(val){
 	}
 }
 
-console.log(!GLOBALS['owner'])
 if(!GLOBALS['owner']){
 	sessionClicks = function(){
 		$(".upvote").off("click");
@@ -124,6 +123,12 @@ function check(){
 				ids.push(id);
 				$("#question-"+id).css("display", "block");
 				if(!$("#question-"+id).length){
+					var val ={
+						question:question,
+						isauthenticated: GLOBALS['auth'],
+						isowner:GLOBALS['owner']
+					};
+					question['html'] = Mustache.template("question").render(val);
 					if(question['answer'] == null){
 						$("#unansweredlist").append(question['html']);
 					}else{
@@ -171,7 +176,8 @@ function check(){
 
 if(GLOBALS['session']){
 	$(function(){
-		setInterval(check, 1000);
+		setInterval(check, 10000);
+		check()
 	})
 }
 

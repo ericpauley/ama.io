@@ -2,8 +2,14 @@ from django.conf.urls import patterns, include, url
 from tastypie.api import Api
 from questions.api import *
 from questions import views
+from django.views.decorators.cache import cache_page
 
-v1_api = Api(api_name='v1')
+class CachedApi(Api):
+    def wrap_view(self, view):
+        print "CACHED"
+        return cache_page(Api.wrap_view(self, view),10)
+print"starting"
+v1_api = CachedApi(api_name='v1')
 v1_api.register(UserResource())
 v1_api.register(SessionResource())
 v1_api.register(QuestionResource())

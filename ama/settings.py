@@ -199,13 +199,6 @@ SOCIALACCOUNT_PROVIDERS = \
 
 LOGIN_REDIRECT_URL = "/"
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'unique-snowflake'
-    }
-}
-
 THUMBNAIL_ALIASES = {
     '': {
         'session': {'size': (220, 220), 'crop': True},

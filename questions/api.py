@@ -15,7 +15,7 @@ from questions.forms import *
 from tastypie import fields
 from tastypie.authorization import ReadOnlyAuthorization
 from tastypie.http import HttpUnauthorized, HttpForbidden, HttpConflict, HttpBadRequest, HttpApplicationError
-from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
+from tastypie.resources import ModelResource, Resource, ALL, ALL_WITH_RELATIONS
 from tastypie.utils import trailing_slash
 from django.template import RequestContext
 from dateutil import parser
@@ -28,6 +28,12 @@ from django.core.exceptions import ValidationError
 from allauth.socialaccount import providers
 from django.shortcuts import get_object_or_404
 from tastypie.validation import *
+from django.views.decorators.cache import cache_page
+
+class CachedResource():
+    def wrap_view(self, view):
+        print "CACHED RESOURCE"
+        return cache_page(Resource.wrap_view(self, view),10)
 
 class UserResource(ModelResource):
     display = fields.CharField(readonly = True)
@@ -145,10 +151,14 @@ class UserResource(ModelResource):
         else:
             return self.create_response(request, { 'success': False }, HttpUnauthorized)
 
-class SessionResource(ModelResource):
+class SessionResource(CachedResource, ModelResource):
     owner = fields.ForeignKey(UserResource, 'owner', readonly=True)
     questions = fields.ToManyField('questions.api.QuestionResource', readonly=True, attribute='questions', null=True, use_in='detail', full=True, related_name='session')
     num_viewers = fields.IntegerField(attribute="num_viewers", readonly=True)
+    time = fields.DateField()
+
+    def dehydrate_time(self, bundle):
+        return datetime.datetime.now()
 
     class Meta:
         queryset = AMASession.objects.all()
@@ -286,8 +296,9 @@ class QuestionResource(ModelResource):
     answer = fields.OneToOneField('questions.api.AnswerResource', 'answer', related_name='question', null=True, full=True)
     session = fields.OneToOneField('questions.api.SessionResource', 'session', null=True)
     #comments = fields.ToManyField('questions.api.CommentResource', readonly=True, attribute='comments', null=True, use_in="detail", full=True, related_name='question')
-    html = fields.CharField(use_in = "detail")
+    #html = fields.CharField(use_in = "detail")
     score = fields.IntegerField(attribute='score', default=0, readonly=True)
+    asker = fields.ForeignKey('questions.api.UserResource', 'asker', full=True, readonly=True)
 
     class Meta:
         queryset = AMAQuestion.objects.all().order_by("-starred", "-score")

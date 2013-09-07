@@ -15,7 +15,7 @@ DATABASES = {
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': 'ama.uxft7n.cfg.use1.cache.amazonaws.com:11211',
+        'LOCATION': 'ama.uxft7n.0001.use1.cache.amazonaws.com:11211',
     }
 }
 
@@ -30,6 +30,7 @@ AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
 AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_KEY']
 AWS_STORAGE_BUCKET_NAME = "ama.io"
 AWS_S3_SECURE_URLS = False
+AWS_QUERYSTRING_EXPIRE = 0
 
 AWS_SES_REGION_NAME = 'us-east-1'
 AWS_SES_REGION_ENDPOINT = 'email.us-east-1.amazonaws.com'
