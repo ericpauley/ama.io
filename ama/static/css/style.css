@@ -12,6 +12,15 @@ input[type="file"]{
 	line-height: 10px;
 }
 
+.session-header{
+	margin-top: 0px;
+}
+
+.page-alert{
+	margin-top: 10px;
+	margin-bottom: 0px;
+}
+
 .about{
 	padding-left: 25px;
 	padding-right: 25px;
