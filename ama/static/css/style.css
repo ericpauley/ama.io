@@ -1,9 +1,15 @@
+/*GENERAL CLASSES/FIXES */
 body{
 	background-color: #F5FEFF;
 }
 
 h1, h2, h3, h4, h5, h6{
 	color: #000;
+}
+
+input[type="file"]{
+	margin-top: 5px;
+	line-height: 10px;
 }
 
 .about{
