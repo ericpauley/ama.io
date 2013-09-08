@@ -2,11 +2,23 @@ body{
 	background-color: #F5FEFF;
 }
 
+h1, h2, h3, h4, h5, h6{
+	color: #000;
+}
+
 .about{
 	padding-left: 25px;
 	padding-right: 25px;
+	padding-bottom: 20px;
 	color: #666;
-	min-height: 152px;
+}
+
+.about-cell{
+	padding-left: 25px;
+	padding-right: 25px;
+	padding-bottom: 20px;
+	color: #666;
+	min-height: 140px;
 }
 
 .about-table{
@@ -116,13 +128,18 @@ body{
 	padding-bottom: 10px;
 }
 
+.tile-wrap a:first-child .session-tile-wrapper {
+	margin-top: 0px;
+}
+
 .session-tile-wrapper{
 	position: relative;
 	padding: 10px;
 	margin-right: 15px;
 	margin-top: 15px;
 	float: left;
-	height: 120px;
+	height: auto;
+	overflow: auto;
 	background: #F5F5F5;
 }
 
@@ -133,6 +150,12 @@ body{
 
 .session-img{
 	padding-right: 10px;
+}
+
+.session-img > img{
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
 }
 
 #time-left{
@@ -167,6 +190,7 @@ body{
 
 .session-subtitle{
 	font-size: 15px;
+	font-weight: normal;
 }
 
 .requests-table{

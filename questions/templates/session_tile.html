@@ -1,4 +1,5 @@
 {% load ihatethumbnails %}
+{% load staticfiles %}
 <a href="{%url 'session' slug=session.slug%}" class="tile-links">
 	<div class="row-fluid">
 		<div class="thumbnail session-tile-wrapper span8">
@@ -6,7 +7,7 @@
 				{% if session.image %}
 				<img width="100" height="100" src="{{session.image|thumbnail_url:'session'}}" />
 				{% else %}
-				<img width="100" height="100" src="default.jpg" />
+				<img width="100" height="100" src="{%static 'images/default-session.png'%}" />
 				{% endif %}
 			</div>
 			<div class="pull-left">
