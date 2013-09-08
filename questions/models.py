@@ -130,13 +130,14 @@ class AMASession(SluggedModel):
     def answered(self):
         return self.questions.exclude(answer=None)
     
-    @property
     def time_left(self):
-        return timedelta(seconds=int((self.end_time - datetime.now(tzlocal())).total_seconds()))
+        td = self.end_time - datetime.now(tzlocal())
+        return ""
 
     @property
     def time_until(self):
-        return timedelta(seconds=int((self.start_time - datetime.now(tzlocal())).total_seconds()))
+        td = timedelta(seconds=int((self.start_time - datetime.now(tzlocal())).total_seconds()))
+        return ""
 
     @property
     def near_end(self):
@@ -161,21 +162,10 @@ class AMASession(SluggedModel):
             except SessionView.DoesNotExist:
                 obj = SessionView(session = self, user = request.user)
             obj.save()
-        else:
-            if not request.session.exists(request.session.session_key):
-                request.session.create() 
-            session = django.contrib.sessions.models.Session.objects.get(session_key=request.session.session_key)
-            try:
-                obj = self.viewers.get(user_session=session)
-            except SessionView.DoesNotExist:
-                obj = SessionView(session = self, user_session = session)
-            obj.save()
-
 
 class SessionView(models.Model):
     session = models.ForeignKey(AMASession, related_name='viewers')
     user = models.ForeignKey(User, related_name='views', null=True)
-    user_session = models.ForeignKey(django.contrib.sessions.models.Session, related_name='views', null=True, on_delete=models.SET_NULL)
     timestamp = models.DateTimeField(auto_now = True)
 
 class AMAQuestionManager(models.Manager):

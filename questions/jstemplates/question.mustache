@@ -37,7 +37,7 @@
 			</div>
 		</div>
 		{{/isowner}}
-		<div id="answer-{{question.id}}" {%if not question.answer%}style="display: none"{%endif%}>
+		<div id="answer-{{question.id}}" {{^question.answer}}style="display: none"{{/question.answer}}>
 			<hr/>
 			<div class="row-fluid">
 				<div class="response-area">

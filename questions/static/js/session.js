@@ -117,8 +117,7 @@ function check(){
 			$("#session-desc-edit:hidden").val(data['desc']);
 			var ids = [];
 			$(".question").css("display", "none");
-			for(var i=0; i<data['questions'].length;i++){
-				var question = data['questions'][i];
+			$.each(data['questions'], function(index, question){
 				var id = question['id'];
 				ids.push(id);
 				$("#question-"+id).css("display", "block");
@@ -167,7 +166,7 @@ function check(){
 						$("#star-"+id).removeClass("btn-info");
 					}
 				}
-			}
+			});
 			sessionClicks();
 		}).fail(function(a,b,c){
 			d = a;

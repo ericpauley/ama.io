@@ -156,6 +156,7 @@ class SessionResource(CachedResource, ModelResource):
     questions = fields.ToManyField('questions.api.QuestionResource', readonly=True, attribute='questions', null=True, use_in='detail', full=True, related_name='session')
     num_viewers = fields.IntegerField(attribute="num_viewers", readonly=True)
     time = fields.DateField()
+    image = fields.FileField(attribute="image", readonly=True)
 
     def dehydrate_time(self, bundle):
         return datetime.datetime.now()
