@@ -2,6 +2,22 @@ body{
 	background-color: #F5FEFF;
 }
 
+.about{
+	padding-left: 25px;
+	padding-right: 25px;
+	color: #666;
+	min-height: 152px;
+}
+
+.about-table{
+	margin-top: 15px;
+	width: 300px;
+}
+
+#support-padding{
+	padding-top:5px;
+}
+
 .max-size-image{
 	max-width: 250px;
 	max-height: 250px;
@@ -97,28 +113,31 @@ body{
 }
 
 .tile-wrap{
-	padding-bottom: 5px;
+	padding-bottom: 10px;
 }
 
 .session-tile-wrapper{
 	position: relative;
-	text-align: center;
-	width: 227px;
-	padding: 0px;
+	padding: 10px;
 	margin-right: 15px;
 	margin-top: 15px;
 	float: left;
-	min-width: 225px;
-	height: 217px;
-	background: #A8AEC2;
+	height: 120px;
+	background: #fff;
 }
 
-.session-tile-wrapper:hover .session-title{
-	color: #fff;	
+.tile-links{
+	color: #666;
+	text-decoration: none;
 }
 
-.session-tile-wrapper:hover .session-stats{
-	background: rgba(0,0,0,.7);
+.session-img{
+	padding-right: 10px;
+}
+
+#time-left{
+	position: absolute;
+	bottom: 5px;
 }
 
 @media (max-width: 480px) {
@@ -143,34 +162,11 @@ body{
 	font-size: 20px;
 	font-weight: bold;
 	overflow: hidden;
-	margin-bottom: 75px;
-	padding: 10px;
-	color: #000;
-	-o-transition:.2s;
-	-ms-transition:.2s;
-	-moz-transition:.2s;
-	-webkit-transition:.2s;
-	transition:.2s;
+	color: #666;
 }
 
-.session-stats{
-	width: 100%;
-	position: absolute;
-	bottom: 0;
-	font-family: Helvetica, arial, sans-serif;
-	font-size: 13px;
-	font-weight: normal;
-	background: rgba(0,0,0,.5);
-	color: #fff;
-	-o-transition:.2s;
-	-ms-transition:.2s;
-	-moz-transition:.2s;
-	-webkit-transition:.2s;
-	transition:.2s;
-}
-
-.session-stats-text{
-	padding: 10px;
+.session-subtitle{
+	font-size: 15px;
 }
 
 .requests-table{

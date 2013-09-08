@@ -1,26 +1,39 @@
 {% load ihatethumbnails %}
-<a href="{%url 'session' slug=session.slug%}">
-	<div class="thumbnail session-tile-wrapper" {% if session.image %}style="background-image: url('{{session.image|thumbnail_url:'session'}}'); background-repeat: no-repeat; background-size: 220px 220px; background-position: center;"{% endif %}>
-		<div class="session-title">{{session.title}}</div>
-		<div class="session-stats">
-			<div class="session-stats-text">
-			{% if not session.before%}
-					Questions asked: {{session.questions.count}}<br/>
-					Questions answered: {{session.answered.count}}
-			{%endif%}
-				{% if session.running %}
-					<div {% if session.near_end %}class="near_end"{%endif%}>
-					Time left: {{session.time_left}}<br/>
-					Viewers: {{session.num_viewers}}
-					</div>
-				{%else%}
-					<br/>Views: {{session.viewers.count}}
-				{%endif%}
-				{%if session.before%}
-					<br/>Time until: {{session.time_until}}
-					</p>
-				{%endif%}
+<a href="{%url 'session' slug=session.slug%}" class="tile-links">
+	<div class="row-fluid">
+		<div class="thumbnail session-tile-wrapper span8">
+			<div class="pull-left session-img">
+				{% if session.image %}
+				<img width="100" height="100" src="{{session.image|thumbnail_url:'session'}}" />
+				{% else %}
+				<img width="100" height="100" src="default.jpg" />
+				{% endif %}
+			</div>
+			<div class="pull-left">
+				<div class="session-title">
+					{{session.title}}
+				</div>
+				<div class="session-title session-subtitle">
+					{{session.subtitle}}
+				</div>
+				<div id="time-left" {% if session.near_end %}class="near_end"{%endif%}>
+					{% if session.running %}
+						Time left: {{session.time_left}}
+					{%endif%}
+					{%if session.before%}
+						Time until: {{session.time_until}}
+					{%endif%}
 				</div>
 			</div>
+			<div class="pull-right">
+				<div align="right" class="session-viewers">
+					<i class="icon-eye-open"></i>&nbsp;{{session.viewers.count}}<br/>
+					{% if not session.before%}
+					<i class="icon-comment"></i>&nbsp;{{session.questions.count}}<br/>
+					<i class="icon-ok"></i>&nbsp;{{session.answered.count}}
+					{%endif%}
+				</div>
+			</div>
+		</div>
 	</div>
 </a>
