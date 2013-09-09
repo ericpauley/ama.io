@@ -53,6 +53,7 @@ class UserResource(ModelResource):
             'username': ALL
 
         }
+        
     def prepend_urls(self):
         return [
             url(r"^(?P<resource_name>%s)/login%s$" %
@@ -116,7 +117,7 @@ class UserResource(ModelResource):
             return self.create_response(request, {
                 'success': False,
                 'reason': 'error',
-                }, HttpApplicaitonError )
+                }, HttpApplicationError )
 
 
     def login(self, request, **kwargs):
@@ -150,6 +151,22 @@ class UserResource(ModelResource):
             return self.create_response(request, { 'success': True })
         else:
             return self.create_response(request, { 'success': False }, HttpUnauthorized)
+        
+    def make_old(self, request, **kwargs):
+        print "Make_Old!!"
+        #self.method_check(request, allowed=['post'])
+        username = request.GET.get('username', '').lower()
+        user = User.objects.filter(username=username)
+        if user.count() == 0:
+            print "Here!"
+            return self.create_response(request, { 'success': False }, HttpNotFound)
+        if user.count() == 1:
+            print "There!"
+            user.meta.new = False
+            user.save()
+            return self.create_response(request, { 'success': True})
+        return self.create_response(request, { 'success': False, 'reason': "Dup User",}, HttpNotFound)
+    
 
 class SessionResource(CachedResource, ModelResource):
     owner = fields.ForeignKey(UserResource, 'owner', readonly=True)
