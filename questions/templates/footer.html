@@ -158,8 +158,8 @@
 			{%include "error.html" with id="too_short" message="You must have your AMA run for at least 30 minutes." only%}
 			{%include "error.html" with id="bad_image" message="Only .png and .jpg images are supported." only%}
 			<fieldset>
-				<input type="text" placeholder="Title (max 30 characters, be concise!)" name="title" maxlength="30" id="session-create-title"/> e.g. I am (name), AMA!
-				<input type="text" name="subtitle" placeholder="Subtitle (max 100 characters)" maxlength="100" id="session-create-title"/>
+				<input type="text" placeholder="Title (max 100 characters)" name="title" maxlength="100" id="session-create-title"/> e.g. I am (name), AMA!
+				<input type="text" name="subtitle" placeholder="Subtitle (max 200 characters)" maxlength="200" id="session-create-title"/>
 				<input type="number" name="duration" placeholder="Approx. length (hours)" min="0" max="100" id="session-create-title"/> 0 for less than one hour
 				<textarea id="session-desc" name="desc" placeholder="Description" rows="5"></textarea>	
 				<input type="date" name="date" value="{% now '%Y-%m-%d' %}" id="session-create-date"/> Schedule a Date<br/>
