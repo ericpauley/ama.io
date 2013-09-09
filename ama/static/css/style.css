@@ -1,5 +1,48 @@
+/*GENERAL CLASSES/FIXES */
 body{
 	background-color: #F5FEFF;
+}
+
+h1, h2, h3, h4, h5, h6{
+	color: #000;
+}
+
+input[type="file"]{
+	margin-top: 5px;
+	line-height: 10px;
+}
+
+.session-header{
+	margin-top: 0px;
+}
+
+.page-alert{
+	margin-top: 10px;
+	margin-bottom: 0px;
+}
+
+.about{
+	padding-left: 25px;
+	padding-right: 25px;
+	padding-bottom: 20px;
+	color: #666;
+}
+
+.about-cell{
+	padding-left: 25px;
+	padding-right: 25px;
+	padding-bottom: 20px;
+	color: #666;
+	min-height: 140px;
+}
+
+.about-table{
+	margin-top: 15px;
+	width: 300px;
+}
+
+#support-padding{
+	padding-top:5px;
 }
 
 .max-size-image{
@@ -97,28 +140,42 @@ body{
 }
 
 .tile-wrap{
-	padding-bottom: 5px;
+	padding-bottom: 10px;
+}
+
+.tile-wrap a:first-child .session-tile-wrapper {
+	margin-top: 0px;
 }
 
 .session-tile-wrapper{
 	position: relative;
-	text-align: center;
-	width: 227px;
-	padding: 0px;
+	padding: 10px;
 	margin-right: 15px;
 	margin-top: 15px;
 	float: left;
-	min-width: 225px;
-	height: 217px;
-	background: #A8AEC2;
+	height: auto;
+	overflow: auto;
+	background: #F5F5F5;
 }
 
-.session-tile-wrapper:hover .session-title{
-	color: #fff;	
+.tile-links{
+	color: #666;
+	text-decoration: none;
 }
 
-.session-tile-wrapper:hover .session-stats{
-	background: rgba(0,0,0,.7);
+.session-img{
+	padding-right: 10px;
+}
+
+.session-img > img{
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+
+#time-left{
+	position: absolute;
+	bottom: 5px;
 }
 
 @media (max-width: 480px) {
@@ -143,34 +200,12 @@ body{
 	font-size: 20px;
 	font-weight: bold;
 	overflow: hidden;
-	margin-bottom: 75px;
-	padding: 10px;
-	color: #000;
-	-o-transition:.2s;
-	-ms-transition:.2s;
-	-moz-transition:.2s;
-	-webkit-transition:.2s;
-	transition:.2s;
+	color: #666;
 }
 
-.session-stats{
-	width: 100%;
-	position: absolute;
-	bottom: 0;
-	font-family: Helvetica, arial, sans-serif;
-	font-size: 13px;
+.session-subtitle{
+	font-size: 15px;
 	font-weight: normal;
-	background: rgba(0,0,0,.5);
-	color: #fff;
-	-o-transition:.2s;
-	-ms-transition:.2s;
-	-moz-transition:.2s;
-	-webkit-transition:.2s;
-	transition:.2s;
-}
-
-.session-stats-text{
-	padding: 10px;
 }
 
 .requests-table{

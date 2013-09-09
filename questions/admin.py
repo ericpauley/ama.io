@@ -39,5 +39,5 @@ class SessionViewAdmin(admin.ModelAdmin):
     timestamp.short_description = "timestamp"
     timestamp.admin_order_field = "timestamp"
 
-    list_display = ('session', 'user', 'user_session', 'timestamp')
+    list_display = ('session', 'user', 'timestamp')
 admin.site.register(SessionView, SessionViewAdmin)

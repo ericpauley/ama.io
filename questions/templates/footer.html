@@ -185,6 +185,7 @@
 			{%include "error.html" with id="req_bad_provider" message="Please select a valid Social Media service." only%}
 			{%include "error.html" with id="req_bad_username" message="Invalid username" only%}
 			{%include "error.html" with id="req_duplicate" message="That person has already recieved a request." only%}
+			{%include "error.html" with id="req_bad_timing" message="You can only request a new person once every hour." only%}
 			<div class="control-group" style="display:none">
 				<label class="control-label" for="request_provider">Service</label>
 				<div class="controls">
@@ -210,5 +211,21 @@
 	</div>
 	<div class="modal-footer">
 		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> <button id="request_submit" class="btn btn-primary btn-success" onclick="$('#request-form').submit()">Request</button>
+	</div>
+</div>
+<div id="supportModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="sessionModalLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		<h3 id="supportModalLabel">
+			Support
+		</h3>
+	</div>
+	<div class="modal-body container-fluid">
+		General Support: <a href="mailto:support@ama.io" target="_blank">support@ama.io</a><br/>
+		Business Inquiries: <a href="mailto:support@ama.io" target="_blank">business@ama.io</a><br/><br/>
+		Tutorials: <a href="/about/" aria-hidden="true">Click Here</a>
+	</div>
+	<div class="modal-footer">
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
 	</div>
 </div>

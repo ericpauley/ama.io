@@ -12,7 +12,6 @@ $.fn.smartHtml = function(val){
 	}
 }
 
-console.log(!GLOBALS['owner'])
 if(!GLOBALS['owner']){
 	sessionClicks = function(){
 		$(".upvote").off("click");
@@ -118,12 +117,17 @@ function check(){
 			$("#session-desc-edit:hidden").val(data['desc']);
 			var ids = [];
 			$(".question").css("display", "none");
-			for(var i=0; i<data['questions'].length;i++){
-				var question = data['questions'][i];
+			$.each(data['questions'], function(index, question){
 				var id = question['id'];
 				ids.push(id);
 				$("#question-"+id).css("display", "block");
 				if(!$("#question-"+id).length){
+					var val ={
+						question:question,
+						isauthenticated: GLOBALS['auth'],
+						isowner:GLOBALS['owner']
+					};
+					question['html'] = Mustache.template("question").render(val);
 					if(question['answer'] == null){
 						$("#unansweredlist").append(question['html']);
 					}else{
@@ -162,7 +166,7 @@ function check(){
 						$("#star-"+id).removeClass("btn-info");
 					}
 				}
-			}
+			});
 			sessionClicks();
 		}).fail(function(a,b,c){
 			d = a;
@@ -171,7 +175,8 @@ function check(){
 
 if(GLOBALS['session']){
 	$(function(){
-		setInterval(check, 1000);
+		setInterval(check, 10000);
+		check()
 	})
 }
 
