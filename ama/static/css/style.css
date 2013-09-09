@@ -174,7 +174,6 @@ input[type="file"]{
 }
 
 #time-left{
-	position: absolute;
 	bottom: 5px;
 }
 
@@ -195,6 +194,7 @@ input[type="file"]{
 }
 
 .session-title{
+	margin-right: 25px;
 	text-align: left;
 	font-family: Helvetica, arial, sans-serif;
 	font-size: 20px;
@@ -206,6 +206,12 @@ input[type="file"]{
 .session-subtitle{
 	font-size: 15px;
 	font-weight: normal;
+}
+
+.session-viewers{
+	position: absolute;
+	top: 10px;
+	right: 10px;
 }
 
 .requests-table{
