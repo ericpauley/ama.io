@@ -15,10 +15,16 @@
 <script src="{% static 'libs/django.mustache.js' %}">
 </script>
 <script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
+<script type="application/x-javascript" src="//cdn.jsdelivr.net/intro.js/0.5.0/intro.min.js"></script>
 <script>
 {%if user.is_authenticated%}
 GLOBALS['auth'] = true
 {%else%}
 GLOBALS['auth'] = false
+{%endif%}
+{%if user.meta.new == True%}
+$(document).ready(function(){
+        introJs().start();
+});
 {%endif%}
 </script>

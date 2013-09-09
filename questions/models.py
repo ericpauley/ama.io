@@ -58,7 +58,11 @@ class UserMeta(models.Model):
     
     @property
     def is_new(self):
-        return new
+        try:
+            return new
+        except NameError:
+            new = True
+            return False
     
 
 class AMASessionManager(models.Manager):
