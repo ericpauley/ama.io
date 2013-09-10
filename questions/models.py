@@ -132,12 +132,11 @@ class AMASession(SluggedModel):
     
     def time_left(self):
         td = self.end_time - datetime.now(tzlocal())
-        return ""
+        return ":".join(str(td).split(":")[:2])
 
-    @property
     def time_until(self):
-        td = timedelta(seconds=int((self.start_time - datetime.now(tzlocal())).total_seconds()))
-        return ""
+        td = self.start_time - datetime.now(tzlocal())
+        return ":".join(str(td).split(":")[:2])
 
     @property
     def near_end(self):
