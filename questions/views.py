@@ -36,8 +36,8 @@ def question(request, question):
 def requests(request, page="1"):
     page = int(page)
     num = Request.objects.all().count()
-    if num <= (page-1)*20:
-        raise Http404()
+    if (num <= (page-1)*20 and page != 1) or page == 0:
+        return redirect("requests",page=1)
     prev = None if page == 1 else reverse("requests", kwargs={"page":page-1})
     next = None if 20*page >= num else reverse("requests", kwargs={"page":page+1})
     top_requests = top_requests = Request.objects.all()[(page-1)*20:page*20]
