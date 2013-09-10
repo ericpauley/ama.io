@@ -169,7 +169,7 @@ class UserResource(ModelResource):
         elif user.count() == 1 and request.user and request.user.is_authenticated():
             user = user[0]
             #print "User was "+str(user.meta.new)
-            user.meta.new = True
+            user.meta.new = False
             #print "User is now "+str(user.meta.new)
             user.meta.save()
             user.save()

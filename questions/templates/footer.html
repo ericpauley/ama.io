@@ -160,18 +160,20 @@
 			{%include "error.html" with id="small_image" message="Your image must be at least 220x220 pixels." only%}
 			{%include "error.html" with id="image_error" message="There was an error processing your image." only%}
 			<fieldset>
-				<input type="text" placeholder="Title (max 50 characters)" name="title" maxlength="50" id="session-create-title"/> e.g. I am (name), AMA!
-				<input type="text" name="subtitle" placeholder="Subtitle (max 100 characters)" maxlength="100" id="session-create-title"/>
-				<input type="number" name="duration" placeholder="Approx. length (hours)" min="0" max="100" id="session-create-title"/>
-				<textarea id="session-desc" name="desc" placeholder="Description" maxlength="2000" rows="5"></textarea>	
-				<input type="date" name="date" value="{% now '%Y-%m-%d' %}" id="session-create-date"/> Schedule a Date<br/>
-				<input type="time" name="time" value="{% now '%H:%M' %}" id="sesion-create-time"/> Schedule a Time
-				<input type="file" name="image" id="session-create-image" /> Set the image.
+				<input type="text" placeholder="Title (max 50 characters)" name="title" maxlength="50" id="session-create-title" class="createIntro" data-intro="Here is the title of your session. Use it to draw in users." data-step="1"/> e.g. I am (name), AMA!
+				<input type="text" name="subtitle" placeholder="Subtitle (max 100 characters)" maxlength="100" id="session-create-title" class="createIntro" data-intro="Here is the subtitle of your session." data-step="2"/>
+				<input type="number" name="duration" placeholder="Approx. length (hours)" min="0" max="100" id="session-create-title" class="createIntro" data-intro="Estimate the length of your AMA session. If it's less than one hour, put 0." data-step="3"/>
+				<textarea id="session-desc" name="desc" placeholder="Description" maxlength="2000" rows="5" class="createIntro" data-intro="Explain who you are, and what made you famous. Don't be afraid to boast, but be helpful." data-step="4"></textarea>	
+				<span class="createIntro" data-intro="Decide when you can do your AMA." data-step="5">
+					<input type="date" name="date" value="{% now '%Y-%m-%d' %}" id="session-create-date"/> Schedule a Date<br/>
+					<input type="time" name="time" value="{% now '%H:%M' %}" id="sesion-create-time"/> Schedule a Time
+				</span>
+				<input type="file" name="image" id="session-create-image" class="createIntro" data-intro="Choose an image to represent you on ama.io." data-step="6"/> Set the image.
 			</fieldset>
 		</form>
 	</div>
 	<div class="modal-footer">
-		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> <button id="reg_submit" class="btn btn-primary btn-success" onclick="$('#create-session-form').submit()">Schedule</button>
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> <button id="reg_submit" class="btn btn-primary btn-success createIntro" onclick="$('#create-session-form').submit()" data-intro="Click here to schedule your AMA!" data-step="7">Schedule</button>
 	</div>
 	<iframe id="session-upload-iframe" style="display:none"></iframe>
 </div>
