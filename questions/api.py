@@ -296,7 +296,7 @@ class SessionResource(CachedResource, ModelResource):
         question = request.POST['question']
         desc = request.POST['desc']
 
-        if(len(question) < 15):
+        if(len(question) < 6):
             return self.create_response(request, {
                 'success': False,
                 'reason': 'question_short',

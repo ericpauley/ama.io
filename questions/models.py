@@ -107,8 +107,8 @@ class AMASession(SluggedModel):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
 
-    title = models.CharField(max_length=30)
-    subtitle = models.CharField(max_length=50)
+    title = models.CharField(max_length=75)
+    subtitle = models.CharField(max_length=125)
     desc = models.TextField()
     image = models.ImageField(upload_to="session_images")
     

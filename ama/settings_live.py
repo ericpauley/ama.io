@@ -23,18 +23,29 @@ INSTALLED_APPS += ('storages',)
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3botomulti.S3BotoStorage_media'
+STATICFILES_STORAGE = 'storages.backends.s3botomulti.S3BotoStorage_static'
 EMAIL_BACKEND = 'django_ses.SESBackend'
-STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-THUMBNAIL_DEFAULT_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+THUMBNAIL_DEFAULT_STORAGE = 'storages.backends.s3botomulti.S3BotoStorage_media'
 
-AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
-AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_KEY']
-AWS_STORAGE_BUCKET_NAME = "media.ama.io"
-AWS_S3_SECURE_URLS = False
-AWS_S3_CUSTOM_DOMAIN = "media.ama.io"
-AWS_QUERYSTRING_AUTH = False
-AWS_LOCATION = ""
+STORAGES_S3BOTO_MULTI = {
+    'media' : {
+        'AWS_ACCESS_KEY_ID' : os.environ['AWS_ACCESS_KEY_ID'],
+        'AWS_SECRET_ACCESS_KEY' : os.environ['AWS_SECRET_KEY'],
+        'AWS_STORAGE_BUCKET_NAME' : 'media.ama.io',
+        'AWS_S3_SECURE_URLS' : False,
+        'AWS_S3_CUSTOM_DOMAIN' : "media.ama.io",
+        'AWS_QUERYSTRING_AUTH' : False
+    },
+    'static' : {
+        'AWS_ACCESS_KEY_ID' : os.environ['AWS_ACCESS_KEY_ID'],
+        'AWS_SECRET_ACCESS_KEY' : os.environ['AWS_SECRET_KEY'],
+        'AWS_STORAGE_BUCKET_NAME' : 'static.ama.io',
+        'AWS_S3_SECURE_URLS' : False,
+        'AWS_S3_CUSTOM_DOMAIN' : "static.ama.io",
+        'AWS_QUERYSTRING_AUTH' : False
+    }
+}
 
 AWS_SES_REGION_NAME = 'us-east-1'
 AWS_SES_REGION_ENDPOINT = 'email.us-east-1.amazonaws.com'

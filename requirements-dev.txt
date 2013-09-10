@@ -13,8 +13,7 @@ requests_oauthlib
 oauthlib
 python-mimeparse
 django-jstemplate
-path.py
-django-storages
+https://bitbucket.org/russmo/django-storages-multi/get/default.zip
 boto
 django-ses
 easy-thumbnails
