@@ -216,19 +216,23 @@ class SessionResource(CachedResource, ModelResource):
                     'success': False,
                     'reason': 'no_desc',
                 }, HttpBadRequest)
-        if float(request.POST['duration']) < .5:
-            return self.create_response(request, {
-                    'success': False,
-                    'reason': 'too_short',
-                }, HttpBadRequest)
         try:
+            duration = float(request.POST['duration']) if request.POST['duration'] != "" else 12
+            if duration < .5:
+                return self.create_response(request, {
+                        'success': False,
+                        'reason': 'too_short',
+                    }, HttpBadRequest)
             s.start_time = parser.parse('%s %s' % (request.POST['date'], request.POST['time']))
-            s.end_time = s.start_time + datetime.timedelta(hours=float(request.POST['duration']))
+            if s.start_time.replace(tzinfo=None) < datetime.datetime.utcnow():
+                s.start_time = datetime.datetime.utcnow()
+            s.end_time = s.start_time + datetime.timedelta(hours=duration)
         except:
             return self.create_response(request, {
                     'success': False,
                     'reason': 'bad_timing',
                 }, HttpBadRequest)
+        
         if not request.user.is_staff:
             last = request.user.sessions.order_by("-created")[:1]
             if last and last[0].created.replace(tzinfo=None) > datetime.datetime.utcnow() - datetime.timedelta(hours=1):
