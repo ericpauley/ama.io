@@ -21,4 +21,5 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/', include('allauth.urls')),
+    url(r'^search/', include('haystack.urls')),
 )+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

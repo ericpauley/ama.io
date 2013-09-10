@@ -107,9 +107,9 @@ class AMASession(SluggedModel):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
 
-    title = models.CharField(max_length=75)
-    subtitle = models.CharField(max_length=125)
-    desc = models.TextField()
+    title = models.CharField(max_length=50)
+    subtitle = models.CharField(max_length=100)
+    desc = models.TextField(max_length=2000)
     image = models.ImageField(upload_to="session_images")
     
     data = JSONField(default={}, blank=True)
@@ -142,12 +142,11 @@ class AMASession(SluggedModel):
     
     def time_left(self):
         td = self.end_time - datetime.now(tzlocal())
-        return ""
+        return ":".join(str(td).split(":")[:2])
 
-    @property
     def time_until(self):
-        td = timedelta(seconds=int((self.start_time - datetime.now(tzlocal())).total_seconds()))
-        return ""
+        td = self.start_time - datetime.now(tzlocal())
+        return ":".join(str(td).split(":")[:2])
 
     @property
     def near_end(self):

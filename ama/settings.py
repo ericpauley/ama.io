@@ -138,6 +138,7 @@ INSTALLED_APPS = (
     "jstemplate",
     'south',
     'easy_thumbnails',
+    'haystack',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -198,6 +199,12 @@ SOCIALACCOUNT_PROVIDERS = \
           'LOCALE_FUNC': lambda request: 'en_US'} }
 
 LOGIN_REDIRECT_URL = "/"
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
+    },
+}
 
 THUMBNAIL_ALIASES = {
     '': {

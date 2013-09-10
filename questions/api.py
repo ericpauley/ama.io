@@ -30,6 +30,7 @@ from allauth.socialaccount import providers
 from django.shortcuts import get_object_or_404
 from tastypie.validation import *
 from django.views.decorators.cache import cache_page
+from django.core.files.images import get_image_dimensions
 
 class CachedResource():
     def wrap_view(self, view):
@@ -78,13 +79,13 @@ class UserResource(ModelResource):
         password = request.POST.get('password', '')
         confirm = request.POST.get('confirm', '')
 
-        if not re.match(r"^\w{4,30}", username):
+        if not re.match(r"^\w{4,30}$", username):
             return self.create_response(request, {
                     'success': False,
                     'reason': 'bad_username',
                 }, HttpBadRequest)
 
-        if not re.match(r"^\w{6,50}", password):
+        if not re.match(r"^.{6,50}$", password):
             return self.create_response(request, {
                     'success': False,
                     'reason': 'bad_password',
@@ -238,19 +239,23 @@ class SessionResource(CachedResource, ModelResource):
                     'success': False,
                     'reason': 'no_desc',
                 }, HttpBadRequest)
-        if float(request.POST['duration']) < .5:
-            return self.create_response(request, {
-                    'success': False,
-                    'reason': 'too_short',
-                }, HttpBadRequest)
         try:
+            duration = float(request.POST['duration']) if request.POST['duration'] != "" else 12
+            if duration < .5:
+                return self.create_response(request, {
+                        'success': False,
+                        'reason': 'too_short',
+                    }, HttpBadRequest)
             s.start_time = parser.parse('%s %s' % (request.POST['date'], request.POST['time']))
-            s.end_time = s.start_time + datetime.timedelta(hours=float(request.POST['duration']))
+            if s.start_time.replace(tzinfo=None) < datetime.datetime.utcnow():
+                s.start_time = datetime.datetime.utcnow()
+            s.end_time = s.start_time + datetime.timedelta(hours=duration)
         except:
             return self.create_response(request, {
                     'success': False,
                     'reason': 'bad_timing',
                 }, HttpBadRequest)
+        
         if not request.user.is_staff:
             last = request.user.sessions.order_by("-created")[:1]
             if last and last[0].created.replace(tzinfo=None) > datetime.datetime.utcnow() - datetime.timedelta(hours=1):
@@ -258,6 +263,7 @@ class SessionResource(CachedResource, ModelResource):
                     'success': False,
                     'reason': 'too_soon',
                 }, HttpBadRequest)
+        file = None
         try:
             file=request.FILES['image']
             if len(file.name.split(".")) < 2 or not file.name.split(".")[-1].lower() in ("jpg, png"):
@@ -265,14 +271,24 @@ class SessionResource(CachedResource, ModelResource):
                     'success': False,
                     'reason': 'bad_image',
                 }, HttpBadRequest)
+            w, h = get_image_dimensions(file)
+            if w < 220 or h < 220:
+                return self.create_response(request, {
+                    'success': False,
+                    'reason': 'small_image',
+                }, HttpBadRequest)
         except KeyError:
             pass
         s.save()
         Request.objects.for_user(request.user).filter(session=None).update(session=s)
-        try:
-            s.image.save(s.slug+"."+file.name.split(".")[-1], file)
-        except:
-            pass
+        if file is not None:
+            try:
+                s.image.save(s.slug+"."+file.name.split(".")[-1], file)
+            except:
+                return self.create_response(request, {
+                    'success': False,
+                    'reason': 'image_error',
+                }, HttpBadRequest)
         return self.create_response(request, {
             'success': True,
             'slug': s.slug,

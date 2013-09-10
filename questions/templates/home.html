@@ -56,7 +56,7 @@
 	</div>
 	<a href="{% url 'requests'%}">Click here to see all requests.</a>
 	{%else%}
-	<a href="#requestModal" data-toggle="modal">No active requests.  Request someone?</a>
+	<a href="{%if user.is_authenticated%}#requestModal{%else%}#loginModal{%endif%}" data-toggle="modal">No active requests.  Request someone?</a>
 	{%endif%}
 	
 	{%endcache%}
