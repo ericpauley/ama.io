@@ -24,21 +24,21 @@ GLOBALS['owner'] = true
 {%block content%}
 <div class="page-header row-fluid session-header">
 	<div class="clearfix">
-		<h1 id="session-title" class="pull-left">
-			{{session.title}}
-		</h1>
-		{%if session.running%}
-		<h6 id="live-now">[Live Now!]</h6>
-		{%endif%}
+		<div class="pull-left session-title-wrap">
+			<span id="session-title">{{session.title}}</span>
+			{%if session.running%}
+			<span id="live-now"> [Live&nbsp;Now!]</span>
+			{%endif%}
+		</div>
 	</div>
 	{%if session.owner == user%}
-	<input style="display:none" x-autoblur type="text" id="session-title-edit" value="{{session.title}}">
+	<input style="display:none" x-autoblur type="text" id="session-title-edit" value="{{session.title}}" />
 	{%endif%}
-	<h3 id="session-subtitle">
+	<div id="session-subtitle">
 		{{session.subtitle}}
-	</h3>
+	</div>
 	{%if session.owner == user%}
-	<input style="display:none" x-autoblur type="text" id="session-subtitle-edit" value="{{session.subtitle}}">
+	<input style="display:none" x-autoblur type="text" id="session-subtitle-edit" value="{{session.subtitle}}" />
 	{%if session.running%}
 	<div id="end-session" class="btn">End Session</div>
 	{%endif%}
