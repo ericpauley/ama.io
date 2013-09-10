@@ -4,7 +4,7 @@
 	<span class="icon-bar"></span>
 	<span class="icon-bar"></span>
 </button>
-<a class="brand" href="{%url 'home'%}" data-intro="Welcome! This takes you to the home page." data-step="1"><a/>
+<a class="brand firstIntro" href="{%url 'home'%}" data-intro="Welcome to ama.io! This takes you to the home page." data-step="1"><a/>
 {% if user.is_anonymous%}
 <form id="login-form" class="navbar-form pull-right">
 	<div class="input-prepend user-field">
@@ -48,7 +48,7 @@
 <div class="nav-collapse collapse">
 	<ul class="nav">
 		<li class="dropdown">
-			<a href="#" class="dropdown-toggle" data-toggle="dropdown">Sessions <b class="caret"></b></a>
+			<a href="#" class="dropdown-toggle  firstIntro" data-toggle="dropdown" data-intro="Click here to see live sessions, past sessions, and sessions that are coming up. You may also create your own AMA session." data-step="2">Sessions <b class="caret"></b></a>
 			<ul class="dropdown-menu">
 				<li>
 					<a href="{%url 'live'%}">Live Sessions</a>
@@ -65,7 +65,7 @@
 			</ul>
 		</li>
 		<li>
-			<a href="{%url 'requests'%}">Requests</a>
+			<a href="{%url 'requests'%}" class="firstIntro" data-intro="Click here to see who the ama.io community wants to bring to the website. If you're a fan of someone, request them here!" data-step="3">Requests</a>
 		</li>
 		<li>
 			<a href="/about">About</a>
