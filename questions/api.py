@@ -29,6 +29,7 @@ from allauth.socialaccount import providers
 from django.shortcuts import get_object_or_404
 from tastypie.validation import *
 from django.views.decorators.cache import cache_page
+from django.core.files.images import get_image_dimensions
 
 class CachedResource():
     def wrap_view(self, view):
@@ -235,6 +236,7 @@ class SessionResource(CachedResource, ModelResource):
                     'success': False,
                     'reason': 'too_soon',
                 }, HttpBadRequest)
+        file = None
         try:
             file=request.FILES['image']
             if len(file.name.split(".")) < 2 or not file.name.split(".")[-1].lower() in ("jpg, png"):
@@ -242,14 +244,24 @@ class SessionResource(CachedResource, ModelResource):
                     'success': False,
                     'reason': 'bad_image',
                 }, HttpBadRequest)
+            w, h = get_image_dimensions(file)
+            if w < 220 or h < 220:
+                return self.create_response(request, {
+                    'success': False,
+                    'reason': 'small_image',
+                }, HttpBadRequest)
         except KeyError:
             pass
         s.save()
         Request.objects.for_user(request.user).filter(session=None).update(session=s)
-        try:
-            s.image.save(s.slug+"."+file.name.split(".")[-1], file)
-        except:
-            pass
+        if file is not None:
+            try:
+                s.image.save(s.slug+"."+file.name.split(".")[-1], file)
+            except:
+                return self.create_response(request, {
+                    'success': False,
+                    'reason': 'image_error',
+                }, HttpBadRequest)
         return self.create_response(request, {
             'success': True,
             'slug': s.slug,
