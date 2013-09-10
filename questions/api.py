@@ -162,7 +162,7 @@ class UserResource(ModelResource):
         user = User.objects.filter(username=username)
         if user.count() == 0:
             return self.create_response(request, { 'success': False }, HttpNotFound)
-        elif user.count() == 1:
+        elif user.count() == 1 and request.user and request.user.is_authenticated():
             user = user[0]
             #print "User was "+str(user.meta.new)
             user.meta.new = False
