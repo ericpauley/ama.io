@@ -80,7 +80,7 @@ class UserResource(ModelResource):
                     'reason': 'bad_username',
                 }, HttpBadRequest)
 
-        if not re.match(r"^\w{6,50}$", password):
+        if not re.match(r"^.{6,50}$", password):
             return self.create_response(request, {
                     'success': False,
                     'reason': 'bad_password',
