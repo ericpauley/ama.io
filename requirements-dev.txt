@@ -18,3 +18,4 @@ boto
 django-ses
 easy-thumbnails
 python-memcached
+django-haystack

@@ -20,3 +20,4 @@ django-ses
 easy-thumbnails
 python-memcached
 pillow
+django-haystack
