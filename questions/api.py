@@ -73,13 +73,13 @@ class UserResource(ModelResource):
         password = request.POST.get('password', '')
         confirm = request.POST.get('confirm', '')
 
-        if not re.match(r"^\w{4,30}", username):
+        if not re.match(r"^\w{4,30}$", username):
             return self.create_response(request, {
                     'success': False,
                     'reason': 'bad_username',
                 }, HttpBadRequest)
 
-        if not re.match(r"^\w{6,50}", password):
+        if not re.match(r"^\w{6,50}$", password):
             return self.create_response(request, {
                     'success': False,
                     'reason': 'bad_password',
