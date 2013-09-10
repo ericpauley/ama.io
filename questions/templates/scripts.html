@@ -22,9 +22,11 @@ GLOBALS['auth'] = true
 {%else%}
 GLOBALS['auth'] = false
 {%endif%}
-{%if user.meta.new == True%}
+{%if user.meta.new%}
 $(document).ready(function(){
-        introJs().start();
+        introJs().start().oncomplete(function(){
+           $.post("/api/v1/user/make_old/",{username:'{{user}}'},function(data){console.log();});
+        });
 });
 {%endif%}
 </script>

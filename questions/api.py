@@ -14,13 +14,14 @@ from questions.models import *
 from questions.forms import *
 from tastypie import fields
 from tastypie.authorization import ReadOnlyAuthorization
-from tastypie.http import HttpUnauthorized, HttpForbidden, HttpConflict, HttpBadRequest, HttpApplicationError
+from tastypie.http import HttpUnauthorized, HttpForbidden, HttpConflict, HttpBadRequest, HttpApplicationError, HttpNotFound
 from tastypie.resources import ModelResource, Resource, ALL, ALL_WITH_RELATIONS
 from tastypie.utils import trailing_slash
 from django.template import RequestContext
 from dateutil import parser
 import datetime
 import re
+import json
 from tastypie.cache import NoCache, SimpleCache
 from django.db import transaction
 from django.core.validators import validate_email
@@ -65,6 +66,9 @@ class UserResource(ModelResource):
             url(r'^(?P<resource_name>%s)/register%s$' %
                 (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('register'), name='api_register'),
+            url(r'^(?P<resource_name>%s)/make_old%s$' %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('make_old'), name='api_make_old'),
         ]
 
     def register(self, request, **kwargs):
@@ -153,19 +157,21 @@ class UserResource(ModelResource):
             return self.create_response(request, { 'success': False }, HttpUnauthorized)
         
     def make_old(self, request, **kwargs):
-        print "Make_Old!!"
-        #self.method_check(request, allowed=['post'])
-        username = request.GET.get('username', '').lower()
+        self.method_check(request, allowed=['post'])
+        username = request.POST.get('username', '').lower()
         user = User.objects.filter(username=username)
         if user.count() == 0:
-            print "Here!"
             return self.create_response(request, { 'success': False }, HttpNotFound)
-        if user.count() == 1:
-            print "There!"
+        elif user.count() == 1:
+            user = user[0]
+            #print "User was "+str(user.meta.new)
             user.meta.new = False
+            #print "User is now "+str(user.meta.new)
+            user.meta.save()
             user.save()
+            #print "User is now "+str(user.meta.new)
             return self.create_response(request, { 'success': True})
-        return self.create_response(request, { 'success': False, 'reason': "Dup User",}, HttpNotFound)
+        return self.create_response(request, { 'success': False, 'reason': "Dup User"}, HttpNotFound)
     
 
 class SessionResource(CachedResource, ModelResource):
