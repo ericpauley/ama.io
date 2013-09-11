@@ -1,30 +1,26 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>Search</h2>
-
-    <form method="get" action=".">
-        <table>
-            <tbody>
-                <tr>
-                    <th>
-                        <label for="id_q">Search:</label>
-                    </th>
-                    <td>
-                        <input id="id_q" name="q" type="text" value="test">
-                    </td>
-                </tr>
-            <tr>
-                <td>&nbsp;</td>
-                <td>
-                    <input type="submit" value="Search">
-                </td>
-            </tr>
-        </tbody></table>
-
+    <div class="row-fluid">
+        <div class="thumbnail white cell span7">
+            <h2>Search</h2>
+            <form method="get" action=".">
+                <table width="90%">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <input id="id_q" name="q" type="text" placeholder="AMA titles, Name, Descriptions" style="width: 90%" />
+                            </td>
+                            <td valign="top">
+                                <input class="btn" type="submit" value="Search" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+        </div>
+    </div>
         {% if query %}
             <h3>Results</h3>
-
             {% for result in page.object_list %}
                 {%include "session_tile.html" with session=result.object%}
             {% empty %}
