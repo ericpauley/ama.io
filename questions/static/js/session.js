@@ -97,6 +97,44 @@ function sessionClicks(){
 			});
 		}
 	});
+	$(".view-more").off("click")
+	$(".view-more").click(function(){
+		question = $(this).closest(".question").attr("data-question");
+		$(this).hide();
+		$.get("http://localhost:8000/api/v1/comment?question="+question+"&id__lt="+$(this).attr("data-next")).done(function(data){
+			$.each(data.objects, function(i, val){
+				val.content = markdown.toHTML(val.comment);
+				$("#comments-"+question).append(Mustache.template("comment").render(val));
+			})
+			if(data.meta.next != null){
+				$("#question-"+question).find(".view-more").show().attr("data-next", data.meta.next);
+			}
+		})
+	})
+	$(".add-comment").off("click")
+	$(".add-comment").click(function(){
+		var question = $(this).closest("[data-question]").attr("data-question");
+		var contents = $("#comment-form-"+question).val();
+		$.ajax({
+			type: "POST",
+			url: "/api/v1/comment/", 
+			data: JSON.stringify({
+			"question": "/api/v1/question/"+question+"/",
+			"comment":contents
+			}),
+			contentType: "application/json; charset=utf-8"
+		}).done(function(data, text, jqXHR){
+			$("#comment-form-"+question).val("");
+			$.ajax({
+				type: "GET",
+				url: jqXHR.getResponseHeader("location")
+			}).done(function(val){
+				val.content = markdown.toHTML(val.comment);
+				$("#nocomments-"+question).hide();
+				$("#comments-"+question).prepend(Mustache.template("comment").render(val));
+			});
+		});
+	});
 	if(sessionClicksOwner){
 		sessionClicksOwner();
 	}
@@ -212,41 +250,3 @@ if(GLOBALS['session']){
 		check()
 	})
 }
-
-$(".view-more").click(function(){
-	question = $(this).closest(".question").attr("data-question");
-	$(this).hide();
-	$.get("http://localhost:8000/api/v1/comment?question="+question+"&id__lt="+$(this).attr("data-next")).done(function(data){
-		$.each(data.objects, function(i, val){
-			val.content = markdown.toHTML(val.comment);
-			$("#comments-"+question).append(Mustache.template("comment").render(val));
-		})
-		if(data.meta.next != null){
-			$("#question-"+question).find(".view-more").show().attr("data-next", data.meta.next);
-		}
-	})
-})
-
-$(".add-comment").click(function(){
-	var question = $(this).closest("[data-question]").attr("data-question");
-	var contents = $("#comment-form-"+question).val();
-	$.ajax({
-		type: "POST",
-		url: "/api/v1/comment/", 
-		data: JSON.stringify({
-		"question": "/api/v1/question/"+question+"/",
-		"comment":contents
-		}),
-		contentType: "application/json; charset=utf-8"
-	}).done(function(data, text, jqXHR){
-		$("#comment-form-"+question).val("");
-		$.ajax({
-			type: "GET",
-			url: jqXHR.getResponseHeader("location")
-		}).done(function(val){
-			val.content = markdown.toHTML(val.comment);
-			$("#nocomments-"+question).hide();
-			$("#comments-"+question).prepend(Mustache.template("comment").render(val));
-		});
-	});
-});
