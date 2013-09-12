@@ -135,7 +135,7 @@ function sessionClicks(){
 			});
 		});
 	});
-	if(sessionClicksOwner){
+	if(typeof(sessionClicksOwner) == 'function'){
 		sessionClicksOwner();
 	}
 }
