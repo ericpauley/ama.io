@@ -54,7 +54,7 @@ $("#session-desc-edit").blur(function(){
 	});
 });
 
-function sessionClicks(){
+function sessionClicksOwner(){
 	$(".delete").off("click");
 	$(".delete").click(function(e){
 	    e.preventDefault();
