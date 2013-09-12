@@ -76,7 +76,7 @@ function sessionClicks(){
 			if(GLOBALS['question_full']){
 				limit = 20;
 			}
-			$.get("http://localhost:8000/api/v1/comment",
+			$.get("/api/v1/comment",
 				{
 					limit: limit,
 					question: question
@@ -101,7 +101,7 @@ function sessionClicks(){
 	$(".view-more").click(function(){
 		question = $(this).closest(".question").attr("data-question");
 		$(this).hide();
-		$.get("http://localhost:8000/api/v1/comment?question="+question+"&id__lt="+$(this).attr("data-next")).done(function(data){
+		$.get("/api/v1/comment?question="+question+"&id__lt="+$(this).attr("data-next")).done(function(data){
 			$.each(data.objects, function(i, val){
 				val.content = markdown.toHTML(val.comment);
 				$("#comments-"+question).append(Mustache.template("comment").render(val));
