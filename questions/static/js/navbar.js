@@ -57,6 +57,8 @@ $("#reg_form").submit(function(event){
 		var err = eval("(" + xhr.responseText + ")");
 		if(err.reason == "exists"){
 			$("#reg_exists").show();
+		}else if(err.reason == "reserved"){
+			$("#reg_reserved").show();
 		}else if(err.reason == "pass_match"){
 			$("#reg_passmatch").show();
 		}else if(err.reason == "bad_username"){

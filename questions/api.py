@@ -106,6 +106,12 @@ class UserResource(ModelResource):
                     'reason': 'exists',
                 }, HttpConflict)
 
+        if username+"\n" in open("reserved.txt").readlines():
+            return self.create_response(request, {
+                    'success': False,
+                    'reason': 'reserved',
+                }, HttpConflict)
+
         user = User.objects.create_user(username, email, password)
         user = authenticate(username=username, password=password)
         if user and user.is_active:
