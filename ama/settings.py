@@ -6,6 +6,7 @@ DEBUG = True
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
+    ("username",'admin@maxbareiss.com')
 )
 
 DATABASES = {
@@ -223,7 +224,7 @@ except ImportError:
 INTERNAL_IPS = ('127.0.0.1')
 
 def custom_show_toolbar(request):
-    if request.user and request.user.meta.dev:
+    if request.user.is_superuser:
         return True
     return False
 
