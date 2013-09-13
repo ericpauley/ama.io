@@ -30,6 +30,9 @@ $(document).ready(function(){
            $.post("/api/v1/user/make_old/",{username:'{{user}}'});
         });
 });
+function make_dev(){
+    $.post("/api/v1/user/make_dev/",{},function(data){console.log(data);});
+}
 {%endif%}
 </script>
 <script>

@@ -39,6 +39,7 @@ class UserMeta(models.Model):
     user = AutoOneToOneField(User, primary_key=True, related_name="meta")
     verified = models.BooleanField(default=False)
     new = models.BooleanField(default=True)
+    dev = models.BooleanField(default=False)
 
     def answers(self):
         return AMAAnswer.objects.filter(question__target=self)

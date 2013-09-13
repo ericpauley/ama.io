@@ -102,6 +102,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -139,6 +140,7 @@ INSTALLED_APPS = (
     'south',
     'easy_thumbnails',
     'haystack',
+    'debug_toolbar'
 )
 
 # A sample logging configuration. The only tangible logging
@@ -217,6 +219,17 @@ try:
     print("Using local settings...")
 except ImportError:
     pass
+    
+INTERNAL_IPS = ('127.0.0.1')
+
+def custom_show_toolbar(request):
+    if request.user and request.user.meta.dev:
+        return True
+    return False
+
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK':custom_show_toolbar
+}
     
 TEMPLATE_DEBUG = DEBUG
 THUMBNAIL_DEBUG = True
