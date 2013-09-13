@@ -12,60 +12,131 @@ $.fn.smartHtml = function(val){
 	}
 }
 
-if(!GLOBALS['owner']){
-	sessionClicks = function(){
-		$(".upvote").off("click");
-		$(".upvote").click(function(){
-			if(GLOBALS.auth){
-				var id = $(this).attr("data-question");
-				GLOBALS.lock = true;
-				if($(this).hasClass("btn-success")){
-					$(this).removeClass("btn-success");
-					$.post("/api/v1/question/"+id+"/vote/",
-						{'vote': 0},
-						function(data){
-							$("#score-"+id).text(data['score'])
-					});
-				}else{
-					$(this).addClass("btn-success");
-					$("#downvote-"+id).removeClass("btn-danger");
-					$.post("/api/v1/question/"+id+"/vote/",
-						{'vote': 1},
-						function(data){
-							$("#score-"+id).text(data['score'])
-					});
-				}
+function sessionClicks(){
+	$(".upvote").off("click");
+	$(".upvote").click(function(){
+		if(GLOBALS.auth){
+			var id = $(this).attr("data-question");
+			GLOBALS.lock = true;
+			if($(this).hasClass("btn-success")){
+				$(this).removeClass("btn-success");
+				$.post("/api/v1/question/"+id+"/vote/",
+					{'vote': 0},
+					function(data){
+						$("#score-"+id).text(data['score'])
+				});
 			}else{
-				$("#loginModal").modal();
+				$(this).addClass("btn-success");
+				$("#downvote-"+id).removeClass("btn-danger");
+				$.post("/api/v1/question/"+id+"/vote/",
+					{'vote': 1},
+					function(data){
+						$("#score-"+id).text(data['score'])
+				});
+			}
+		}else{
+			$("#loginModal").modal();
+		}
+	})
+
+	$(".downvote").off("click");
+	$(".downvote").click(function(){
+		if(GLOBALS.auth){
+			var id = $(this).attr("data-question");
+			GLOBALS.lock = true;
+			if($(this).hasClass("btn-danger")){
+				$(this).removeClass("btn-danger");
+				$.post("/api/v1/question/"+id+"/vote/",
+					{'vote': 0},
+					function(data){
+						$("#score-"+id).text(data['score'])
+				});
+			}else{
+				$(this).addClass("btn-danger");
+				$("#upvote-"+id).removeClass("btn-success");
+				$.post("/api/v1/question/"+id+"/vote/",
+					{'vote': -1},
+					function(data){
+						$("#score-"+id).text(data['score'])
+				});
+			}
+		}else{
+			$("#loginModal").modal();
+		}
+	})
+	$(".show-comments").off("click")
+	$(".show-comments").click(function(){
+		question = $(this).attr("data-question");
+		if($("#comment-wrapper-"+question).is(":visible")){
+			$("#comments-"+question).html("");
+			$("#comment-wrapper-"+question).hide();
+		}else{
+			$("#comment-wrapper-"+question).show();
+			var limit = 10;
+			if(GLOBALS['question_full']){
+				limit = 20;
+			}
+			$.get("/api/v1/comment",
+				{
+					limit: limit,
+					question: question
+				}).done(function(data){
+				if(data.objects.length != 0){
+					var last = 0;
+					$.each(data.objects, function(i, val){
+						val.content = markdown.toHTML(val.comment);
+						$("#comments-"+question).append(Mustache.template("comment").render(val));
+						last = val.id;
+					})
+					if(data.meta.next != null){
+						$("#question-"+question).find(".view-more").show().attr("data-next", last);
+					}
+				}else{
+					$("#nocomments-"+question).show();
+				}
+			});
+		}
+	});
+	$(".view-more").off("click")
+	$(".view-more").click(function(){
+		question = $(this).closest(".question").attr("data-question");
+		$(this).hide();
+		$.get("/api/v1/comment?question="+question+"&id__lt="+$(this).attr("data-next")).done(function(data){
+			$.each(data.objects, function(i, val){
+				val.content = markdown.toHTML(val.comment);
+				$("#comments-"+question).append(Mustache.template("comment").render(val));
+			})
+			if(data.meta.next != null){
+				$("#question-"+question).find(".view-more").show().attr("data-next", data.meta.next);
 			}
 		})
-
-		$(".downvote").off("click");
-		$(".downvote").click(function(){
-			if(GLOBALS.auth){
-				var id = $(this).attr("data-question");
-				GLOBALS.lock = true;
-				if($(this).hasClass("btn-danger")){
-					$(this).removeClass("btn-danger");
-					$.post("/api/v1/question/"+id+"/vote/",
-						{'vote': 0},
-						function(data){
-							$("#score-"+id).text(data['score'])
-					});
-				}else{
-					$(this).addClass("btn-danger");
-					$("#upvote-"+id).removeClass("btn-success");
-					$.post("/api/v1/question/"+id+"/vote/",
-						{'vote': -1},
-						function(data){
-							$("#score-"+id).text(data['score'])
-					});
-				}
-			}else{
-				$("#loginModal").modal();
-			}
-		})
-
+	})
+	$(".add-comment").off("click")
+	$(".add-comment").click(function(){
+		var question = $(this).closest("[data-question]").attr("data-question");
+		var contents = $("#comment-form-"+question).val();
+		$.ajax({
+			type: "POST",
+			url: "/api/v1/comment/", 
+			data: JSON.stringify({
+			"question": "/api/v1/question/"+question+"/",
+			"comment":contents
+			}),
+			contentType: "application/json; charset=utf-8"
+		}).done(function(data, text, jqXHR){
+			$("#comment-form-"+question).val("");
+			$.ajax({
+				type: "GET",
+				url: jqXHR.getResponseHeader("location")
+			}).done(function(val){
+				val.content = markdown.toHTML(val.comment);
+				$("#nocomments-"+question).hide();
+				$("#comments-"+question).prepend(Mustache.template("comment").render(val));
+			});
+		});
+	});
+	if(typeof(sessionClicksOwner) == 'function'){
+		sessionClicksOwner();
 	}
 }
 
@@ -179,74 +250,3 @@ if(GLOBALS['session']){
 		check()
 	})
 }
-
-$(".show-comments").click(function(){
-	question = $(this).attr("data-question");
-	if($("#comment-wrapper-"+question).is(":visible")){
-		$("#comments-"+question).html("");
-		$("#comment-wrapper-"+question).hide();
-	}else{
-		$("#comment-wrapper-"+question).show();
-		var limit = 10;
-		if(GLOBALS['question_full']){
-			limit = 20;
-		}
-		$.get("http://localhost:8000/api/v1/comment",
-			{
-				limit: limit,
-				question: question
-			}).done(function(data){
-			if(data.objects.length != 0){
-				var last = 0;
-				$.each(data.objects, function(i, val){
-					val.content = markdown.toHTML(val.comment);
-					$("#comments-"+question).append(Mustache.template("comment").render(val));
-					last = val.id;
-				})
-				if(data.meta.next != null){
-					$("#question-"+question).find(".view-more").show().attr("data-next", last);
-				}
-			}else{
-				$("#nocomments-"+question).show();
-			}
-		});
-	}
-});
-
-$(".view-more").click(function(){
-	question = $(this).closest(".question").attr("data-question");
-	$(this).hide();
-	$.get("http://localhost:8000/api/v1/comment?question="+question+"&id__lt="+$(this).attr("data-next")).done(function(data){
-		$.each(data.objects, function(i, val){
-			val.content = markdown.toHTML(val.comment);
-			$("#comments-"+question).append(Mustache.template("comment").render(val));
-		})
-		if(data.meta.next != null){
-			$("#question-"+question).find(".view-more").show().attr("data-next", data.meta.next);
-		}
-	})
-})
-
-$(".add-comment").click(function(){
-	var question = $(this).closest("[data-question]").attr("data-question");
-	var contents = $("#comment-form-"+question).val();
-	$.ajax({
-		type: "POST",
-		url: "/api/v1/comment/", 
-		data: JSON.stringify({
-		"question": "/api/v1/question/"+question+"/",
-		"comment":contents
-		}),
-		contentType: "application/json; charset=utf-8"
-	}).done(function(data, text, jqXHR){
-		$("#comment-form-"+question).val("");
-		$.ajax({
-			type: "GET",
-			url: jqXHR.getResponseHeader("location")
-		}).done(function(val){
-			val.content = markdown.toHTML(val.comment);
-			$("#nocomments-"+question).hide();
-			$("#comments-"+question).prepend(Mustache.template("comment").render(val));
-		});
-	});
-});

@@ -267,8 +267,8 @@ class SessionResource(CachedResource, ModelResource):
                         'reason': 'too_short',
                     }, HttpBadRequest)
             s.start_time = parser.parse('%s %s' % (request.POST['date'], request.POST['time']))
-            if s.start_time.replace(tzinfo=None) < datetime.datetime.utcnow():
-                s.start_time = datetime.datetime.utcnow()
+            if s.start_time.replace(tzinfo=None) < datetime.datetime.now():
+                s.start_time = datetime.datetime.now()
             s.end_time = s.start_time + datetime.timedelta(hours=duration)
         except:
             return self.create_response(request, {

@@ -33,16 +33,27 @@ input[type="file"]{
 	color: #666;
 }
 
-.about-cell{
+.search-field-wrapper{
+
+}
+
+.white{
+	background: #FFFFFF;
+}
+
+.cell{
 	padding-left: 25px;
 	padding-right: 25px;
 	padding-bottom: 20px;
 	color: #666;
-	min-height: 140px;
+}
+
+.support-cell{
+	margin-top: 20px;
+	min-height: 132px;
 }
 
 .about-table{
-	margin-top: 15px;
 	width: 300px;
 }
 
