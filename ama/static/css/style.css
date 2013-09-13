@@ -233,6 +233,10 @@ input[type="file"]{
 	font-weight: normal;
 }
 
+#owner-btns{
+	padding-top:5px;
+}
+
 .session-viewers{
 	position: absolute;
 	top: 10px;
