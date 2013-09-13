@@ -76,6 +76,9 @@ $("#reg_submit").click(function(){
 })
 
 $("#create-session-form").submit(function(event){
+    $(this).submit(function() {
+        return false;
+    });
 	$(".form-alert").hide();
 	$("#session-upload-iframe").off("load");
 	$("#session-upload-iframe").load(function(){
