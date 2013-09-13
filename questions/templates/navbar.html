@@ -60,7 +60,7 @@
 					<a href="{%url 'upcoming'%}">Upcoming Sessions</a>
 				</li>
 				<li>
-					<a href="#sessionModal" data-toggle="modal">+ Create Session</a>
+					<a href="{%if user.is_authenticated%}#sessionModal{%else%}#loginModal{%endif%}" data-toggle="modal">+ Create Session</a>
 				</li>
 			</ul>
 		</li>

@@ -10,7 +10,7 @@
 {%include "session_tile.html"%}
 {%endfor%}
 {%else%}
-<a href="#sessionModal" data-toggle="modal">No sessions here. Start or schedule your own?</a>
+<a href="{%if user.is_authenticated%}#sessionModal{%else%}#loginModal{%endif%}" data-toggle="modal">No sessions here. Start or schedule your own?</a>
 </div>
 {%endif%}
 {%endcache%}

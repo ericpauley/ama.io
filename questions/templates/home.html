@@ -15,7 +15,7 @@
 	{%if live_sessions%}
 	<a href="{% url 'live'%}">Click here to see all live sessions.</a>
 	{%else%}
-	<a href="#sessionModal" data-toggle="modal">No live sessions currently running. Start your own?</a>
+	<a href="{%if user.is_authenticated%}#sessionModal{%else%}#loginModal{%endif%}" data-toggle="modal">No live sessions currently running. Start your own?</a>
 	{%endif%}	
 		<h1>Upcoming</h1>
 		{%if user.is_authenticated%}
@@ -31,7 +31,7 @@
 	{%if upcoming_sessions%}
 		<a href="{% url 'upcoming'%}">Click here to see all upcoming sessions.</a>
 	{%else%}
-		<a href="#sessionModal" data-toggle="modal">No upcoming sessions. Schedule one?</a>	
+		<a href="{%if user.is_authenticated%}#sessionModal{%else%}#loginModal{%endif%}" data-toggle="modal">No upcoming sessions. Schedule one?</a>	
 	{%endif%}
 		<div class="clearfix">
 			<h1 class="pull-left">Top Requests</h1>
