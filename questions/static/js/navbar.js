@@ -76,13 +76,16 @@ $("#reg_submit").click(function(){
 })
 
 function sessionSubmit(event){
-	$(this).submit(function() {
-        return false;
+	$(this).off("submit");
+	$(this).submit(function(event) {
+        event.preventDefault();
     });
+    var th = this;
 	$(".form-alert").hide();
 	$("#session-upload-iframe").off("load");
 	$("#session-upload-iframe").load(function(){
-		$(this).submit(sessionSubmit);
+		$(th).off("submit");
+		$(th).submit(sessionSubmit);
 		var resp = eval("("+$("#session-upload-iframe").contents().text()+")");
 		if(resp['success']){
 			document.location="/s/"+resp.slug;
