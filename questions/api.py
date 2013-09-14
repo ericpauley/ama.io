@@ -345,8 +345,8 @@ class SessionResource(CachedResource, ModelResource):
         except KeyError:
             pass
         Request.objects.for_user(request.user).filter(session=None).update(session=s)
-        file.seek(0)
         if file is not None:
+            file.seek(0)
             try:
                 slug=base64.urlsafe_b64encode(hashlib.sha224(file.read()).digest())
                 file.seek(0)
