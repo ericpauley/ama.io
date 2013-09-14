@@ -191,7 +191,7 @@ function check(){
 			$.each(data['questions'], function(index, question){
 				var id = question['id'];
 				ids.push(id);
-				$("#question-"+id).css("display", "block");
+				$("#question-"+id).not(".deleted").css("display", "block");
 				if(!$("#question-"+id).length){
 					var val ={
 						question:question,
