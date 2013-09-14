@@ -23,7 +23,7 @@ input[type="file"]{
 
 .page-alert{
 	margin-top: 10px;
-	margin-bottom: 0px;
+	margin-bottom: 15px;
 }
 
 .about{
@@ -216,10 +216,12 @@ input[type="file"]{
 	padding-right: 5px;
 	font-size: 30px;
 	font-weight: bold;
+	vertical-align: middle;
 }
 
 .session-title-wrap{
 	padding-top: 15px;
+	margin-top: 10px;
 }
 
 .session-title{
@@ -259,9 +261,9 @@ input[type="file"]{
 	width: 413px;
 }
 
-@media (max-width: 320px){
+@media (max-width: 979px){
 .requests-table{
-	width: 270px;
+	width: 100%;
 }
 }
 
