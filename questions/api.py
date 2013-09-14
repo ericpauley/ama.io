@@ -78,9 +78,6 @@ class UserResource(ModelResource):
             url(r'^(?P<resource_name>%s)/make_new%s$' %
                 (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('make_new'), name='api_make_new'),
-            url(r'^(?P<resource_name>%s)/make_dev%s$' %
-                (self._meta.resource_name, trailing_slash()),
-                self.wrap_view('make_dev'), name='api_make_dev')
         ]
 
     def register(self, request, **kwargs):
@@ -201,25 +198,6 @@ class UserResource(ModelResource):
             user = user[0]
             #print "User was "+str(user.meta.new)
             user.meta.new = True
-            #print "User is now "+str(user.meta.new)
-            user.meta.save()
-            user.save()
-            #print "User is now "+str(user.meta.new)
-            return self.create_response(request, { 'success': True})
-        return self.create_response(request, { 'success': False, 'reason': "Dup User"}, HttpNotFound)
-    
-    def make_dev(self, request, **kwargs):
-        print "here!"
-        self.method_check(request, allowed=['post'])
-        #username = request.POST.get('username', '').lower()
-        username = request.user
-        user = User.objects.filter(username=username)
-        if user.count() == 0:
-            return self.create_response(request, { 'success': False }, HttpNotFound)
-        elif user.count() == 1 and request.user and request.user.is_authenticated():
-            user = user[0]
-            #print "User was "+str(user.meta.new)
-            user.meta.dev = True
             #print "User is now "+str(user.meta.new)
             user.meta.save()
             user.save()
