@@ -279,3 +279,14 @@ input[type="file"]{
 #unansweredlist{
 	font-weight:bold;
 }
+
+#image-form-file{
+	width:0;
+	height:0;
+}
+
+#image-form{
+	width:0;
+	height:0;
+	margin:0;
+}

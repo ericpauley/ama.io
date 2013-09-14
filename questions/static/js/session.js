@@ -166,12 +166,12 @@ $.ajax("/api/v1/session/"+GLOBALS['session']+"/", {
 });
 
 function check(){
-	GLOBALS.lock = false;
 	$.ajax("/api/v1/session/"+GLOBALS['session']+"/", {
 		type:"GET",
 	}).done(
 		function(data){
 			if(GLOBALS.lock){
+				GLOBALS.lock = false;
 				return;
 			}
 			$("#session-title").smartText(data['title']);
@@ -186,6 +186,15 @@ function check(){
 			$("#session-title-edit:hidden").val(data['title']);
 			$("#session-subtitle-edit:hidden").val(data['subtitle']);
 			$("#session-desc-edit:hidden").val(data['desc']);
+			if(data['thumbnail']){
+				$("#session-img-inner").attr("src", data['thumbnail']).show()
+				$("#remove-image").show()
+				$("#add-image").hide()
+			}else{
+				$("#session-img-inner").hide()
+				$("#remove-image").hide()
+				$("#add-image").show()
+			}
 			var ids = [];
 			$(".question").css("display", "none");
 			$.each(data['questions'], function(index, question){

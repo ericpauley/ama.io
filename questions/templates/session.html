@@ -48,29 +48,42 @@ GLOBALS['owner'] = true
 		</div>
 		{%if session.owner == user%}
 		<input style="display:none" x-autoblur type="text" id="session-subtitle-edit" value="{{session.subtitle}}" />
-			<div id="owner-btns">
-			{%if session.running%}
-				<div id="end-session" class="btn">End Session</div>
+		<div id="owner-btns">
+		{%if session.running%}
+			<div id="end-session" class="btn">End Session</div>
 			{%endif%}
 			{%if session.questions.count == 0 %}
-				<div id="delete-session" class="btn">Delete Session</div>
+			<div id="delete-session" class="btn">Delete Session</div>
 			{%endif%}
-			</div>
+			<div id="add-image" class="btn" {%if session.image%}style="display:none"{%endif%}>Add Image</div>
+			<div id="remove-image" class="btn" {%if not session.image%}style="display:none"{%endif%}>Remove Image</div>
+		</div>
 		{%endif%}
 	</div>
-	{% if session.image %}
+	{%if session.owner == user%}
+	{%include "error.html" with id="small_image" message="Your image must be at least 220x220." only%}
+	{%include "error.html" with id="bad_image" message="We only accept PNGs and JPEGs." only%}
+	{%include "error.html" with id="image_error" message="There was a problem processing your image." only%}	
+	<form id="image-form" method="POST" target="image-form-iframe" action="/api/v1/session/{{session.slug}}/image/?format=json" enctype="multipart/form-data">
+	<input id="image-form-file" type="file" name="image" id="session-create-image" />
+	</form>
+	<iframe id="image-form-iframe" style="display:none"></iframe>
+	{%endif%}
+
 	<div id ="session-img">
-		<img src="{{ session.image|thumbnail_url:'session' }}" width="220" class="img-rounded max-size-image"/>
+		<img id="session-img-inner" src="{{ session.image|thumbnail_url:'session' }}" width="220" {% if not session.image %}style="display:none"{%endif%} class="img-rounded max-size-image"/>
 	</div>
-	{% endif %}
+
 	<div id="session-desc" class="row-fluid">
 		
 	</div>
-	{%if session.owner == user%}
+	<div id="session-desc" class="row-fluid">
+		
+	</div>
 	<textarea id="session-desc-edit" style="display:None">
+		</textarea>
 
-	</textarea>
-	{%endif%}
+
 	<div id="current-viewers">
 	{{session.num_viewers}} {{session.num_viewers|pluralize:"person,people"}} currently viewing this AMA.
 	</div>
