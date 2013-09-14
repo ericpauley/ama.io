@@ -75,8 +75,8 @@ $("#reg_submit").click(function(){
 	$("#reg_form").submit();
 })
 
-$("#create-session-form").submit(function(event){
-    $(this).submit(function() {
+function sessionSubmit(event){
+	$(this).submit(function() {
         return false;
     });
 	$(".form-alert").hide();
@@ -89,7 +89,10 @@ $("#create-session-form").submit(function(event){
 			$("#"+resp.reason).show();
 		}
 	});
-});
+	$(this).submit(sessionSubmit);
+}
+
+$("#create-session-form").submit(sessionSubmit);
 
 $("#request-form").submit(function(event){
 	event.preventDefault();

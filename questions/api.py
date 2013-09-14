@@ -30,6 +30,9 @@ from django.shortcuts import get_object_or_404
 from tastypie.validation import *
 from django.views.decorators.cache import cache_page
 from django.core.files.images import get_image_dimensions
+import hashlib
+import base64
+import sys
 
 class CachedResource():
     def wrap_view(self, view):
@@ -190,10 +193,15 @@ class SessionResource(CachedResource, ModelResource):
             url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/ask%s$" %
                 (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('ask'), name="api_ask"),
+            url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/image%s$" %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('set_image'), name="api_image"),
             url(r"^(?P<resource_name>%s)/create%s$" %
                 (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('create'), name="api_create"),
         ]
+
+
 
     def create(self, request, **kwargs):
         self.method_check(request, allowed=['post'])
@@ -266,7 +274,7 @@ class SessionResource(CachedResource, ModelResource):
         Request.objects.for_user(request.user).filter(session=None).update(session=s)
         if file is not None:
             try:
-                s.image.save(s.slug+"."+file.name.split(".")[-1], file)
+                s.image.save(base64.urlsafe_b64encode(hashlib.sha224(file.read()).digest())+"."+file.name.split(".")[-1], file)
             except:
                 return self.create_response(request, {
                     'success': False,
@@ -276,7 +284,62 @@ class SessionResource(CachedResource, ModelResource):
             'success': True,
             'slug': s.slug,
         })
-        s.save()
+
+    def set_image(self, request, pk, **kwargs):
+        self.method_check(request, allowed=['post'])
+
+        if not request.user.is_authenticated():
+            return self.create_response(request, {
+                'success': False,
+                'reason': 'not_logged_in',
+                }, HttpUnauthorized )
+
+        if AMASession.objects.filter(pk=pk).count() == 0:
+            return self.create_response(request, {
+                'success': False,
+                'reason': 'no_session',
+                }, HttpBadRequest )
+        s = AMASession.objects.get(pk=pk)
+        if not request.user == s.owner:
+            return self.create_response(request, {
+                'success': False,
+                'reason': 'owner',
+                }, HttpUnauthorized )
+        file = None
+        try:
+            file=request.FILES['image']
+            if len(file.name.split(".")) < 2 or not file.name.split(".")[-1].lower() in ("jpg, png"):
+                return self.create_response(request, {
+                    'success': False,
+                    'reason': 'bad_image',
+                }, HttpBadRequest)
+            w, h = get_image_dimensions(file)
+            if w < 220 or h < 220:
+                return self.create_response(request, {
+                    'success': False,
+                    'reason': 'small_image',
+                }, HttpBadRequest)
+        except KeyError:
+            pass
+        
+        if file is not None:
+            try:
+                s.image.save(base64.urlsafe_b64encode(hashlib.sha224(file.read()).digest())+"."+file.name.split(".")[-1], file)
+            except:
+                return self.create_response(request, {
+                    'success': False,
+                    'reason': 'image_error',
+                }, HttpBadRequest)
+            s.save()
+            return self.create_response(request, {
+                'success': True,
+                'slug': s.slug,
+            })
+        else:
+            return self.create_response(request, {
+                    'success': False,
+                    'reason': 'no_image',
+                }, HttpBadRequest)
 
     def ask(self, request, pk, **kwargs):
         self.method_check(request, allowed=['post'])
