@@ -82,6 +82,7 @@ function sessionSubmit(event){
 	$(".form-alert").hide();
 	$("#session-upload-iframe").off("load");
 	$("#session-upload-iframe").load(function(){
+		$(this).submit(sessionSubmit);
 		var resp = eval("("+$("#session-upload-iframe").contents().text()+")");
 		if(resp['success']){
 			document.location="/s/"+resp.slug;
@@ -89,7 +90,6 @@ function sessionSubmit(event){
 			$("#"+resp.reason).show();
 		}
 	});
-	$(this).submit(sessionSubmit);
 }
 
 $("#create-session-form").submit(sessionSubmit);
