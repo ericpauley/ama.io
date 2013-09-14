@@ -58,9 +58,15 @@
 	padding-top: 15px;
 }
 
+.home-link{
+	display: none;
+}
+
 /*Navbar Media CSS*/
 @media (max-width: 980px) and (min-width: 768px){
 	.brand {display: none !important;}
+
+	.home-link {display: block !important;}
 }
 
 @media (max-width: 767px){

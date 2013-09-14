@@ -41,6 +41,10 @@ input[type="file"]{
 	background: #FFFFFF;
 }
 
+.home-cell{
+	margin-top: 20px;
+}
+
 .cell{
 	padding-left: 25px;
 	padding-right: 25px;
@@ -179,6 +183,13 @@ input[type="file"]{
 	padding-right: 10px;
 }
 
+@media (min-width: 400px){
+	.session-img{
+		float: left;
+	}
+}
+
+
 .session-img > img{
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
@@ -240,6 +251,7 @@ input[type="file"]{
 }
 
 .requests-table{
+	margin-top: 20px;
 	width: 413px;
 }
 
