@@ -43,7 +43,7 @@ $("#image-form-iframe").load(function(){
 				$("#remove-image").show()
 				$("#add-image").hide()
 			}else{
-				$("#session-img-inner").hide()
+				$("#session-img").hide()
 				$("#remove-image").hide()
 				$("#add-image").show()
 			}
