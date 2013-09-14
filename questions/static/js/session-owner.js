@@ -29,8 +29,10 @@ $("#add-image").click(function(){
 });
 
 $("#image-form-file").change(function(){
-	$(".form-alert").hide();
-	$("#image-form").submit()
+	if($(this).val()){
+		$(".form-alert").hide();
+		$("#image-form").submit()
+	}
 });
 
 $("#image-form-iframe").load(function(){
