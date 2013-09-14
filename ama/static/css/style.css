@@ -181,6 +181,7 @@ input[type="file"]{
 
 .session-img{
 	padding-right: 10px;
+	text-align: center;
 }
 
 @media (min-width: 400px){
@@ -259,6 +260,10 @@ input[type="file"]{
 .requests-table{
 	margin-top: 20px;
 	width: 413px;
+}
+
+#tweet-table{
+	text-align: center;
 }
 
 @media (max-width: 979px){
