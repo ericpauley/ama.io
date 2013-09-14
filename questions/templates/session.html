@@ -22,97 +22,127 @@ GLOBALS['owner'] = true
 {%mustachejs "question"%}
 {%endblock%}
 {%block content%}
-<div class="page-header row-fluid session-header">
-	<div class="clearfix">
-		<div class="pull-left session-title-wrap">
-			<span id="session-title">{{session.title}}</span>
-			{%if session.running%}
-			<span id="live-now"> [Live&nbsp;Now!]</span>
-			{%endif%}
+<div class="white cell thumbnail">
+	<div class="page-header row-fluid session-header">
+		<div class="clearfix">
+			<div class="pull-left session-title-wrap">
+				<span id="session-title">{{session.title}}</span>
+				{%if session.running%}
+				<span id="live-now"> [Live&nbsp;Now!]</span>
+				{%endif%}
+			</div>
 		</div>
+		{%if session.owner == user%}
+		<input style="display:none" x-autoblur type="text" id="session-title-edit" value="{{session.title}}" />
+		{%endif%}
+		<div id="session-subtitle">
+			{{session.subtitle}}
+		</div>
+		<div id="session-time">
+		{%if session.before %}
+			Time until: {{session.time_until}}
+		{%endif%}
+		{%if session.running %}
+			Time left: {{session.time_left}}
+		{%endif%}
+		</div>
+		{%if session.owner == user%}
+		<input style="display:none" x-autoblur type="text" id="session-subtitle-edit" value="{{session.subtitle}}" />
+		<div id="owner-btns">
+		{%if session.running%}
+			<div id="end-session" class="btn">End Session</div>
+			{%endif%}
+			{%if session.questions.count == 0 %}
+			<div id="delete-session" class="btn">Delete Session</div>
+			{%endif%}
+			<div id="add-image" class="btn" {%if session.image%}style="display:none"{%endif%}>Add Image</div>
+			<div id="remove-image" class="btn" {%if not session.image%}style="display:none"{%endif%}>Remove Image</div>
+		</div>
+		{%endif%}
 	</div>
 	{%if session.owner == user%}
-	<input style="display:none" x-autoblur type="text" id="session-title-edit" value="{{session.title}}" />
+	{%include "error.html" with id="small_image" message="Your image must be at least 220x220." only%}
+	{%include "error.html" with id="bad_image" message="We only accept PNGs and JPEGs." only%}
+	{%include "error.html" with id="image_error" message="There was a problem processing your image." only%}	
+	<form id="image-form" method="POST" target="image-form-iframe" action="/api/v1/session/{{session.slug}}/image/?format=json" enctype="multipart/form-data">
+	<input id="image-form-file" type="file" name="image" id="session-create-image" />
+	</form>
+	<iframe id="image-form-iframe" style="display:none"></iframe>
 	{%endif%}
-	<div id="session-subtitle">
-		{{session.subtitle}}
-	</div>
-	{%if session.owner == user%}
-	<input style="display:none" x-autoblur type="text" id="session-subtitle-edit" value="{{session.subtitle}}" />
-	{%if session.running%}
-	<div id="end-session" class="btn">End Session</div>
-	{%endif%}
-	{%if session.questions.count == 0 %}
-	<div id="delete-session" class="btn">Delete Session</div>
-	{%endif%}
-	{%endif%}
-</div>
-{% if session.image %}
-<div id ="session-img">
-	<img src="{{ session.image|thumbnail_url:'session' }}" width="220" class="img-rounded max-size-image"/>
-</div>
-{% endif %}
-<div id="session-desc" class="row-fluid">
-	
-</div>
-{%if session.owner == user%}
-<textarea id="session-desc-edit" style="display:None">
 
-</textarea>
-{%endif%}
-<div id="current-viewers">
-{{session.num_viewers}} {{session.num_viewers|pluralize:"person,people"}} currently viewing this AMA.
-</div>
-{% for account in session.owner.socialaccount_set.all%}
-{%with acc=account.get_provider_account%}
-{% if acc.extra_data.verified%}Verified {%endif%}Twitter: <a href="{{acc.get_profile_url}}">@{{acc.get_screen_name}}</a>
-{%endwith%}
-{%endfor%}
-<div class="row-fluid qa-section">
-	<ul id="sessiontabs" class="nav nav-tabs">
-		<li class="active">
-			<a href="#unanswered" data-toggle="tab">Unanswered Questions</a>
-		</li>
-		<li>
-			<a href="#answered" data-toggle="tab">Answered Questions</a>
-		</li>
-	</ul>
-	<div id="sessiontabcontent" class="tab-content">
-		<div class="tab-pane fade active in" id="unanswered">
-			<div class="row-fluid">
-				<div class="span10" id="unansweredlist">
-				</div>
-				<a href="{%if user.is_authenticated%}#askModal{%else%}#loginModal{%endif%}" class="btn btn-large btn-success ask-btn affix" data-toggle="modal" data-spy="affix" data-offset-top="405">
-					Ask
-				</a>
-				<a href="{%if user.is_authenticated%}#askModal{%else%}#loginModal{%endif%}" class="btn btn-large btn-success ask-btn-bottom" data-toggle="modal">
-					Ask
-				</a>
-				<div id="askModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="askModelLabel" aria-hidden="true">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-						<h3 id="addModalLabel">
-							Ask Question
-						</h3>
+	<div id ="session-img">
+		<img id="session-img-inner" src="{{ session.image|thumbnail_url:'session' }}" width="220" {% if not session.image %}style="display:none"{%endif%} class="img-rounded max-size-image"/>
+	</div>
+
+	<div id="session-desc" class="row-fluid">
+		
+	</div>
+	<div id="session-desc" class="row-fluid">
+		
+	</div>
+	<textarea id="session-desc-edit" style="display:None">
+		</textarea>
+
+
+	<div id="current-viewers">
+	{{session.num_viewers}} {{session.num_viewers|pluralize:"person,people"}} currently viewing this AMA.
+	</div>
+	{% for account in session.owner.socialaccount_set.all%}
+	{%with acc=account.get_provider_account%}
+	{% if acc.extra_data.verified%}Verified {%endif%}Twitter: <a href="{{acc.get_profile_url}}">@{{acc.get_screen_name}}</a>
+	{%endwith%}
+	{%endfor%}
+	<div class="row-fluid qa-section">
+		<ul id="sessiontabs" class="nav nav-tabs">
+			<li class="active">
+				<a href="#unanswered" data-toggle="tab">Unanswered Questions</a>
+			</li>
+			<li>
+				<a href="#answered" data-toggle="tab">Answered Questions</a>
+			</li>
+		</ul>
+		<div id="sessiontabcontent" class="tab-content">
+			<div class="tab-pane fade active in" id="unanswered">
+				<div class="row-fluid">
+					<div class="span10" id="unansweredlist">
+						{% if session.questions.count == 0 and not session.after and not session.owner == user%}
+							Be the first to ask a question!
+						{%endif%}
 					</div>
-					<div class="modal-body container-fluid">
-						{%include "error.html" with id="ask-question_short" message="Your question must be at least 6 characters long." only%}
-						<form>
-							<fieldset>
-								<input type="text" placeholder="Question" id="ask-question"></input>
-								<textarea id="ask-desc" class="span" placeholder="More details, if needed." rows="5"></textarea>
-							</fieldset>
-						</form>
-					</div>
-					<div class="modal-footer">
-						<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> <button id="ask-submit" class="btn btn-primary btn-success">Submit</button>
+					{%if session.running%}
+					<a href="{%if user.is_authenticated%}#askModal{%else%}#loginModal{%endif%}" class="btn btn-large btn-success ask-btn affix" data-toggle="modal" data-spy="affix" data-offset-top="405">
+						Ask
+					</a>
+					<a href="{%if user.is_authenticated%}#askModal{%else%}#loginModal{%endif%}" class="btn btn-large btn-success ask-btn-bottom" data-toggle="modal">
+						Ask
+					</a>
+					{%endif%}
+					<div id="askModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="askModelLabel" aria-hidden="true">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+							<h3 id="addModalLabel">
+								Ask Question
+							</h3>
+						</div>
+						<div class="modal-body container-fluid">
+							{%include "error.html" with id="ask-question_short" message="Your question must be at least 6 characters long." only%}
+							<form>
+								<fieldset>
+									<input type="text" placeholder="Question" id="ask-question"></input>
+									<textarea id="ask-desc" class="span" placeholder="More details, if needed." rows="5"></textarea>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> <button id="ask-submit" class="btn btn-primary btn-success">Submit</button>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="tab-pane fade" id="answered">
-			<div class="row-fluid">
-				<div class="span12" id="answeredlist">
+			<div class="tab-pane fade" id="answered">
+				<div class="row-fluid">
+					<div class="span12" id="answeredlist">
+					</div>
 				</div>
 			</div>
 		</div>

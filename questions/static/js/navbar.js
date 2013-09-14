@@ -57,6 +57,8 @@ $("#reg_form").submit(function(event){
 		var err = eval("(" + xhr.responseText + ")");
 		if(err.reason == "exists"){
 			$("#reg_exists").show();
+		}else if(err.reason == "reserved"){
+			$("#reg_reserved").show();
 		}else if(err.reason == "pass_match"){
 			$("#reg_passmatch").show();
 		}else if(err.reason == "bad_username"){
@@ -73,10 +75,14 @@ $("#reg_submit").click(function(){
 	$("#reg_form").submit();
 })
 
-$("#create-session-form").submit(function(event){
+function sessionSubmit(event){
+	$(this).submit(function() {
+        return false;
+    });
 	$(".form-alert").hide();
 	$("#session-upload-iframe").off("load");
 	$("#session-upload-iframe").load(function(){
+		$(this).submit(sessionSubmit);
 		var resp = eval("("+$("#session-upload-iframe").contents().text()+")");
 		if(resp['success']){
 			document.location="/s/"+resp.slug;
@@ -84,7 +90,9 @@ $("#create-session-form").submit(function(event){
 			$("#"+resp.reason).show();
 		}
 	});
-});
+}
+
+$("#create-session-form").submit(sessionSubmit);
 
 $("#request-form").submit(function(event){
 	event.preventDefault();

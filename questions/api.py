@@ -31,6 +31,11 @@ from django.shortcuts import get_object_or_404
 from tastypie.validation import *
 from django.views.decorators.cache import cache_page
 from django.core.files.images import get_image_dimensions
+import hashlib
+import base64
+import sys
+import traceback
+from easy_thumbnails.files import get_thumbnailer
 
 class CachedResource():
     def wrap_view(self, view):
@@ -115,6 +120,12 @@ class UserResource(ModelResource):
             return self.create_response(request, {
                     'success': False,
                     'reason': 'exists',
+                }, HttpConflict)
+
+        if username+"\n" in open("reserved.txt").readlines():
+            return self.create_response(request, {
+                    'success': False,
+                    'reason': 'reserved',
                 }, HttpConflict)
 
         user = User.objects.create_user(username, email, password)
@@ -223,6 +234,13 @@ class SessionResource(CachedResource, ModelResource):
     num_viewers = fields.IntegerField(attribute="num_viewers", readonly=True)
     time = fields.DateField()
     image = fields.FileField(attribute="image", readonly=True)
+    thumbnail = fields.CharField(readonly=True)
+
+    def dehydrate_thumbnail(self, bundle):
+        if bundle.obj.image:
+            return get_thumbnailer(bundle.obj.image).get_thumbnail({'size': (220, 220), 'crop': True}).url
+        else:
+            return None
 
     def dehydrate_time(self, bundle):
         return datetime.datetime.now()
@@ -249,10 +267,15 @@ class SessionResource(CachedResource, ModelResource):
             url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/ask%s$" %
                 (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('ask'), name="api_ask"),
+            url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/image%s$" %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('set_image'), name="api_image"),
             url(r"^(?P<resource_name>%s)/create%s$" %
                 (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('create'), name="api_create"),
         ]
+
+
 
     def create(self, request, **kwargs):
         self.method_check(request, allowed=['post'])
@@ -305,6 +328,60 @@ class SessionResource(CachedResource, ModelResource):
                     'success': False,
                     'reason': 'too_soon',
                 }, HttpBadRequest)
+        try:
+            file = None
+            file=request.FILES['image']
+            if len(file.name.split(".")) < 2 or not file.name.split(".")[-1].lower() in ("jpg, png"):
+                return self.create_response(request, {
+                    'success': False,
+                    'reason': 'bad_image',
+                }, HttpBadRequest)
+            w, h = get_image_dimensions(file)
+            if w < 220 or h < 220:
+                return self.create_response(request, {
+                    'success': False,
+                    'reason': 'small_image',
+                }, HttpBadRequest)
+        except KeyError:
+            pass
+        Request.objects.for_user(request.user).filter(session=None).update(session=s)
+        file.seek(0)
+        if file is not None:
+            try:
+                slug=base64.urlsafe_b64encode(hashlib.sha224(file.read()).digest())
+                file.seek(0)
+                s.image.save("%s.%s" % (slug, file.name.split(".")[-1].lower()), file)
+            except:
+                return self.create_response(request, {
+                    'success': False,
+                    'reason': 'image_error',
+                }, HttpBadRequest)
+        s.save()
+        return self.create_response(request, {
+            'success': True,
+            'slug': s.slug,
+        })
+
+    def set_image(self, request, pk, **kwargs):
+        self.method_check(request, allowed=['post'])
+
+        if not request.user.is_authenticated():
+            return self.create_response(request, {
+                'success': False,
+                'reason': 'not_logged_in',
+                }, HttpUnauthorized )
+
+        if AMASession.objects.filter(pk=pk).count() == 0:
+            return self.create_response(request, {
+                'success': False,
+                'reason': 'no_session',
+                }, HttpBadRequest )
+        s = AMASession.objects.get(pk=pk)
+        if not request.user == s.owner:
+            return self.create_response(request, {
+                'success': False,
+                'reason': 'owner',
+                }, HttpUnauthorized )
         file = None
         try:
             file=request.FILES['image']
@@ -321,21 +398,32 @@ class SessionResource(CachedResource, ModelResource):
                 }, HttpBadRequest)
         except KeyError:
             pass
-        s.save()
-        Request.objects.for_user(request.user).filter(session=None).update(session=s)
         if file is not None:
+            file.seek(0)
             try:
-                s.image.save(s.slug+"."+file.name.split(".")[-1], file)
+                slug=base64.urlsafe_b64encode(hashlib.sha224(file.read()).digest())
+                file.seek(0)
+                s.image.save("%s.%s" % (slug, file.name.split(".")[-1].lower()), file)
             except:
                 return self.create_response(request, {
                     'success': False,
                     'reason': 'image_error',
+                    'error': traceback.format_exc(),
                 }, HttpBadRequest)
-        return self.create_response(request, {
-            'success': True,
-            'slug': s.slug,
-        })
-        s.save()
+            s.save()
+            thumbnailer = get_thumbnailer(s.image)
+            return self.create_response(request, {
+                'success': True,
+                'slug': s.slug,
+                'thumbnail': thumbnailer.get_thumbnail({'size': (220, 220), 'crop': True}).url
+            })
+        else:
+            s.image = None
+            s.save()
+            return self.create_response(request, {
+                'success': True,
+                'slug': s.slug,
+            })
 
     def ask(self, request, pk, **kwargs):
         self.method_check(request, allowed=['post'])

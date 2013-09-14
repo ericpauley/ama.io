@@ -47,6 +47,9 @@
 {%endif%}
 <div class="nav-collapse collapse">
 	<ul class="nav">
+		<li class="home-link">
+			<a href="{%url 'home'%}">Home</a>
+		</li>
 		<li class="dropdown">
 			<a href="#" class="dropdown-toggle  firstIntro" data-toggle="dropdown" data-intro="Click here to see live sessions, past sessions, and sessions that are coming up. You may also create your own AMA session." data-step="2">Sessions <b class="caret"></b></a>
 			<ul class="dropdown-menu">
@@ -81,6 +84,9 @@
 			<a href="#registerModal" data-toggle="modal">Register</a>
 		</li>
 		{% else %}
+		<li class="mobile-menu-item">
+			<a href="{%url 'user' user.username%}">Profile</a>
+		</li>
 		<li class="mobile-menu-item">
 			<a href="{%url 'logout'%}">Logout</a>
 		</li>

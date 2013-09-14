@@ -23,7 +23,7 @@ input[type="file"]{
 
 .page-alert{
 	margin-top: 10px;
-	margin-bottom: 0px;
+	margin-bottom: 15px;
 }
 
 .about{
@@ -39,6 +39,10 @@ input[type="file"]{
 
 .white{
 	background: #FFFFFF;
+}
+
+.home-cell{
+	margin-top: 20px;
 }
 
 .cell{
@@ -177,7 +181,15 @@ input[type="file"]{
 
 .session-img{
 	padding-right: 10px;
+	text-align: center;
 }
+
+@media (min-width: 400px){
+	.session-img{
+		float: left;
+	}
+}
+
 
 .session-img > img{
 	-webkit-border-radius: 3px;
@@ -205,10 +217,12 @@ input[type="file"]{
 	padding-right: 5px;
 	font-size: 30px;
 	font-weight: bold;
+	vertical-align: middle;
 }
 
 .session-title-wrap{
 	padding-top: 15px;
+	margin-top: 10px;
 }
 
 .session-title{
@@ -233,6 +247,10 @@ input[type="file"]{
 	font-weight: normal;
 }
 
+#owner-btns{
+	padding-top:5px;
+}
+
 .session-viewers{
 	position: absolute;
 	top: 10px;
@@ -240,15 +258,35 @@ input[type="file"]{
 }
 
 .requests-table{
+	margin-top: 20px;
 	width: 413px;
 }
 
-@media (max-width: 320px){
+#tweet-table{
+	text-align: center;
+}
+
+@media (max-width: 979px){
 .requests-table{
-	width: 270px;
+	width: 100%;
 }
 }
 
 .user-stats{
 	padding-top: 10px;
+}
+
+#unansweredlist{
+	font-weight:bold;
+}
+
+#image-form-file{
+	width:0;
+	height:0;
+}
+
+#image-form{
+	width:0;
+	height:0;
+	margin:0;
 }

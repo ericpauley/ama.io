@@ -13,6 +13,7 @@
 	<div class="modal-body container-fluid">
 		<form id="reg_form" class="form-horizontal">
 			{%include "error.html" with id="reg_exists" message="That username is taken." only%}
+			{%include "error.html" with id="reg_reserved" message="That username is taken." only%}
 			{%include "error.html" with id="bad_username" message="Invalid username." only%}
 			{%include "error.html" with id="bad_email" message="Please enter a valid email." only%}
 			{%include "error.html" with id="reg_passmatch" message="Passwords don't match." only%}
@@ -102,7 +103,7 @@
 	</div>
 	<div class="modal-footer">
 		<div class="btn" data-dismiss="modal" aria-hidden="true">Cancel</div>
-		<div id="confirm-submit"data-dismiss="modal"  class="btn btn-warning">Yes</div>
+		<div id="confirm-submit"data-dismiss="modal"  class="btn btn-danger">Yes</div>
 	</div>
 	
 </div>
