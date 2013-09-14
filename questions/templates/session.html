@@ -37,14 +37,24 @@ GLOBALS['owner'] = true
 	<div id="session-subtitle">
 		{{session.subtitle}}
 	</div>
+	<div id="session-time">
+	{%if session.before %}
+		Time until: {{session.time_until}}
+	{%endif%}
+	{%if session.running %}
+		Time left: {{session.time_left}}
+	{%endif%}
+	</div>
 	{%if session.owner == user%}
 	<input style="display:none" x-autoblur type="text" id="session-subtitle-edit" value="{{session.subtitle}}" />
 	{%if session.running%}
-	<div id="end-session" class="btn">End Session</div>
-	{%endif%}
-	{%if session.questions.count == 0 %}
-	<div id="delete-session" class="btn">Delete Session</div>
-	{%endif%}
+	<div id="owner-btns">
+		<div id="end-session" class="btn">End Session</div>
+		{%endif%}
+		{%if session.questions.count == 0 %}
+		<div id="delete-session" class="btn">Delete Session</div>
+		{%endif%}
+	</div>
 	{%endif%}
 </div>
 {% if session.image %}
