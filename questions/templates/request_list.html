@@ -1,38 +1,40 @@
 {%extends "base.html"%}
 
 {%block content%}
-<div class="thumbnail white cell span7">
-<div class="clearfix">
-<h1 class="pull-left">Requests</h1>
-
-<div class="btn btn-title-inline" href="{%if user.is_authenticated%}#requestModal{%else%}#loginModal{%endif%}" data-toggle="modal">Request an AMA</div>
-
-</div>
-{% if top_requests%}
-<table class="table table-striped table-bordered requests-table">
-<tr>
-<th>Person</th>
-<th>Tweets</th>
-<th>Action</th>
-</tr>
-{% for request in top_requests%}
-{%include "request_tile.html"%}
-{%endfor%}
-</table>
-{%else%}
-<a href="{%if user.is_authenticated%}#requestModal{%else%}#loginModal{%endif%}" data-toggle="modal">No active requests.  Request someone?</a>
-{%endif%}
-<ul class="pager">
-  {%if prev%}
-  <li class="previous">
-    <a href="{{prev}}">&larr;  Previous</a>
-  </li>
-  {%endif%}
-  {%if next%}
-  <li class="next">
-    <a href="{{next}}">Next &rarr;</a>
-  </li>
-  {%endif%}
-</ul>
+<div class="row-fluid">
+    <div class="thumbnail white cell span7">
+        <div class="clearfix">
+        <h1 class="pull-left">Requests</h1>
+            <div class="btn btn-title-inline" href="{%if user.is_authenticated%}#requestModal{%else%}#loginModal{%endif%}" data-toggle="modal">
+            Request an AMA
+            </div>
+        </div>
+        {% if top_requests%}
+        <table class="table table-striped table-bordered requests-table">
+        <tr>
+        <th>Person</th>
+        <th>Tweets</th>
+        <th>Action</th>
+        </tr>
+        {% for request in top_requests%}
+        {%include "request_tile.html"%}
+        {%endfor%}
+        </table>
+        {%else%}
+        <a href="{%if user.is_authenticated%}#requestModal{%else%}#loginModal{%endif%}" data-toggle="modal">No active requests.  Request someone?</a>
+        {%endif%}
+        <ul class="pager">
+          {%if prev%}
+          <li class="previous">
+            <a href="{{prev}}">&larr;  Previous</a>
+          </li>
+          {%endif%}
+          {%if next%}
+          <li class="next">
+            <a href="{{next}}">Next &rarr;</a>
+          </li>
+          {%endif%}
+        </ul>
+    </div>
 </div>
 {%endblock%}
