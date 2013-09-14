@@ -321,6 +321,7 @@
       tooltipLayer.className = 'introjs-tooltip';
 
       helperNumberLayer.innerHTML = targetElement.getAttribute('data-step');
+      tooltipLayer.setAttribute('style', 'width: ' + ('200')  + 'px; ');
       tooltipLayer.innerHTML = '<div class="introjs-tooltiptext">' +
                                targetElement.getAttribute('data-intro') +
                                '</div><div class="introjs-tooltipbuttons"></div>';

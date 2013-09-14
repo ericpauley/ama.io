@@ -57,14 +57,6 @@ class UserMeta(models.Model):
                 return True
         return False
     
-    @property
-    def is_new(self):
-        try:
-            return new
-        except NameError:
-            new = True
-            return False
-    
 
 class AMASessionManager(models.Manager):
     def get_query_set(self):

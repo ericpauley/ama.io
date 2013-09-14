@@ -229,9 +229,11 @@ def custom_show_toolbar(request):
     return False
 
 DEBUG_TOOLBAR_CONFIG = {
-    'SHOW_TOOLBAR_CALLBACK':custom_show_toolbar
+    'SHOW_TOOLBAR_CALLBACK':custom_show_toolbar,
+    'INTERCEPT_REDIRECTS':False
 }
-    
+
+
 TEMPLATE_DEBUG = DEBUG
 THUMBNAIL_DEBUG = True
 MANAGERS = ADMINS
