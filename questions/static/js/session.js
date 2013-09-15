@@ -145,10 +145,18 @@ function sessionClicks(){
 sessionClicks();
 
 function answer(id){
-	text = $("#answer-textarea-"+id).val();
+	var text = $("#answer-textarea-"+id).val();
+	var question = $("#answer-textarea-"+id).closest(".question");
+	if(text == ""){
+		question.remove();
+	}else{
+		$("#answer-form-"+id).hide();
+		question.remove();
+		$("#answered").append(question);
+	}
 	$.post("/api/v1/question/"+id+"/answer/",
 		{'answer': text});
-	$("#answer-form-"+id).hide();
+	GLOBALS.lock = true;
 }
 
 $("#ask-submit").click(function(){
@@ -234,7 +242,7 @@ function check(){
 				}
 				if(!$("#question-"+id).hasClass("lock")){
 					$("#score-"+id).text(question['score']);
-					$("#question-"+id).find(".answer-button").attr("disabled", !data['running']);
+					$("#question-"+id).find(".answer-button").attr("disabled", !data['state'] == "running");
 					/*if(question['vote'] == 1){
 						$("#upvote-"+id).addClass("btn-success")
 					}else{
