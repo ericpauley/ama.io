@@ -4,6 +4,10 @@
 	margin-bottom: 0px;
 }
 
+#username{
+	width: 154px;
+}
+
 .navbar-inner{
 	min-height: 55px;
 	background-color: rgba(0,0,0,.6);
