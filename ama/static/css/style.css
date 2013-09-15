@@ -207,6 +207,10 @@ input[type="file"]{
 	}
 }
 
+#current-viewers{
+	padding-top: 15px;
+}
+
 #live-now{
 	padding-left: 5px;
 	color: green;
@@ -274,10 +278,6 @@ input[type="file"]{
 
 .user-stats{
 	padding-top: 10px;
-}
-
-#unansweredlist{
-	font-weight:bold;
 }
 
 #image-form-file{

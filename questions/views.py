@@ -71,7 +71,7 @@ def session(request, slug):
             if s.owner == request.user:
                 messages.add_message(request, messages.WARNING, 'You have not yet linked a verified Twitter account. You can do so <a href="/accounts/twitter/login/?process=connect">here</a>.')
             else:
-                messages.add_message(request, messages.INFO, 'This user has not verified their account with Twitter. Beware of impersonators.')
+                messages.add_message(request, messages.WARNING, 'This user has not verified their account with Twitter. Beware of impersonators.')
     except AMASession.DoesNotExist:
         raise Http404
     return render(request, "session.html", {'session':s, 'unanswered': unanswered, 'answered': answered})
