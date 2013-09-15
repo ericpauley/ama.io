@@ -14,7 +14,8 @@ $.fn.smartHtml = function(val){
 
 function sessionClicks(){
 	$(".upvote").off("click");
-	$(".upvote").click(function(){
+	$(".upvote").click(function(event){
+		event.preventDefault();
 		if(GLOBALS.auth){
 			var id = $(this).attr("data-question");
 			GLOBALS.lock = true;
@@ -40,7 +41,8 @@ function sessionClicks(){
 	})
 
 	$(".downvote").off("click");
-	$(".downvote").click(function(){
+	$(".downvote").click(function(event){
+		event.preventDefault();
 		if(GLOBALS.auth){
 			var id = $(this).attr("data-question");
 			GLOBALS.lock = true;
@@ -205,8 +207,10 @@ function check(){
 					var val ={
 						question:question,
 						isauthenticated: GLOBALS['auth'],
-						isowner:GLOBALS['owner']
+						isowner:GLOBALS['owner'],
+						running:data['state'] == 'running'
 					};
+					question['desc_html'] = markdown.toHTML(question['desc'])
 					question['html'] = Mustache.template("question").render(val);
 					if(question['answer'] == null){
 						$("#unansweredlist").append(question['html']);

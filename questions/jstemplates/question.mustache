@@ -3,7 +3,7 @@
 		<div class="row-fluid">
 			<div style="vertical-align:middle;" class="btn-group-vertical question-options">
 				{{#isowner}}
-				<a href="#" class="btn answer-button"><i class="icon-ok"></i> Answer</a>
+				<a href="#" class="btn answer-button" {{^running}}disabled{{/running}}><i class="icon-ok"></i> Answer</a>
 				<div disabled id="score-{{question.id}}" class="btn" >{{question.score}}</div>
 				<a href="#" class="delete btn" data-question="{{question.id}}"><i class="icon-trash"></i> delete</a>
 				{{/isowner}}
