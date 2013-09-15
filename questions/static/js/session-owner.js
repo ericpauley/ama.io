@@ -9,15 +9,21 @@ $("#session-title").click(function(){
 });
 
 $("#session-title-edit").blur(function(){
-	$(this).hide();$('#session-title').show().text(this.value);
-	GLOBALS.lock = true;
-	$.ajax("/api/v1/session/"+GLOBALS['session']+"/", {
-		type:"PATCH",
-		data:JSON.stringify({
-			title:this.value
-		}),
-		contentType: 'application/json; charset=utf-8'
-	});
+	$(this).hide();
+	$('#session-title').show();
+	if($(this).val()!=""){
+		$('#session-title').text(this.value);
+		GLOBALS.lock = true;
+		$.ajax("/api/v1/session/"+GLOBALS['session']+"/", {
+			type:"PATCH",
+			data:JSON.stringify({
+				title:this.value
+			}),
+			contentType: 'application/json; charset=utf-8'
+		});
+	}else{
+		$(this).val($('#session-title').text())
+	}
 });
 
 $("#session-img").click(function(){
@@ -67,33 +73,45 @@ $("#session-subtitle").click(function(){
 });
 
 $("#session-subtitle-edit").blur(function(){
-	$(this).hide();$('#session-subtitle').show().text(this.value);
-	GLOBALS.lock = true;
-	$.ajax("/api/v1/session/"+GLOBALS['session']+"/", {
-		type:"PATCH",
-		data:JSON.stringify({
-			subtitle:this.value
-		}),
-		contentType: 'application/json; charset=utf-8'
-	});
+	$(this).hide();
+	$('#session-subtitle').show();
+	if($(this).val()!=""){
+		$('#session-subtitle').text(this.value);
+		GLOBALS.lock = true;
+		$.ajax("/api/v1/session/"+GLOBALS['session']+"/", {
+			type:"PATCH",
+			data:JSON.stringify({
+				subtitle:this.value
+			}),
+			contentType: 'application/json; charset=utf-8'
+		});
+	}else{
+		$(this).val($('#session-subtitle').text())
+	}
 });
 
 $("#session-desc").click(function(){
 	$(this).hide();
+	$('#session-desc-edit').attr("backup", $('#session-desc-edit').val());
 	$('#session-desc-edit').show().focus();
 });
 
 $("#session-desc-edit").blur(function(){
 	$(this).hide();
-	$('#session-desc').show().html(markdown.toHTML($(this).val()));
-	GLOBALS.lock = true;
-	$.ajax("/api/v1/session/"+GLOBALS['session']+"/", {
-	    type:"PATCH",
-	    data:JSON.stringify({
-		    desc:this.value
-	    }),
-	    contentType: 'application/json; charset=utf-8'
-	});
+	$('#session-desc').show();
+	if($(this).val()!=""){
+		$('#session-desc').html(markdown.toHTML($(this).val()));
+		GLOBALS.lock = true;
+		$.ajax("/api/v1/session/"+GLOBALS['session']+"/", {
+		    type:"PATCH",
+		    data:JSON.stringify({
+			    desc:this.value
+		    }),
+		    contentType: 'application/json; charset=utf-8'
+		});
+	}else{
+		$(this).val($(this).attr("backup"))
+	}
 });
 
 function sessionClicksOwner(){

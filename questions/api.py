@@ -213,7 +213,7 @@ class SessionResource(CachedResource, ModelResource):
     time = fields.DateField()
     image = fields.FileField(attribute="image", readonly=True)
     thumbnail = fields.CharField(readonly=True)
-    state = fields.CharField(readonly=True)\
+    state = fields.CharField(readonly=True)
 
     def dehydrate_state(self, bundle):
         if bundle.obj.before:
@@ -241,6 +241,7 @@ class SessionResource(CachedResource, ModelResource):
             'start_time': ALL,
             'end_time': ALL
         }
+        validation = FormValidation(form_class=SessionForm)
 
     def dehydrate(self, bundle):
         bundle.obj.mark_viewed(bundle.request)
