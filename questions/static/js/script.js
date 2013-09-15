@@ -9,3 +9,9 @@ if(!Array.prototype.indexOf) {
     };
 }
 
+$("#createIntroLaunch").click(function(){
+    $("#sessionModal").modal("show");
+    setTimeout(function(){
+        introJs().setOptions({group:".createIntro"}).start(); 
+    },700);
+});

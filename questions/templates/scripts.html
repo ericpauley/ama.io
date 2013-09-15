@@ -14,12 +14,25 @@
 </script>
 <script src="{% static 'libs/django.mustache.js' %}">
 </script>
+<script src="{% static 'js/intro.js' %}">
+</script>
 <script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
+
 <script>
 {%if user.is_authenticated%}
 GLOBALS['auth'] = true
 {%else%}
 GLOBALS['auth'] = false
+{%endif%}
+{%if user.meta.new%}
+$(document).ready(function(){
+        introJs().setOptions({group:".firstIntro"}).start().oncomplete(function(){
+           $.post("/api/v1/user/make_old/",{username:'{{user}}'});
+        });
+});
+function make_dev(){
+    $.post("/api/v1/user/make_dev/",{},function(data){console.log(data);});
+}
 {%endif%}
 </script>
 <script>
