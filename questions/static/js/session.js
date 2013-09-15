@@ -14,7 +14,8 @@ $.fn.smartHtml = function(val){
 
 function sessionClicks(){
 	$(".upvote").off("click");
-	$(".upvote").click(function(){
+	$(".upvote").click(function(event){
+		event.preventDefault();
 		if(GLOBALS.auth){
 			var id = $(this).attr("data-question");
 			GLOBALS.lock = true;
@@ -40,7 +41,8 @@ function sessionClicks(){
 	})
 
 	$(".downvote").off("click");
-	$(".downvote").click(function(){
+	$(".downvote").click(function(event){
+		event.preventDefault();
 		if(GLOBALS.auth){
 			var id = $(this).attr("data-question");
 			GLOBALS.lock = true;
