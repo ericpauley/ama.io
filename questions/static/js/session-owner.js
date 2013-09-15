@@ -123,8 +123,10 @@ function sessionClicksOwner(){
 	})
 	$(".answer-button").off("click");
 	$(".answer-button").click(function(e){
-		e.preventDefault();
-		$('#answer-form-'+$(this).closest(".question").attr("data-question")).toggle();
+		if(!$(this).is('[disabled]')){
+			e.preventDefault();
+			$('#answer-form-'+$(this).closest(".question").attr("data-question")).toggle();
+		}
 	});
 }
 

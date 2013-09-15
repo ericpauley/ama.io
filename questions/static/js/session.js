@@ -205,8 +205,10 @@ function check(){
 					var val ={
 						question:question,
 						isauthenticated: GLOBALS['auth'],
-						isowner:GLOBALS['owner']
+						isowner:GLOBALS['owner'],
+						running:data['state'] == 'running'
 					};
+					question['desc_html'] = markdown.toHTML(question['desc'])
 					question['html'] = Mustache.template("question").render(val);
 					if(question['answer'] == null){
 						$("#unansweredlist").append(question['html']);
