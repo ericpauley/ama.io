@@ -23,6 +23,7 @@
         {%else%}
         <a href="{%if user.is_authenticated%}#requestModal{%else%}#loginModal{%endif%}" data-toggle="modal">No active requests.  Request someone?</a>
         {%endif%}
+        {%if prev or next%}
         <ul class="pager">
           {%if prev%}
           <li class="previous">
@@ -35,6 +36,7 @@
           </li>
           {%endif%}
         </ul>
+        {%endif%}
     </div>
 </div>
 {%endblock%}
