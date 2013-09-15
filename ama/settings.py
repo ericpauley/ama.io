@@ -141,7 +141,8 @@ INSTALLED_APPS = (
     'south',
     'easy_thumbnails',
     'haystack',
-    'debug_toolbar'
+    'debug_toolbar',
+    'template_timings_panel'
 )
 
 # A sample logging configuration. The only tangible logging
@@ -233,6 +234,18 @@ DEBUG_TOOLBAR_CONFIG = {
     'INTERCEPT_REDIRECTS':False
 }
 
+DEBUG_TOOLBAR_PANELS = {
+    'debug_toolbar.panels.version.VersionDebugPanel',
+    'debug_toolbar.panels.settings_vars.SettingsVarsDebugPanel',
+    'debug_toolbar.panels.headers.HeaderDebugPanel',
+    'debug_toolbar.panels.request_vars.RequestVarsDebugPanel',
+    'debug_toolbar.panels.template.TemplateDebugPanel',
+    'debug_toolbar.panels.sql.SQLDebugPanel',
+    'debug_toolbar.panels.signals.SignalDebugPanel',
+    'debug_toolbar.panels.logger.LoggingPanel',
+    'template_timings_panel.panels.TemplateTimings.TemplateTimings',
+    'debug_toolbar.panels.sql.SQLDebugPanel'
+}
 
 TEMPLATE_DEBUG = DEBUG
 THUMBNAIL_DEBUG = True

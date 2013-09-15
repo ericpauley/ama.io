@@ -20,3 +20,4 @@ easy-thumbnails
 python-memcached
 django-haystack
 django-debug-toolbar
+django-debug-toolbar-template-timings
