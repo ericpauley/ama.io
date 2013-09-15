@@ -142,7 +142,7 @@ class UserResource(ModelResource):
     def login(self, request, **kwargs):
         self.method_check(request, allowed=['post'])
 
-        username = request.POST.get('username', '')
+        username = request.POST.get('username', '').lower()
         password = request.POST.get('password', '')
 
         user = authenticate(username=username, password=password)
