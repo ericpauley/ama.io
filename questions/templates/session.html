@@ -109,7 +109,7 @@ GLOBALS['owner'] = true
 							Be the first to ask a question!
 						{%endif%}
 					</div>
-					{%if session.running%}
+					{%if not session.after%}
 					<a href="{%if user.is_authenticated%}#askModal{%else%}#loginModal{%endif%}" class="btn btn-large btn-success ask-btn affix" data-toggle="modal" data-spy="affix" data-offset-top="405">
 						Ask
 					</a>

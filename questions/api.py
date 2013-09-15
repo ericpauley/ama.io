@@ -213,6 +213,15 @@ class SessionResource(CachedResource, ModelResource):
     time = fields.DateField()
     image = fields.FileField(attribute="image", readonly=True)
     thumbnail = fields.CharField(readonly=True)
+    state = fields.CharField(readonly=True)\
+
+    def dehydrate_state(self, bundle):
+        if bundle.obj.before:
+            return "before"
+        elif bundle.obj.after:
+            return "after"
+        else:
+            return "running"
 
     def dehydrate_thumbnail(self, bundle):
         if bundle.obj.image:
@@ -427,6 +436,11 @@ class SessionResource(CachedResource, ModelResource):
                 }, HttpBadRequest )
 
         s = AMASession.objects.get(pk=pk)
+        if s.after:
+            return self.create_response(request, {
+                'success': False,
+                'reason': 'after',
+                }, HttpBadRequest )
         q = AMAQuestion()
         q.asker = request.user
         q.session = s
@@ -503,7 +517,11 @@ class QuestionResource(ModelResource):
                 'success': False,
                 'reason': 'not-target',
                 }, HttpForbidden )
-
+        if not q.session.running:
+            return self.create_response(request, {
+                'success': False,
+                'reason': 'not_running',
+                }, HttpBadRequest )
         a = request.POST.get('answer',"")
         if a == "":
             try:
