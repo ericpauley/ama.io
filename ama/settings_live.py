@@ -43,7 +43,8 @@ STORAGES_S3BOTO_MULTI = {
         'AWS_STORAGE_BUCKET_NAME' : 'static.ama.io',
         'AWS_S3_SECURE_URLS' : False,
         'AWS_S3_CUSTOM_DOMAIN' : "static.ama.io",
-        'AWS_QUERYSTRING_AUTH' : False
+        'AWS_QUERYSTRING_AUTH' : False,
+        'AWS_LOCATION' : os.environ['PWD'].split("/")[-2],
     }
 }
 
