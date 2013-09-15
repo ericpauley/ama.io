@@ -234,7 +234,7 @@ DEBUG_TOOLBAR_CONFIG = {
     'INTERCEPT_REDIRECTS':False
 }
 
-DEBUG_TOOLBAR_PANELS = {
+DEBUG_TOOLBAR_PANELS = (
     'debug_toolbar.panels.version.VersionDebugPanel',
     'debug_toolbar.panels.settings_vars.SettingsVarsDebugPanel',
     'debug_toolbar.panels.headers.HeaderDebugPanel',
@@ -245,7 +245,7 @@ DEBUG_TOOLBAR_PANELS = {
     'debug_toolbar.panels.logger.LoggingPanel',
     'template_timings_panel.panels.TemplateTimings.TemplateTimings',
     'debug_toolbar.panels.sql.SQLDebugPanel'
-}
+)
 
 TEMPLATE_DEBUG = DEBUG
 THUMBNAIL_DEBUG = True
