@@ -234,6 +234,7 @@ function check(){
 				}
 				if(!$("#question-"+id).hasClass("lock")){
 					$("#score-"+id).text(question['score']);
+					$("#question-"+id).find(".answer-button").attr("disabled", !data['running']);
 					/*if(question['vote'] == 1){
 						$("#upvote-"+id).addClass("btn-success")
 					}else{
