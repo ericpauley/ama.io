@@ -326,7 +326,7 @@ class Request(models.Model):
 
     @property
     def tweet_url(self):
-        return "https://twitter.com/intent/tweet?"+urlencode({"text": choice(tweets) % self.username})
+        return "https://twitter.com/intent/tweet?"+urlencode({"text": choice(tweets) % self.username.encode('utf-8')})
         print()
 
     @property
