@@ -3,7 +3,7 @@
 
 {%block content%}
 	{%cache 10 homepage%}
-	<div class="cell white thumbnail firstIntro" data-intro="Here are the sessions that are running right now. You can ask these people questions and read their answers." data-step="4">
+	<div class="cell white thumbnail firstIntro" data-intro="Check out the AMA sessions that are running now.  Ask questions and interact live!" data-step="4">
 		<h1>Live Sessions</h1>
 		{%if user.is_authenticated%}
 		{%else%}
@@ -19,7 +19,7 @@
 		<a href="{%if user.is_authenticated%}#sessionModal{%else%}#loginModal{%endif%}" data-toggle="modal">No live sessions currently running. Start your own?</a>
 		{%endif%}
 	</div>
-	<div class="cell white thumbnail home-cell firstIntro" data-intro="Here are the sessions that will be running in the future." data-step="5">	
+	<div class="cell white thumbnail home-cell firstIntro" data-intro="Here are the most anticipated upcoming AMA sessions.  Mark these dates on your calendar!" data-step="5">	
 		<h1>Upcoming</h1>
 		{%if user.is_authenticated%}
 
@@ -37,7 +37,7 @@
 		<a href="{%if user.is_authenticated%}#sessionModal{%else%}#loginModal{%endif%}" data-toggle="modal">No upcoming sessions. Schedule one?</a>	
 		{%endif%}
 	</div>
-	<div class="white cell thumbnail home-cell firstIntro" data-intro="Here are the people who are requested most often on AMA.io. Maybe you can be here one day! Before then, you can request your favorite celebrities right here." data-step="6">
+	<div class="white cell thumbnail home-cell firstIntro" data-intro="If you want someone to do an AMA, request them here.  You can see top requests, and even tweet at people to encrouage them to come and start their own AMA session." data-step="6">
 		<div class="clearfix">
 			<h1 class="pull-left">Top Requests</h1>
 			{%if user.is_authenticated%}
