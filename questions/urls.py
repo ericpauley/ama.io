@@ -34,5 +34,5 @@ urlpatterns = patterns('',
 
     #Static pages
     url(r'about/', views.static_page("about.html", "About")),
-    url(r'session-demo/', views.static_page("session-demo.html", "Session Tutorial"))
+    url(r'demo/', views.static_page("session-demo.html", "Session Tutorial"))
 )

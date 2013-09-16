@@ -39,7 +39,7 @@ $("#createIntroLaunch").click(function(){
     $("#sessionModal").modal("show");
     setTimeout(function(){
         introJs().setOptions({group:".createIntro"}).start().oncomplete(function(){
-            window.location.href = '/session-demo';
+            window.location.href = '/demo';
         }); 
     },700);
 });
