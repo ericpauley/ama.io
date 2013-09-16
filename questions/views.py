@@ -8,13 +8,13 @@ from django.core.urlresolvers import reverse
 from django.contrib import messages
 
 def live(request):
-    return render(request, "session_list.html", {'sessions': AMASession.objects.live(), 'title':'Live Sessions'})
+    return render(request, "session_list.html", {'sessions': AMASession.objects.live()[:50], 'title':'Live Sessions'})
 
 def past(request):
-    return render(request, "session_list.html", {'sessions': AMASession.objects.past(), 'title':'Past Sessions'})
+    return render(request, "session_list.html", {'sessions': AMASession.objects.past()[:50], 'title':'Past Sessions'})
 
 def upcoming(request):
-    return render(request, "session_list.html", {'sessions': AMASession.objects.upcoming(), 'title':'Upcoming Sessions'})
+    return render(request, "session_list.html", {'sessions': AMASession.objects.upcoming()[:50], 'title':'Upcoming Sessions'})
 
 def home(request):
     top_requests = Request.objects.all()[:10]
