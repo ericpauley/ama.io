@@ -8,10 +8,3 @@ if(!Array.prototype.indexOf) {
         return -1;
     };
 }
-
-$("#createIntroLaunch").click(function(){
-    $("#sessionModal").modal("show");
-    setTimeout(function(){
-        introJs().setOptions({group:".createIntro"}).start(); 
-    },700);
-});

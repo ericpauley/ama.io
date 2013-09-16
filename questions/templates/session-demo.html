@@ -1,0 +1,220 @@
+{%extends "base.html"%}
+{%load staticfiles%}
+{% load ihatethumbnails %}
+{% load jstemplate %}
+{%block prescript%}
+<script type="text/javascript">
+GLOBALS['session'] = "{{session.slug}}"
+GLOBALS['question_full'] = false
+{%if session.owner == user%}
+GLOBALS['owner'] = true
+{%endif%}
+</script>
+{%endblock%}
+{%block postscript%}
+{%mustachejs "comment"%}
+{%mustachejs "question"%}
+{%endblock%}
+{%block content%}
+<div class="white cell thumbnail">
+	<div class="page-header row-fluid session-header">
+		<div class="clearfix">
+			<div class="pull-left session-title-wrap">
+				<span id="session-title" class="sessionIntro" data-intro="This is the title of your session." data-step="1">I am John Smith, here to answer your questions!</span>
+				<span id="live-now"> [Live&nbsp;Now!]</span>
+			</div>
+		</div>
+		<input style="display:none" x-autoblur type="text" id="session-title-edit" value="I am John Smith, here to answer your questions!" />
+		<div id="session-subtitle">
+			Ask me anything you want. I'm ready and can't wait to start.
+		</div>
+		<div id="session-time">
+			Time left: 9:37
+		</div>
+		<input style="display:none" x-autoblur type="text" id="session-subtitle-edit" value="{{session.subtitle}}" />
+		<div id="owner-btns">
+		<div id="end-session" class="btn sessionIntro" data-intro="Here you can end your session. Your session will end automatically when it is scheduled to end." data-step="2">End Session</div>
+		<div id="add-image" class="btn sessionIntro" data-intro="Here you can add an image to represent your AMA." data-step="3">Add Image</div>
+		</div>
+	</div>
+	{%include "error.html" with id="small_image" message="Your image must be at least 220x220." only%}
+	{%include "error.html" with id="bad_image" message="We only accept PNGs and JPEGs." only%}
+	{%include "error.html" with id="image_error" message="There was a problem processing your image." only%}	
+	<form id="image-form" method="POST" enctype="multipart/form-data">
+	<input id="image-form-file" type="file" name="image" id="session-create-image" />
+	</form>
+	<iframe id="image-form-iframe" style="display:none"></iframe>
+
+	<div id="session-desc" class="row-fluid">
+		<p>Here's a link to my twitter, don't forget to follow me:</p>
+		<p>I'll be here for the next few hours to answer your questions.</p>
+	</div>
+	<div id="session-desc" class="row-fluid">
+		
+	</div>
+	<textarea id="session-desc-edit" style="display:None">
+		</textarea>
+
+
+	<div id="current-viewers">
+	0 people currently viewing this AMA.
+	</div>
+	<div class="row-fluid qa-section">
+		<ul id="sessiontabs" class="nav nav-tabs">
+			<li class="active sessionIntro" data-intro="Here are the questions you haven't answered yet." data-step="4">
+				<a href="#unanswered" data-toggle="tab">Unanswered Questions</a>
+			</li>
+			<li class="sessionIntro" data-intro="Here are the answers you've already given." data-step="5">
+				<a href="#answered" data-toggle="tab">Answered Questions</a>
+			</li>
+		</ul>
+		<div id="sessiontabcontent" class="tab-content">
+			<div class="tab-pane fade active in" id="unanswered">
+				<div class="row-fluid">
+					<div class="span10" id="unansweredlist">
+						<div class="question row-fluid" data-question="1" id="question-1" style="display: block;">
+							<div class="thumbnail white">
+								<div class="row-fluid">
+									<div style="vertical-align:middle;" class="btn-group-vertical question-options">
+										<a href="/s/uwe3/#" class="btn answer-button" disabled="disabled"><i class="icon-ok"></i> Answer</a>
+									<div disabled="" id="score-1" class="btn">0</div>
+										<a href="/s/uwe3/#" class="delete btn" data-question="1"><i class="icon-trash"></i> delete</a>
+				
+								</div>
+								<a href="/s/uwe3/#" id="star-1" class="star btn" data-question="1"><i class="icon-star"></i> Star</a>
+								<a class="btn permalink" href="/q/1">Link</a>
+								<div class="question-area">
+									<h4>Hey John, what do you enjoy most in life?</h4>
+									<p></p><p>I've been a fan for years and hope you answer this!</p>
+									<p></p>
+									<small>—Asked by test123</small>
+								</div>
+							</div>
+							<div class="answer-area" id="answer-form-1" style="display: none">
+							<hr>
+							<div class="row-fluid">
+							<form>
+								<textarea class="answer-textarea" id="answer-textarea-1" type="text"></textarea><br>
+								<button class="btn answer-confirm-btn btn-primary" onclick="answer(1)" type="button">Confirm</button>
+								<button class="btn answer-confirm-btn btn-default" onclick="answer(1)" type="button">Close</button>
+							</form>
+						</div>
+					</div>
+					<div id="answer-1" style="display: none;">
+						<hr>
+						<div class="row-fluid">
+							<div class="response-area">
+								<b>Response:&nbsp;&nbsp;&nbsp;&nbsp;</b><div id="answer-text-1">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="comment-show">
+					<a href="/s/uwe3/#" class="show-comments" data-question="1">Show comments</a>
+				</div>
+				<div class="comment-wrapper" id="comment-wrapper-1" style="display: none">
+					<div class="comment-form-wrapper">
+						<textarea class="comment-form" id="comment-form-1"></textarea>
+						<div class="btn add-comment" id="comment-submit-1">Add Comment</div>
+					</div>
+					<div id="comments-1">
+				</div>
+				<div class="no-comments" id="nocomments-1" style="display: none">There are no comments. Be the first!</div>
+				<div class="btn view-more" style="display: none">View more...</div>
+			</div>
+		</div>
+	</div>
+<div class="question row-fluid" data-question="2" id="question-2" style="display: block;">
+	<div class="thumbnail white">
+		<div class="row-fluid">
+			<div style="vertical-align:middle;" class="btn-group-vertical question-options">
+				<a href="/s/uwe3/#" class="btn answer-button" disabled="disabled"><i class="icon-ok"></i> Answer</a>
+				<div disabled="" id="score-2" class="btn">0</div>
+				<a href="/s/uwe3/#" class="delete btn" data-question="2"><i class="icon-trash"></i> delete</a>
+			</div>
+			<a href="/s/uwe3/#" id="star-2" class="star btn" data-question="2"><i class="icon-star"></i> Star</a>
+			<a class="btn permalink" href="/q/2">Link</a>
+			<div class="question-area">
+				<h4>Why did you choose your career path?</h4>
+				<p></p><p>Your life has had a lot of ups and downs.  I'm curious what led you to choosing this path, and if you have any regrets.</p>
+				<p></p>
+				<small>—Asked by test123</small>
+			</div>
+		</div>
+		<div class="answer-area" id="answer-form-2" style="display: none">
+			<hr>
+			<div class="row-fluid">
+				<form>
+					<textarea class="answer-textarea" id="answer-textarea-2" type="text"></textarea><br>
+					<button class="btn answer-confirm-btn btn-primary" onclick="answer(2)" type="button">Confirm</button>
+					<button class="btn answer-confirm-btn btn-default" onclick="answer(2)" type="button">Close</button>
+				</form>
+			</div>
+		</div>
+		<div id="answer-2" style="display: none;">
+			<hr>
+			<div class="row-fluid">
+				<div class="response-area">
+					<b>Response:&nbsp;&nbsp;&nbsp;&nbsp;</b><div id="answer-text-2"></div>
+				</div>
+			</div>
+		</div>
+		<div id="comment-show">
+			<a href="/s/uwe3/#" class="show-comments" data-question="2">Show comments</a>
+		</div>
+		<div class="comment-wrapper" id="comment-wrapper-2" style="display: none">
+			<div class="comment-form-wrapper">
+				<textarea class="comment-form" id="comment-form-2"></textarea>
+				<div class="btn add-comment" id="comment-submit-2">Add Comment</div>
+			</div>
+		<div id="comments-2"></div>
+		<div class="no-comments" id="nocomments-2" style="display: none">There are no comments. Be the first!</div>
+		<div class="btn view-more" style="display: none">View more...</div>
+	</div>
+</div>
+</div>
+</div>
+					</div>
+					<a href="{%if user.is_authenticated%}#askModal{%else%}#loginModal{%endif%}" class="btn btn-large btn-success ask-btn affix" data-toggle="modal" data-spy="affix" data-offset-top="405">
+						Ask
+					</a>
+					<a href="{%if user.is_authenticated%}#askModal{%else%}#loginModal{%endif%}" class="btn btn-large btn-success ask-btn-bottom" data-toggle="modal">
+						Ask
+					</a>
+					<div id="askModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="askModelLabel" aria-hidden="true">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+							<h3 id="addModalLabel">
+								Ask Question
+							</h3>
+						</div>
+						<div class="modal-body container-fluid">
+							{%include "error.html" with id="ask-question_short" message="Your question must be at least 6 characters long." only%}
+							<form>
+								<fieldset>
+									<input type="text" placeholder="Question" id="ask-question"></input>
+									<textarea id="ask-desc" class="span" placeholder="More details, if needed." rows="5"></textarea>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> <button id="ask-submit" class="btn btn-primary btn-success">Submit</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="tab-pane fade" id="answered">
+				<div class="row-fluid">
+					<div class="span12" id="answeredlist">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+window.onload = function(){
+	introJs().setOptions({group:".sessionIntro"}).start();
+};
+</script>
+{%endblock%}

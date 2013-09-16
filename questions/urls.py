@@ -33,5 +33,6 @@ urlpatterns = patterns('',
     url(r'^api/', include(v1_api.urls)),
 
     #Static pages
-    url(r'about/', views.static_page("about.html", "About"))
+    url(r'about/', views.static_page("about.html", "About")),
+    url(r'session-demo/', views.static_page("session-demo.html", "Session Tutorial"))
 )

@@ -86,7 +86,8 @@ function sessionSubmit(event){
 	$("#session-upload-iframe").load(function(){
 		$(th).off("submit");
 		$(th).submit(sessionSubmit);
-		var resp = eval("("+$("#session-upload-iframe").contents().text()+")");
+		//var resp = eval("("+$("#session-upload-iframe").contents().text()+")");
+		var resp = jQuery.parseJSON(""+$("#session-upload-iframe").contents().text());
 		if(resp['success']){
 			document.location="/s/"+resp.slug;
 		}else{
