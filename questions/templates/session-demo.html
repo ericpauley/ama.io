@@ -76,13 +76,13 @@ GLOBALS['owner'] = true
 							<div class="thumbnail white">
 								<div class="row-fluid">
 									<div style="vertical-align:middle;" class="btn-group-vertical question-options">
-										<a href="/s/uwe3/#" class="btn answer-button" disabled="disabled"><i class="icon-ok"></i> Answer</a>
+										<a class="btn answer-button" disabled="disabled"><i class="icon-ok"></i> Answer</a>
 									<div disabled="" id="score-1" class="btn">0</div>
-										<a href="/s/uwe3/#" class="delete btn" data-question="1"><i class="icon-trash"></i> delete</a>
+										<a class="delete btn" data-question="1"><i class="icon-trash"></i> delete</a>
 				
 								</div>
-								<a href="/s/uwe3/#" id="star-1" class="star btn" data-question="1"><i class="icon-star"></i> Star</a>
-								<a class="btn permalink" href="/q/1">Link</a>
+								<a id="star-1" class="star btn" data-question="1"><i class="icon-star"></i> Star</a>
+								<a class="btn permalink">Link</a>
 								<div class="question-area">
 									<h4>Hey John, what do you enjoy most in life?</h4>
 									<p></p><p>I've been a fan for years and hope you answer this!</p>
@@ -110,7 +110,7 @@ GLOBALS['owner'] = true
 					</div>
 				</div>
 				<div id="comment-show">
-					<a href="/s/uwe3/#" class="show-comments" data-question="1">Show comments</a>
+					<a class="show-comments" data-question="1">Show comments</a>
 				</div>
 				<div class="comment-wrapper" id="comment-wrapper-1" style="display: none">
 					<div class="comment-form-wrapper">
@@ -128,12 +128,12 @@ GLOBALS['owner'] = true
 	<div class="thumbnail white">
 		<div class="row-fluid">
 			<div style="vertical-align:middle;" class="btn-group-vertical question-options">
-				<a href="/s/uwe3/#" class="btn answer-button" disabled="disabled"><i class="icon-ok"></i> Answer</a>
+				<a class="btn answer-button" disabled="disabled"><i class="icon-ok"></i> Answer</a>
 				<div disabled="" id="score-2" class="btn">0</div>
-				<a href="/s/uwe3/#" class="delete btn" data-question="2"><i class="icon-trash"></i> delete</a>
+				<a class="delete btn" data-question="2"><i class="icon-trash"></i> delete</a>
 			</div>
-			<a href="/s/uwe3/#" id="star-2" class="star btn" data-question="2"><i class="icon-star"></i> Star</a>
-			<a class="btn permalink" href="/q/2">Link</a>
+			<a id="star-2" class="star btn" data-question="2"><i class="icon-star"></i> Star</a>
+			<a class="btn permalink" >Link</a>
 			<div class="question-area">
 				<h4>Why did you choose your career path?</h4>
 				<p></p><p>Your life has had a lot of ups and downs.  I'm curious what led you to choosing this path, and if you have any regrets.</p>
@@ -160,7 +160,7 @@ GLOBALS['owner'] = true
 			</div>
 		</div>
 		<div id="comment-show">
-			<a href="/s/uwe3/#" class="show-comments" data-question="2">Show comments</a>
+			<a class="show-comments" data-question="2">Show comments</a>
 		</div>
 		<div class="comment-wrapper" id="comment-wrapper-2" style="display: none">
 			<div class="comment-form-wrapper">
@@ -175,10 +175,10 @@ GLOBALS['owner'] = true
 </div>
 </div>
 					</div>
-					<a href="{%if user.is_authenticated%}#askModal{%else%}#loginModal{%endif%}" class="btn btn-large btn-success ask-btn affix" data-toggle="modal" data-spy="affix" data-offset-top="405">
+					<a  class="btn btn-large btn-success ask-btn affix" data-toggle="modal" data-spy="affix" data-offset-top="405">
 						Ask
 					</a>
-					<a href="{%if user.is_authenticated%}#askModal{%else%}#loginModal{%endif%}" class="btn btn-large btn-success ask-btn-bottom" data-toggle="modal">
+					<a  class="btn btn-large btn-success ask-btn-bottom" data-toggle="modal">
 						Ask
 					</a>
 					<div id="askModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="askModelLabel" aria-hidden="true">
