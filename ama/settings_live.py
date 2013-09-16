@@ -28,6 +28,9 @@ STATICFILES_STORAGE = 'storages.backends.s3botomulti.S3BotoStorage_static'
 EMAIL_BACKEND = 'django_ses.SESBackend'
 THUMBNAIL_DEFAULT_STORAGE = 'storages.backends.s3botomulti.S3BotoStorage_media'
 
+AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
+AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_KEY']
+
 STORAGES_S3BOTO_MULTI = {
     'media' : {
         'AWS_ACCESS_KEY_ID' : os.environ['AWS_ACCESS_KEY_ID'],
