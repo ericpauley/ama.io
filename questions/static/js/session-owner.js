@@ -41,6 +41,19 @@ $("#image-form-file").change(function(){
 	}
 });
 
+$("#timing-modal-submit").click(function(){
+	$.ajax("/api/v1/session/"+GLOBALS['session']+"/", {
+		type:"PATCH",
+		data:JSON.stringify({
+			start_time:$("#session-start-date").val()+" "+$("#session-start-time").val(),
+			end_time:$("#session-end-date").val()+" "+$("#session-end-time").val()
+		}),
+		contentType: 'application/json; charset=utf-8'
+	}).success(function(){
+		location.reload();
+	});
+});
+
 $("#image-form-iframe").load(function(){
 	var resp = eval("("+$("#image-form-iframe").contents().text()+")");
 		if(resp['success']){
@@ -171,5 +184,3 @@ $("#delete-session").click(function(){
 		});
 	});
 });
-
-console.log(sessionClicks);

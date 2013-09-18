@@ -57,6 +57,7 @@ GLOBALS['owner'] = true
 			{%endif%}
 			<div id="add-image" class="btn" {%if session.image%}style="display:none"{%endif%}>Add Image</div>
 			<div id="remove-image" class="btn" {%if not session.image%}style="display:none"{%endif%}>Remove Image</div>
+			{%if session.before%}<a href="#timingModal" data-toggle="modal" id="edit-timing" class="btn">Reschedule Session</a>{%endif%}
 		</div>
 		{%endif%}
 	</div>
@@ -148,4 +149,25 @@ GLOBALS['owner'] = true
 		</div>
 	</div>
 </div>
+{% if session.owner == user%}
+<div id="timingModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="timingModalLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		<h3 id="timingModalLabel">Edit Session Timing</h3>
+	</div>
+	<form id="timing-modal-form" class="form-horizontal">
+		<div class="modal-body">
+			<input type="date" name="start-date" value="{{ session.start_time|date:'Y-m-d' }}" id="session-start-date"/> Start Date<br/>
+			<input type="time" name="start-time" value="{{ session.start_time|date:'H:i' }}" id="session-start-time"/> Start Time<br/>
+			<input type="date" name="end-date" value="{{ session.end_time|date:'Y-m-d' }}" id="session-end-date"/> End Date<br/>
+			<input type="time" name="end-time" value="{{ session.end_time|date:'H:i' }}" id="session-end-time"/> End Time
+		</div>
+	</form>
+	<div class="modal-footer">
+		<div class="btn" data-dismiss="modal" aria-hidden="true">Close</div>
+		<div id="timing-modal-submit" class="btn btn-success">Apply</div>
+	</div>
+	
+</div>
+{% endif %}
 {%endblock%}
