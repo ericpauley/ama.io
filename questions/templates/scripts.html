@@ -28,6 +28,8 @@ GLOBALS['auth'] = false
 $(document).ready(function(){
         introJs().setOptions({group:".firstIntro"}).start().oncomplete(function(){
            $.post("/api/v1/user/make_old/",{username:'{{user}}'});
+        }).onexit(function(){
+            $.post("/api/v1/user/make_old/",{username:'{{user}}'});
         });
 });
 function make_dev(){

@@ -216,6 +216,8 @@ GLOBALS['owner'] = true
 window.onload = function(){
 	introJs().setOptions({group:".sessionIntro"}).start().oncomplete(function(){
 		window.location.href = '/';
+	}).onexit(function(){
+		window.location.href = '/';
 	});
 };
 </script>
