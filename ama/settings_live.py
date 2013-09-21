@@ -57,3 +57,6 @@ AWS_SES_REGION_ENDPOINT = 'email.us-east-1.amazonaws.com'
 DEBUG = (os.environ.get("DEBUG", "FALSE") == "TRUE")
 TEMPLATE_DEBUG = DEBUG
 THUMBNAIL_DEBUG = DEBUG
+
+for host in os.environ.get("ALLOWED_HOSTS", "").split():
+    ALLOWED_HOSTS += [host]
