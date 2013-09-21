@@ -212,7 +212,6 @@ class SessionResource(CachedResource, ModelResource):
     num_viewers = fields.IntegerField(attribute="num_viewers", readonly=True)
     time = fields.DateField()
     image = fields.FileField(attribute="image", readonly=True)
-    thumbnail = fields.CharField(readonly=True)
     state = fields.CharField(readonly=True)
 
     def dehydrate_state(self, bundle):
@@ -222,12 +221,6 @@ class SessionResource(CachedResource, ModelResource):
             return "after"
         else:
             return "running"
-
-    def dehydrate_thumbnail(self, bundle):
-        if bundle.obj.image:
-            return get_thumbnailer(bundle.obj.image).get_thumbnail({'size': (220, 220), 'crop': True}).url
-        else:
-            return None
 
     def dehydrate_time(self, bundle):
         return datetime.datetime.now()
@@ -399,11 +392,10 @@ class SessionResource(CachedResource, ModelResource):
                     'error': traceback.format_exc(),
                 }, HttpBadRequest)
             s.save()
-            thumbnailer = get_thumbnailer(s.image)
             return self.create_response(request, {
                 'success': True,
                 'slug': s.slug,
-                'thumbnail': thumbnailer.get_thumbnail({'size': (220, 220), 'crop': True}).url
+                'thumbnail': s.image.url
             })
         else:
             s.image = None

@@ -196,12 +196,16 @@ function check(){
 			$("#session-title-edit:hidden").val(data['title']);
 			$("#session-subtitle-edit:hidden").val(data['subtitle']);
 			$("#session-desc-edit:hidden").val(data['desc']);
-			if(data['thumbnail']){
-				$("#session-img-inner").attr("src", data['thumbnail']).show()
-				$("#remove-image").show()
-				$("#add-image").hide()
+			if(data['image']){
+				if($("#session-img-inner").attr("src") != data['image']){
+					$("#session-img").show()
+					$("#session-img-inner").attr("src", data['image'])
+					$("#remove-image").show()
+					$("#add-image").hide()
+				}
 			}else{
 				$("#session-img").hide()
+				$("#session-img-inner").attr("src", null)
 				$("#remove-image").hide()
 				$("#add-image").show()
 			}

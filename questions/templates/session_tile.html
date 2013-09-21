@@ -5,7 +5,7 @@
 	<div class="thumbnail session-tile-wrapper span8">
 		<div class="session-img">
 			{% if session.image %}
-			<img width="100" height="100" src="{{session.image|thumbnail_url:'session'}}" />
+			<img width="100" height="100" src="{{session.image.url}}" />
 			{% else %}
 			<img width="100" height="100" src="{%static 'images/default-session.png'%}" />
 			{% endif %}

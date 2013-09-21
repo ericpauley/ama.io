@@ -215,12 +215,6 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
-THUMBNAIL_ALIASES = {
-    '': {
-        'session': {'size': (220, 220), 'crop': True},
-    },
-}
-
 try:
     from ama.settings_local import *
     print("Using local settings...")

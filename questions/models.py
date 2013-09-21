@@ -11,6 +11,7 @@ from annoying.fields import AutoOneToOneField
 from south.modelsinspector import add_introspection_rules
 import django.contrib.sessions.models
 from allauth.socialaccount import providers
+from easy_thumbnails.fields import ThumbnailerImageField
 from json import loads
 from random import choice
 from django import db
@@ -102,7 +103,7 @@ class AMASession(SluggedModel):
     title = models.CharField(max_length=50)
     subtitle = models.CharField(max_length=100)
     desc = models.TextField(max_length=2000)
-    image = models.ImageField(upload_to="session_images")
+    image =  ThumbnailerImageField(upload_to="session_images", resize_source=dict(size=(220, 220), crop=True))
     
     data = JSONField(default={}, blank=True)
     

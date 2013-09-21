@@ -15,7 +15,7 @@ DATABASES = {
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': 'ama.uxft7n.0001.use1.cache.amazonaws.com:11211',
+        'LOCATION': os.environ['CACHE_URL'],
     }
 }
 

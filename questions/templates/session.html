@@ -72,7 +72,7 @@ GLOBALS['owner'] = true
 	{%endif%}
 
 	<div id ="session-img">
-		<img id="session-img-inner" src="{{ session.image|thumbnail_url:'session' }}" width="220" {% if not session.image %}style="display:none"{%endif%} class="img-rounded max-size-image"/>
+		<img id="session-img-inner" {% if session.image%}src="{{ session.image.url }}"{%endif%} width="220" {% if not session.image %}style="display:none"{%endif%} class="img-rounded max-size-image"/>
 	</div>
 
 	<div id="session-desc" class="row-fluid">
