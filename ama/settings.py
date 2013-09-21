@@ -215,12 +215,6 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
-try:
-    from ama.settings_local import *
-    print("Using local settings...")
-except ImportError:
-    pass
-    
 INTERNAL_IPS = ('127.0.0.1')
 
 def custom_show_toolbar(request):
@@ -246,8 +240,14 @@ DEBUG_TOOLBAR_PANELS = (
     'debug_toolbar.panels.sql.SQLDebugPanel'
 )
 
+ENV = dict(os.environ)
+
+try:
+    from ama.settings_local import *
+    print("Using local settings...")
+except ImportError:
+    pass
+
 TEMPLATE_DEBUG = DEBUG
 THUMBNAIL_DEBUG = True
 MANAGERS = ADMINS
-
-ENV = dict(os.environ)
