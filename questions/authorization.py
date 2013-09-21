@@ -46,7 +46,6 @@ class SessionAuthorization(Authorization):
 
 class CommentAuthorization(ReadOnlyAuthorization):
     def create_detail(self, object_list, bundle):
-        print(bundle.obj)
         return bundle.request.user.is_authenticated()
 
 class QuestionAuthorization(ReadOnlyAuthorization):

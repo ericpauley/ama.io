@@ -57,7 +57,6 @@ USE_TZ = True
 
 # Auto-generated for local dev purposes
 PROJECT_PATH = os.path.realpath(os.path.join(os.path.dirname(__file__), os.pardir))
-print(PROJECT_PATH)
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"

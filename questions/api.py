@@ -39,7 +39,6 @@ from easy_thumbnails.files import get_thumbnailer
 
 class CachedResource():
     def wrap_view(self, view):
-        print "CACHED RESOURCE"
         return cache_page(Resource.wrap_view(self, view),10)
 
 class UserResource(ModelResource):

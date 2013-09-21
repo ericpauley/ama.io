@@ -60,7 +60,6 @@ class UserMeta(models.Model):
 
 class AMASessionManager(models.Manager):
     def get_query_set(self):
-        print(db.settings.DATABASES['default']['ENGINE'])
         if db.settings.DATABASES['default']['ENGINE'] == "django.db.backends.mysql":
             part = "DATE_SUB(NOW(), INTERVAL 30 second)"
         elif db.settings.DATABASES['default']['ENGINE'] == "django.db.backends.sqlite3":
@@ -303,7 +302,6 @@ class RequestManager(models.Manager):
                     part = models.Q(provider = "twitter") & models.Q(username__iexact=auth.extra_data['screen_name'])
                 query = part if query is None else query | part
             requests = requests.filter(query)
-            print(requests.query)
             return requests
         else:
             return self.none()
@@ -328,7 +326,6 @@ class Request(models.Model):
     @property
     def tweet_url(self):
         return "https://twitter.com/intent/tweet?"+urlencode({"text": choice(tweets) % self.username.encode('utf-8')})
-        print()
 
     @property
     def provider_object(self):
