@@ -22,7 +22,7 @@
 			{%endif%}
 			<a class="btn permalink" href="{%url 'session' question.session.slug%}" >Session</a>
 			{%cache 60 question question.id%}
-			<div class="question-area">
+			<div {%if user == question.target%}class="question-area110"{%else%}class="question-area60"{%endif%}>
 				<h4>{{question.question}}</h4>
 				<p>{{question.desc|markdown:"safe"}}
 				</p>

@@ -18,7 +18,7 @@
 			<a href="#" id="star-{{question.id}}" class="star btn {{#question.starred}} btn-info{{/question.starred}}" data-question="{{question.id}}"><i class="icon-star"></i> Star</a>
 			{{/isowner}}
 			<a class="btn permalink" href="/q/{{question.id}}" >Link</a>
-			<div class="question-area">
+			<div class="{{#isowner}}question-area110{{/isowner}}{{^isowner}}question-area60{{/isowner}}">
 				<h4>{{question.question}}</h4>
 				<p>{{{question.desc_html}}}
 				</p>

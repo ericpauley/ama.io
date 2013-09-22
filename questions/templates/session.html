@@ -2,6 +2,7 @@
 {%load staticfiles%}
 {% load ihatethumbnails %}
 {% load jstemplate %}
+{%block title%}{{session.owner}}'s AMA{%endblock%}
 {%block prescript%}
 <script type="text/javascript">
 GLOBALS['session'] = "{{session.slug}}"
