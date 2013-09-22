@@ -118,7 +118,7 @@ ROOT_URLCONF = 'ama.urls'
 WSGI_APPLICATION = 'ama.wsgi.application'
 
 TEMPLATE_DIRS = (
-    os.path.join(PROJECT_PATH, 'template')
+    os.path.join(PROJECT_PATH, 'templates')
 )
 
 INSTALLED_APPS = (
