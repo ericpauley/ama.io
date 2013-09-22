@@ -16,6 +16,7 @@ path.py
 MySQL-python==1.2.3
 https://bitbucket.org/russmo/django-storages-multi/get/default.zip
 boto
+git+https://github.com/Kaiju-Tech/haystack-cloudsearch.git@develop
 django-ses
 easy-thumbnails
 python-memcached

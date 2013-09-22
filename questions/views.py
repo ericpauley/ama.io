@@ -2,10 +2,11 @@ from django.contrib.auth.models import User
 from django.db.models import Sum
 from django.http import Http404
 from django.shortcuts import render,redirect
-from questions.models import AMASession, Request, AMAQuestion
+from questions.models import AMASession, Request, AMAQuestion, AMAVote
 from datetime import datetime
 from django.core.urlresolvers import reverse
 from django.contrib import messages
+from json import dumps
 
 def live(request):
     return render(request, "session_list.html", {'sessions': AMASession.objects.live()[:50], 'title':'Live Sessions'})
@@ -67,6 +68,7 @@ def session(request, slug):
         s.mark_viewed(request)
         answered = s.get_marked_questions(request).exclude(answer=None)
         unanswered = s.get_marked_questions(request).filter(answer=None)
+        votes = dumps(dict([(str(vote.question_id),vote.value) for vote in request.user.votes.filter(question__session=s)]))
         if not s.owner.meta.is_verified:
             if s.owner == request.user:
                 messages.add_message(request, messages.WARNING, 'You have not yet linked a verified Twitter account. You can do so <a href="/accounts/twitter/login/?process=connect">here</a>.')
@@ -74,7 +76,7 @@ def session(request, slug):
                 messages.add_message(request, messages.WARNING, 'This user has not verified their account with Twitter. Beware of impersonators.')
     except AMASession.DoesNotExist:
         raise Http404
-    return render(request, "session.html", {'session':s, 'unanswered': unanswered, 'answered': answered})
+    return render(request, "session.html", {'session':s, 'unanswered': unanswered, 'answered': answered, 'votes':votes})
 
 def settings(request):
     if request.user.is_anonymous():

@@ -51,6 +51,20 @@ STORAGES_S3BOTO_MULTI = {
     }
 }
 
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack_cloudsearch.cloudsearch_backend.CloudsearchSearchEngine',
+        'AWS_ACCESS_KEY_ID' : os.environ['AWS_ACCESS_KEY_ID'],
+        'AWS_SECRET_KEY' : os.environ['AWS_SECRET_KEY'],
+        'IP_ADDRESS': '0.0.0.0',
+        #'SEARCH_DOMAIN_PREFIX': 'optional string to namespace your search domain with; defaults to haystack'
+        #'MAX_SPINLOCK_TIME': 60*60,  # number of seconds before processing spinlocks give up
+        #'PREPARE_SILENTLY': False, # If False, raise ValidationError if preparation of uploads fails.
+                                    # If True, continue with upload
+        #'REGION': 'us-east-1', # The region you want to create the search domain in. Defaults to 'us-east-1'
+    }
+}
+
 AWS_SES_REGION_NAME = 'us-east-1'
 AWS_SES_REGION_ENDPOINT = 'email.us-east-1.amazonaws.com'
 

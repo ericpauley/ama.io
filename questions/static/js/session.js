@@ -213,6 +213,7 @@ function check(){
 			$(".question").css("display", "none");
 			$.each(data['questions'], function(index, question){
 				var id = question['id'];
+				question['vote'] = GLOBALS['votes'][String(id)] || 0;
 				ids.push(id);
 				$("#question-"+id).not(".deleted").css("display", "block");
 				if(!$("#question-"+id).length){
@@ -220,7 +221,7 @@ function check(){
 						question:question,
 						isauthenticated: GLOBALS['auth'],
 						isowner:GLOBALS['owner'],
-						running:data['state'] == 'running'
+						running:data['state'] == 'running',
 					};
 					question['desc_html'] = markdown.toHTML(question['desc'])
 					question['html'] = Mustache.template("question").render(val);
@@ -229,7 +230,6 @@ function check(){
 					}else{
 						$("#answeredlist").append(question['html']);
 					}
-					return;
 				}
 				if(question['answer'] == null){
 					if($("#unansweredlist").has("#question-"+id).length == 0){
@@ -247,7 +247,7 @@ function check(){
 				if(!$("#question-"+id).hasClass("lock")){
 					$("#score-"+id).text(question['score']);
 					$("#question-"+id).find(".answer-button").attr("disabled", !data['state'] == "running");
-					/*if(question['vote'] == 1){
+					if(question['vote'] == 1){
 						$("#upvote-"+id).addClass("btn-success")
 					}else{
 						$("#upvote-"+id).removeClass("btn-success")
@@ -256,7 +256,7 @@ function check(){
 						$("#downvote-"+id).addClass("btn-danger")
 					}else{
 						$("#downvote-"+id).removeClass("btn-danger")
-					}*/
+					}
 					if(question['starred'] == 1){
 						$("#star-"+id).addClass("btn-info");
 					}else{
