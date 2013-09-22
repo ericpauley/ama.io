@@ -4,7 +4,7 @@
 {%block content%}
 	{%cache 10 homepage%}
 	<div class="cell white thumbnail firstIntro" data-intro="Check out the AMA sessions that are running now.  Ask questions and interact live!" data-step="4">
-		<h1>Live Sessions</h1>
+		<h2>Live Sessions</h2>
 		{%if user.is_authenticated%}
 		{%else%}
 		{%endif%}
@@ -20,7 +20,7 @@
 		{%endif%}
 	</div>
 	<div class="cell white thumbnail home-cell firstIntro" data-intro="Here are the most anticipated upcoming AMA sessions.  Mark these dates on your calendar!" data-step="5">	
-		<h1>Upcoming</h1>
+		<h2>Upcoming</h2>
 		{%if user.is_authenticated%}
 
 		{%else%}
@@ -39,7 +39,7 @@
 	</div>
 	<div class="white cell thumbnail home-cell firstIntro" data-intro="If you want someone to do an AMA, request them here.  You can see top requests, and even tweet at people to encrouage them to come and start their own AMA session." data-step="6">
 		<div class="clearfix">
-			<h1 class="pull-left">Top Requests</h1>
+			<h2 class="pull-left">Top Requests</h2>
 			{%if user.is_authenticated%}
 			<div class="btn btn-title-inline" href="#requestModal" data-toggle="modal">Request an AMA</div>
 			{%else%}

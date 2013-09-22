@@ -41,6 +41,9 @@
 		{%endif%}
 		<li class="divider"></li>
 		<li><a tabindex="-1" href="{% url 'account_change_password'%}" data-toggle="modal"><i class="icon-cog"></i> Change Password</a></li>
+		{%if not user.socialaccount_set.count%}
+		<li><a tabindex="-1" href="/accounts/twitter/login/?process=connect" data-toggle="modal"><i class="icon-globe"></i> Connect to Twitter</a></li>
+		{%endif%}
 	</ul>
 	<a class="btn" href="{%url 'logout'%}">Logout</a>
 </div>
