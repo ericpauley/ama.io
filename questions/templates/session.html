@@ -30,6 +30,8 @@ GLOBALS['owner'] = true
 				<span id="session-title">{{session.title}}</span>
 				{%if session.running%}
 				<span id="live-now"> [Live&nbsp;Now!]</span>
+				{%else%}
+				<span id ="not-live"> [Session&nbsp;Ended]</span>
 				{%endif%}
 			</div>
 		</div>

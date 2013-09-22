@@ -217,6 +217,12 @@ input[type="file"]{
 	font-weight: bold;
 }
 
+#not-live{
+	padding-left: 5px;
+	color: #C70808;
+	font-weight: bold;
+}
+
 #session-title{
 	padding-right: 5px;
 	font-size: 30px;
