@@ -7,7 +7,11 @@
 <script type="text/javascript">
 GLOBALS['session'] = "{{session.slug}}"
 GLOBALS['question_full'] = false
+{% if votes%}
 GLOBALS['votes'] = {{votes|safe}}
+{%else%}
+GLOBALS['votes'] = {}
+{%endif%}
 {%if session.owner == user%}
 GLOBALS['owner'] = true
 {%endif%}

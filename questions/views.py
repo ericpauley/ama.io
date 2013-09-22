@@ -68,7 +68,10 @@ def session(request, slug):
         s.mark_viewed(request)
         answered = s.get_marked_questions(request).exclude(answer=None)
         unanswered = s.get_marked_questions(request).filter(answer=None)
-        votes = dumps(dict([(str(vote.question_id),vote.value) for vote in request.user.votes.filter(question__session=s)]))
+        if request.user.is_authenticated():
+            votes = dumps(dict([(str(vote.question_id),vote.value) for vote in request.user.votes.filter(question__session=s)]))
+        else:
+            votes = None
         if not s.owner.meta.is_verified:
             if s.owner == request.user:
                 messages.add_message(request, messages.WARNING, 'You have not yet linked a verified Twitter account. You can do so <a href="/accounts/twitter/login/?process=connect">here</a>.')

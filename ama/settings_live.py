@@ -57,6 +57,7 @@ HAYSTACK_CONNECTIONS = {
         'AWS_ACCESS_KEY_ID' : os.environ['AWS_ACCESS_KEY_ID'],
         'AWS_SECRET_KEY' : os.environ['AWS_SECRET_KEY'],
         'IP_ADDRESS': '0.0.0.0',
+        'SEARCH_DOMAIN_PREFIX': 'ama',
         #'SEARCH_DOMAIN_PREFIX': 'optional string to namespace your search domain with; defaults to haystack'
         #'MAX_SPINLOCK_TIME': 60*60,  # number of seconds before processing spinlocks give up
         #'PREPARE_SILENTLY': False, # If False, raise ValidationError if preparation of uploads fails.

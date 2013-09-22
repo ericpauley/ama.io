@@ -4,9 +4,9 @@ from questions.models import AMASession
 
 class AMASessionIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
-    owner = indexes.CharField(model_attr='user')
-    start_time = indexes.DateTimeField(model_attr='start_time')
-    end_time = indexes.DateTimeField(model_attr='end_time')
+
+    class Meta:
+    	index_name = "sessions"
 
     def get_model(self):
         return AMASession
