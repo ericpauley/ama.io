@@ -162,9 +162,19 @@ function answer(id){
 $("#ask-submit").click(function(){
 	$.post("/api/v1/session/"+GLOBALS['session']+"/ask/",
 		{'question': $("#ask-question").val(), 'desc': $("#ask-desc").val()},
-		function(){
+		function(data){
 			$("#askModal").modal("hide");
-			check();
+			var question = data['question'];
+			var val ={
+				question:question,
+				isauthenticated: GLOBALS['auth'],
+				isowner:GLOBALS['owner'],
+				running:data['state'] == 'running',
+			};
+			question['desc_html'] = markdown.toHTML(question['desc'])
+			question['html'] = Mustache.template("question").render(val);
+			$("#unansweredlist").prepend(question['html']);
+			GLOBLAS['lock'] = true;
 		}).fail(function(xhr){
 			var err = eval("(" + xhr.responseText + ")");
 			$("#ask-"+err.reason).show();

@@ -121,6 +121,15 @@ class AMASession(SluggedModel):
         return AMAQuestion.objects.vote_marked(request).filter(session=self)
     
     @property
+    def state(self):
+        if self.before:
+            return "before"
+        elif self.after:
+            return "after"
+        else:
+            return "running"
+    
+    @property
     def absolute_url(self):
         return '/s/%i/' % self.id
     

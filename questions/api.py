@@ -211,15 +211,7 @@ class SessionResource(CachedResource, ModelResource):
     num_viewers = fields.IntegerField(attribute="num_viewers", readonly=True)
     time = fields.DateField()
     image = fields.FileField(attribute="image", readonly=True)
-    state = fields.CharField(readonly=True)
-
-    def dehydrate_state(self, bundle):
-        if bundle.obj.before:
-            return "before"
-        elif bundle.obj.after:
-            return "after"
-        else:
-            return "running"
+    state = fields.CharField(attribute="state", readonly=True)
 
     def dehydrate_time(self, bundle):
         return datetime.datetime.now()
@@ -440,9 +432,11 @@ class SessionResource(CachedResource, ModelResource):
         q.question = question
         q.desc = desc
         q.save()
-
+        qr = QuestionResource()
         return self.create_response(request, {
             'success': True,
+            "question": qr.full_dehydrate(qr.build_bundle(obj=q, request=request)),
+            "state": s.state,
         })
 
 class QuestionResource(ModelResource):
