@@ -670,7 +670,7 @@ class RequestResource(ModelResource):
         try:
             ama_request = Request.objects.get(provider=provider, username__iexact=username)
         except Request.DoesNotExist:
-            if Request.objects.filter(creator=request.user, created__gte=datetime.datetime.now() - datetime.timedelta(hours=1)).count():
+            if not request.user.is_staff and Request.objects.filter(creator=request.user, created__gte=datetime.datetime.now() - datetime.timedelta(hours=1)).count():
                 return self.create_response(request, {
                     'success': False,
                     'reason': 'bad_timing',
