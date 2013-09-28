@@ -103,15 +103,15 @@ GLOBALS['owner'] = true
 	{%endfor%}
 	<div class="row-fluid qa-section">
 		<ul id="sessiontabs" class="nav nav-tabs">
-			<li class="active">
+			<li {%if not session.after%}class="active"{%endif%}>
 				<a href="#unanswered" data-toggle="tab">Unanswered Questions</a>
 			</li>
-			<li>
+			<li {%if session.after%}class="active"{%endif%}>
 				<a href="#answered" data-toggle="tab">Answered Questions</a>
 			</li>
 		</ul>
 		<div id="sessiontabcontent" class="tab-content">
-			<div class="tab-pane fade active in" id="unanswered">
+			<div class="tab-pane fade{%if not session.after%} active in{%endif%}" id="unanswered">
 				<div class="row-fluid">
 					<div class="span10" id="unansweredlist">
 						{% if session.questions.count == 0 and not session.after and not session.owner == user%}
@@ -148,7 +148,7 @@ GLOBALS['owner'] = true
 					</div>
 				</div>
 			</div>
-			<div class="tab-pane fade" id="answered">
+			<div class="tab-pane fade {%if session.after%} active in{%endif%}" id="answered">
 				<div class="row-fluid">
 					<div class="span12" id="answeredlist">
 					</div>
