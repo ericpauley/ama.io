@@ -174,6 +174,7 @@ $("#ask-submit").click(function(){
 			question['desc_html'] = markdown.toHTML(question['desc'])
 			question['html'] = Mustache.template("question").render(val);
 			$("#unansweredlist").prepend(question['html']);
+			$("#no-questions-asked").hide()
 			GLOBLAS['lock'] = true;
 		}).fail(function(xhr){
 			var err = eval("(" + xhr.responseText + ")");
@@ -221,6 +222,9 @@ function check(){
 			}
 			var ids = [];
 			$(".question").css("display", "none");
+			if(data['questions'].length){
+				$("#no-questions-asked").hide()
+			}
 			$.each(data['questions'], function(index, question){
 				var id = question['id'];
 				question['vote'] = GLOBALS['votes'][String(id)] || 0;

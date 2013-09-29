@@ -115,7 +115,7 @@ GLOBALS['owner'] = true
 				<div class="row-fluid">
 					<div class="span10" id="unansweredlist">
 						{% if session.questions.count == 0 and not session.after and not session.owner == user%}
-							Be the first to ask a question!
+							<div id="no-questions-asked">Be the first to ask a question!</div>
 						{%endif%}
 					</div>
 					{%if not session.after%}
