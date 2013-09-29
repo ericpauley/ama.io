@@ -36,6 +36,8 @@ import base64
 import sys
 import traceback
 from easy_thumbnails.files import get_thumbnailer
+import allauth.account.utils
+from allauth.account.models import EmailAddress
 
 class CachedResource():
     def wrap_view(self, view):
@@ -117,6 +119,11 @@ class UserResource(ModelResource):
                     'success': False,
                     'reason': 'exists',
                 }, HttpConflict)
+        if EmailAddress.objects.filter(email__iexact=email).exists():
+            return self.create_response(request, {
+                    'success': False,
+                    'reason': 'email_exists',
+                }, HttpConflict)
 
         if username+"\n" in open("reserved.txt").readlines():
             return self.create_response(request, {
@@ -125,6 +132,11 @@ class UserResource(ModelResource):
                 }, HttpConflict)
 
         user = User.objects.create_user(username, email, password)
+        allauth.account.utils.setup_user_email(request, user, [EmailAddress(
+                                                                    email=email,
+                                                                    primary=True,
+                                                                    verified=False)])
+        allauth.account.utils.send_email_confirmation(request, user, True)
         user = authenticate(username=username, password=password)
         if user and user.is_active:
             login(request, user)
@@ -145,6 +157,8 @@ class UserResource(ModelResource):
         password = request.POST.get('password', '')
 
         user = authenticate(username=username, password=password)
+        allauth.account.utils.sync_user_email_addresses(user)
+        allauth.account.utils.send_email_confirmation(request, user)
         if user:
             if user.is_active:
                 login(request, user)
