@@ -16,6 +16,7 @@ from json import loads
 from random import choice
 from django import db
 from django.utils import timezone
+from django.core.urlresolvers import reverse
 
 try:
     from urllib import urlencode
@@ -129,6 +130,9 @@ class AMASession(SluggedModel):
 
     def get_marked_questions(self, request):
         return AMAQuestion.objects.vote_marked(request).filter(session=self)
+
+    def get_absolute_url(self):
+        return reverse('session', args=[self.slug])
     
     @property
     def state(self):

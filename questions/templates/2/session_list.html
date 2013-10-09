@@ -1,0 +1,15 @@
+<table align="center" cellspacing="15px">
+	{% for session in sessions %}
+		{% cycle 'hello' '' 'end' as rows silent %}
+		{% if rows == 'hello' %}
+		<tr id="tile-row">
+		{% endif %}
+		<td>
+			<a href="{{session.get_absolute_url}}"><img src="{{session.auto_image}}" width="150" height="150" />
+			</a>
+		</td>
+		{% if rows == 'end' %}
+		</tr>
+		{% endif %}
+	{% endfor %}
+</table>

@@ -38,7 +38,9 @@ import traceback
 from easy_thumbnails.files import get_thumbnailer
 import allauth.account.utils
 from allauth.account.models import EmailAddress
+from allauth.socialaccount.models import SocialApp
 from django.utils import timezone
+from allauth.socialaccount.providers.oauth.client import OAuth
 
 class CachedResource():
     def wrap_view(self, view):
