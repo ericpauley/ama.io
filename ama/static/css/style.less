@@ -41,6 +41,14 @@
 
 /* MAIN ELEMENTS */
 
+* {
+	margin: 0;
+}
+
+html, body {
+	height: 100%;
+}
+
 body {
 	margin: 0;
 	padding: 0;
@@ -70,7 +78,7 @@ input {
 h2 {
 	font-size: 25px;
 	font-weight: bold;
-	margin: 0;
+	margin-bottom: 10px;
 	color: @darkgrey;
 }
 
@@ -109,8 +117,14 @@ h2 {
 }
 
 .container {
-	margin-right: auto;
-	margin-left: auto;
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 auto -78px;
+}
+
+#footer, .push {
+	height: 78px;
 }
 
 /* HEADER */
@@ -118,7 +132,7 @@ h2 {
 #header {
 	width: 100%;
 	height: 50px;
-	margin-top: 10px;
+	padding-top: 10px;
 	font-size: 10pt;
 
 	#center {
@@ -168,6 +182,11 @@ h2 {
 	}
 }
 
+.header-separator{
+	height: 5px;
+	background: @blue;
+}
+
 /* HOME PAGE */
 #home-top {
 	background: @blue;
@@ -206,6 +225,10 @@ h2 {
 	.main-center(600px, 0px, 30px);
 	text-align: center;
 	font-size: 13px;
+
+	table {
+		margin: 0 auto;
+	}
 }
 
 #home-requests {
@@ -217,8 +240,7 @@ h2 {
 	}
 
 	table {
-		margin-top: 25px;
-		margin-bottom: 10px;
+		margin: 25px auto;
 		width: 80%;
 
 		tr:nth-child(even) {
@@ -246,7 +268,6 @@ h2 {
 	}
 
 	h2 {
-		margin-bottom: 10px;
 		color: @white;
 	}
 }
@@ -477,6 +498,7 @@ h2 {
 
 		h2 {
 			color: @white;
+			margin-bottom: 5px;
 		}
 		.main-center(800px, 45px, 0px);
 	}
@@ -496,7 +518,8 @@ h2 {
 
 		#members {
 			border-collapse: separate;
-			
+			margin: 0 auto;
+
 			td {
 				padding: 25px 15px 25px 15px;
 			}
@@ -504,12 +527,27 @@ h2 {
 	}
 }
 
+#contact {
+	text-align: center;
+
+	#contact-info {
+		.main-center(800px, 30px, 0);
+	}
+}
+
 /* FOOTER */
 
 #footer{
 	background: @darkgrey;
-	text-align: center;
-	padding-bottom: 10px;
+
+	#inside {
+		.main-center(800px, 0, 0);
+		text-align: center;
+
+		table {
+			margin: 0 auto;
+		}
+	}
 
 	a {
 		color: @white;
