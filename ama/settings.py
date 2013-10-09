@@ -108,8 +108,9 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
-    # Uncomment the next line for simple clickjacking protection:
-    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'htmlmin.middleware.HtmlMinifyMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'questions.middleware.TimezoneMiddleware',
 )
 
 ROOT_URLCONF = 'ama.urls'
@@ -118,7 +119,7 @@ ROOT_URLCONF = 'ama.urls'
 WSGI_APPLICATION = 'ama.wsgi.application'
 
 TEMPLATE_DIRS = (
-    os.path.join(PROJECT_PATH, 'templates')
+    os.path.join(PROJECT_PATH, 'templates'),
 )
 
 INSTALLED_APPS = (

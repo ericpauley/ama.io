@@ -15,6 +15,7 @@ from easy_thumbnails.fields import ThumbnailerImageField
 from json import loads
 from random import choice
 from django import db
+from django.utils import timezone
 
 try:
     from urllib import urlencode
@@ -76,20 +77,20 @@ class AMASessionManager(models.Manager):
             FROM questions_sessionview
             WHERE questions_sessionview.session_id = questions_amasession.slug
             """
-        }, select_params = [datetime.now() - timedelta(seconds=30)])
+        }, select_params = [timezone.now() - timedelta(seconds=30)])
 
     def live(self):
         return self.all().filter(
-        start_time__lt=datetime.now(),
-        end_time__gt=datetime.now()).order_by('-num_viewers')
+        start_time__lt=timezone.now(),
+        end_time__gt=timezone.now()).order_by('-num_viewers')
 
     def past(self):
         return self.all().filter(
-        end_time__lt=datetime.now()).order_by('-num_views')
+        end_time__lt=timezone.now()).order_by('-num_views')
 
     def upcoming(self):
         return self.all().filter(
-        start_time__gt=datetime.now()).order_by('-num_views')
+        start_time__gt=timezone.now()).order_by('-num_views')
 
 class AMASession(SluggedModel):
     '''
@@ -117,6 +118,15 @@ class AMASession(SluggedModel):
         else:
             return u"%s's AMA Session" % (self.owner.username)
 
+    @property 
+    def auto_image(self):
+        try:
+            return self.image.url
+        except ValueError:
+            for acc in self.owner.socialaccount_set.all():
+                return acc.get_avatar_url()
+            return None
+
     def get_marked_questions(self, request):
         return AMAQuestion.objects.vote_marked(request).filter(session=self)
     
@@ -142,28 +152,28 @@ class AMASession(SluggedModel):
         return self.questions.exclude(answer=None)
     
     def time_left(self):
-        td = self.end_time - datetime.now(tzlocal())
+        td = self.end_time - timezone.now()
         return ":".join(str(td).split(":")[:2])
 
     def time_until(self):
-        td = self.start_time - datetime.now(tzlocal())
+        td = self.start_time - timezone.now()
         return ":".join(str(td).split(":")[:2])
 
     @property
     def near_end(self):
-        return self.end_time - datetime.now(tzlocal()) < timedelta(minutes=30)
+        return self.end_time - timezone.now() < timedelta(minutes=30)
 
     @property
     def running(self):
-        return self.start_time<=datetime.now(tzlocal())<=self.end_time
+        return self.start_time<=timezone.now()<=self.end_time
 
     @property
     def after(self):
-        return datetime.now(tzlocal())>self.end_time
+        return timezone.now()>self.end_time
     
     @property
     def before(self):
-        return self.start_time>datetime.now(tzlocal())
+        return self.start_time>timezone.now()
 
     def mark_viewed(self, request):
         if(request.user.is_authenticated()):

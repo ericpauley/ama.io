@@ -167,8 +167,8 @@
 				<input type="number" name="duration" placeholder="Approx. length (hours)" min="0" max="100" id="session-create-title" class="createIntro" data-intro="Estimate how long you plan to run your session.  You can always end early." data-step="3"/>
 				<textarea id="session-desc" name="desc" placeholder="Description" maxlength="2000" rows="5" class="createIntro" data-intro="Explain who you are, promote your social links, or include any other information in the description." data-step="4"></textarea>	
 				<span class="createIntro" data-intro="Decide when you want to do your AMA.  For best results, schedule it at least a few days later." data-step="5">
-					<input type="date" name="date" value="{% now '%Y-%m-%d' %}" id="session-create-date"/> Schedule a Date<br/>
-					<input type="time" name="time" value="{% now '%H:%M' %}" id="sesion-create-time"/> Schedule a Time
+					<input type="date" name="date" value="{{now|date:'Y-m-d' }}" id="session-create-date"/> Schedule a Date<br/>
+					<input type="time" name="time" value="{{now|date:'H:i' }}" id="sesion-create-time"/> Schedule a Time
 				</span>
 				<input type="file" name="image" id="session-create-image" class="createIntro" data-intro="Choose an image for your AMA session.  It's good to take a current image of yourself, as proof that you are who you say you are." data-step="6"/> Set the image.
 			</fieldset>

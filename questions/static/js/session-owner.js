@@ -26,6 +26,20 @@ $("#session-title-edit").blur(function(){
 	}
 });
 
+$("#extend-session").click(function(){
+	confirm("Extend your session for another hour?", function(){
+		$.ajax("/api/v1/session/"+GLOBALS['session']+"/", {
+			type:"PATCH",
+			data:JSON.stringify({
+				end_time:Date.parse()
+			}),
+			contentType: 'application/json; charset=utf-8'
+		}).success(function(){
+			location.reload();
+		});
+	});
+})
+
 $("#session-img").click(function(){
 	$("#image-form-file").click();
 });
@@ -45,8 +59,8 @@ $("#timing-modal-submit").click(function(){
 	$.ajax("/api/v1/session/"+GLOBALS['session']+"/", {
 		type:"PATCH",
 		data:JSON.stringify({
-			start_time:$("#session-start-date").val()+" "+$("#session-start-time").val(),
-			end_time:$("#session-end-date").val()+" "+$("#session-end-time").val()
+			start_time:$("#session-start-date").val()+" "+$("#session-start-time").val()+createOffset(new Date()),
+			end_time:$("#session-end-date").val()+" "+$("#session-end-time").val()+createOffset(new Date())
 		}),
 		contentType: 'application/json; charset=utf-8'
 	}).success(function(){

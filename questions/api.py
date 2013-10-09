@@ -38,6 +38,7 @@ import traceback
 from easy_thumbnails.files import get_thumbnailer
 import allauth.account.utils
 from allauth.account.models import EmailAddress
+from django.utils import timezone
 
 class CachedResource():
     def wrap_view(self, view):
@@ -224,11 +225,11 @@ class SessionResource(CachedResource, ModelResource):
     questions = fields.ToManyField('questions.api.QuestionResource', readonly=True, attribute='questions', null=True, use_in='detail', full=True, related_name='session')
     num_viewers = fields.IntegerField(attribute="num_viewers", readonly=True)
     time = fields.DateField()
-    image = fields.FileField(attribute="image", readonly=True)
+    image = fields.CharField(attribute="auto_image", readonly=True)
     state = fields.CharField(attribute="state", readonly=True)
 
     def dehydrate_time(self, bundle):
-        return datetime.datetime.now()
+        return timezone.now()
 
     class Meta:
         queryset = AMASession.objects.all()
@@ -297,9 +298,9 @@ class SessionResource(CachedResource, ModelResource):
                         'success': False,
                         'reason': 'too_short',
                     }, HttpBadRequest)
-            s.start_time = parser.parse('%s %s' % (request.POST['date'], request.POST['time']))
-            if s.start_time.replace(tzinfo=None) < datetime.datetime.now():
-                s.start_time = datetime.datetime.now()
+            s.start_time = parser.parse('%s %s' % (request.POST['date'], request.POST['time']), ignoretz=True)
+            if s.start_time.replace(tzinfo=timezone.get_current_timezone()) < timezone.now():
+                s.start_time = timezone.now()
             s.end_time = s.start_time + datetime.timedelta(hours=duration)
         except:
             return self.create_response(request, {
@@ -309,7 +310,7 @@ class SessionResource(CachedResource, ModelResource):
         
         if not request.user.is_staff:
             last = request.user.sessions.order_by("-created")[:1]
-            if last and last[0].created.replace(tzinfo=None) > datetime.datetime.utcnow() - datetime.timedelta(hours=1):
+            if last and last[0].created > timezone.now() - datetime.timedelta(hours=1):
                 return self.create_response(request, {
                     'success': False,
                     'reason': 'too_soon',
@@ -400,7 +401,7 @@ class SessionResource(CachedResource, ModelResource):
             return self.create_response(request, {
                 'success': True,
                 'slug': s.slug,
-                'thumbnail': s.image.url
+                'thumbnail': s.auto_image,
             })
         else:
             s.image = None
@@ -408,6 +409,7 @@ class SessionResource(CachedResource, ModelResource):
             return self.create_response(request, {
                 'success': True,
                 'slug': s.slug,
+                'thumbnail': s.auto_image,
             })
 
     def ask(self, request, pk, **kwargs):

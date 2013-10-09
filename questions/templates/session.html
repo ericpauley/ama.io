@@ -59,12 +59,13 @@ GLOBALS['owner'] = true
 		<div id="owner-btns">
 		{%if session.running%}
 			<div id="end-session" class="btn">End Session</div>
+			<div id="extend-session" class="btn">Extend Session</div>
 			{%endif%}
 			{%if session.questions.count == 0 %}
 			<div id="delete-session" class="btn">Delete Session</div>
 			{%endif%}
-			<div id="add-image" class="btn" {%if session.image%}style="display:none"{%endif%}>Add Image</div>
-			<div id="remove-image" class="btn" {%if not session.image%}style="display:none"{%endif%}>Remove Image</div>
+			<div id="add-image" class="btn" {%if session.auto_image%}style="display:none"{%endif%}>Add Image</div>
+			<div id="remove-image" class="btn" {%if not session.auto_image%}style="display:none"{%endif%}>Remove Image</div>
 			{%if session.before%}<a href="#timingModal" data-toggle="modal" id="edit-timing" class="btn">Reschedule Session</a>{%endif%}
 		</div>
 		{%endif%}
@@ -80,7 +81,7 @@ GLOBALS['owner'] = true
 	{%endif%}
 
 	<div id ="session-img">
-		<img id="session-img-inner" {% if session.image%}src="{{ session.image.url }}"{%endif%} width="220" {% if not session.image %}style="display:none"{%endif%} class="img-rounded max-size-image"/>
+		<img id="session-img-inner" {% if session.auto_image%}src="{{ session.auto_image }}"{%endif%} width="220" {% if not session.auto_image %}style="display:none"{%endif%} class="img-rounded max-size-image"/>
 	</div>
 
 	<div id="session-desc" class="row-fluid">
