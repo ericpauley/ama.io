@@ -79,7 +79,7 @@ def session(request, slug):
                 messages.add_message(request, messages.WARNING, 'This user has not verified their account with Twitter. Beware of impersonators.')
     except AMASession.DoesNotExist:
         raise Http404
-    return render(request, "session.html", {'session':s, 'unanswered': unanswered, 'answered': answered, 'votes':votes})
+    return render(request, "2/session_page.html", {'session':s, 'unanswered': unanswered, 'answered': answered, 'votes':votes})
 
 def settings(request):
     if request.user.is_anonymous():

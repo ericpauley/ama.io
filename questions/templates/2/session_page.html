@@ -1,4 +1,35 @@
 {% extends "2/base.html" %}
+{%load staticfiles%}
+{% load jstemplate %}
+
+{%block title%}{{session.title}}{%endblock%}
+
+{%block prescript%}
+<script type="text/javascript">
+GLOBALS['session'] = "{{session.slug}}"
+GLOBALS['question_full'] = false
+{% if votes%}
+GLOBALS['votes'] = {{votes|safe}}
+{%else%}
+GLOBALS['votes'] = {}
+{%endif%}
+{%if session.owner == user%}
+GLOBALS['owner'] = true
+{%endif%}
+</script>
+{%endblock%}
+
+{%block postscript%}
+{%if session.owner == user%}
+<script type="text/javascript" src="{% static 'js/session-owner.js' %}">
+</script>
+{%endif%}
+<script type="text/javascript" src="{% static 'js/session.js' %}">
+</script>
+{%mustachejs "comment"%}
+{%mustachejs "question"%}
+{%endblock%}
+
 {% block content %}
 <div id="session-header">
 	<div id="info">
