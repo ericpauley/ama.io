@@ -32,5 +32,7 @@ urlpatterns = patterns('',
 
     #Static pages
     url(r'about/', views.static_page("2/about.html", "About"), name="about"),
+    url(r'session/', views.static_page("2/session_page.html", "Session"), name="session"),
+    url(r'sessions/', views.static_page("2/all_sessions.html", "Sessions"), name="sessions"),   
     url(r'demo/', views.static_page("session-demo.html", "Session Tutorial"), name="demo")
 )
