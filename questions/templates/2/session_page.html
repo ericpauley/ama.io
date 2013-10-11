@@ -20,170 +20,143 @@ GLOBALS['owner'] = true
 {%endblock%}
 
 {%block postscript%}
-{%if session.owner == user%}
+<script type="text/javascript" src="{% static 'js/session-angular.js' %}">
+</script>
+{%comment%}{%if session.owner == user%}
 <script type="text/javascript" src="{% static 'js/session-owner.js' %}">
 </script>
 {%endif%}
 <script type="text/javascript" src="{% static 'js/session.js' %}">
 </script>
+
 {%mustachejs "comment"%}
 {%mustachejs "question"%}
+{%endcomment%}
 {%endblock%}
 
 {% block content %}
-<div id="session-header">
-	<div id="info">
-		<div id="img-stats">
-			<a id="img" href="#">
-				<img src="http://www.biography.com/imported/images/Biography/Images/Profiles/S/Will-Smith-9542165-1-402.jpg" width="150" height="150" />
-			</a>
-			<div id="time-left">
-				2:18:11 time left
+<div ng-app="sessionApp" ng-controller="SessionCtrl">
+	{% verbatim %}
+	<div id="session-header">
+		<div id="info">
+			<div id="img-stats">
+				<a id="img" href="#">
+					<img src="http://www.biography.com/imported/images/Biography/Images/Profiles/S/Will-Smith-9542165-1-402.jpg" width="150" height="150" />
+				</a>
+				<div ng-switch="session.state">
+					<div id="time-left" ng-switch-when="running">
+						Ends {{session.end_time | countdown}}
+					</div>
+					<div id="time-left" ng-switch-when="before">
+						Starts {{session.start_time | countdown}}
+					</div>
+					<div id="time-left" ng-switch-when="after">
+						Ended {{session.end_time | countdown}}
+					</div>
+				</div>
+				<div id="viewers" ng-show="session.state == 'running'">
+					{{session.num_viewers}} currently viewing
+				</div>
+				<div id="views" ng-show="session.state != 'running'">
+				{{session.views}} views
+				</div>
+				<a id="twitter-name" href="//twitter.com/">
+					@willsmith
+				</a>
 			</div>
-			<div id="viewers">
-				52,623 currently viewing
-			</div>
-			<a id="twitter-name" href="#">
-				@willsmith
-			</a>
-		</div>
-		<div id="title-desc">
-			<h2>I am Will Smith, awesome actor and stuff. Ask me anything! <span id="live">[LIVE]</span></h2>
-			<div id="desc">
-				Hey everyone.  I'm here for the next few hours to answer all your questions.  My son is here with me as well!  Ask away, and don't forget to check out my upcoming movie.  
+			<div id="title-desc">
+				<h2>{{session.title}}<span id="live" ng-show="session.state == 'running'">[LIVE]</span></h2>
+				<div id="desc" ng-bind-html-unsafe="session.desc | markdown"></div>
 			</div>
 		</div>
 	</div>
-</div>
-<div id="session-ask">
-	<div id="ask-box">
-		<h2>Ask Will Smith:</h2>
-		<textarea></textarea>
-		<a id="ask-btn" href="#">ASK!</a>
+	<div id="session-ask" ng-show="session.state != 'after'">
+		<div id="ask-box">
+			<h2>Ask Will Smith:</h2>
+			<textarea></textarea>
+			<a id="ask-btn" href="#">ASK!</a>
+		</div>
 	</div>
-</div>
-<div id="questions-area">
-	<div id="questions">
-		<div id="filter">
-			<div id="text">
-				<a class="filter-options" href="#">Unanswered </a>|<a class="filter-options" href="#"> Answered</a>
-			</div>
-		</div>
-		<!--
-		<div id="no-questions">
-			There is nothing here. Be the first to ask a question!
-		</div>-->
-		<div id="answered">
-			<div id="pair">
-				<div id="vote">
-				<a href="#">&#x25B2;</a><br/>
-				<a href="#">&#x25BC;</a>
-				</div>
-				<div id="question">
-					<div id="user-picture">
-						<a href="#">
-							<img class="circular" src="http://www.biography.com/imported/images/Biography/Images/Profiles/S/Will-Smith-9542165-1-402.jpg" width="75" height="75" />
-						</a>
-					</div>
-					<div id="main">
-						<div id="top-row">
-							<a id="user-name"href="#">Justin Hundley</a>
-							<div id="timestamp">1 hour ago</div>
-							<a href="#">reply</a>
-							<a href="#">permalink</a>
-							<div id="votes">175 votes</div>
-						</div>
-						<br/>
-						<div id="text">
-							What am I supposed to put here?  A random piece of text that is supposd to resemble a question?  I'm not really sure.
-						</div>
-					</div>
-				</div>
-				<div id="response">
-					<div id="user-picture">
-						<a href="#">
-							<img class="circular" src="http://www.biography.com/imported/images/Biography/Images/Profiles/S/Will-Smith-9542165-1-402.jpg" width="75" height="75" />
-						</a>
-					</div>
-					<div id="main">
-						<div id="top-row">
-							<a id="user-name" href="#">Justin Hundley</a>
-							<div id="timestamp">1 hour ago</div>
-						</div>
-						<br/>
-						<div id="text">
-							What am I supposed to put here?  A random piece of text that is supposd to resemble a question?  I'm not really sure.
-						</div>
-					</div>						
+	<div id="questions-area">
+		<div id="questions">
+			<div id="filter">
+				<div id="text">
+					<a class="filter-options" href="#" ng-click="qfilter = 'false'">Unanswered </a>|<a class="filter-options" href="#" ng-click="qfilter = 'true'"> Answered</a>
 				</div>
 			</div>
-			<div id="pair">
-				<div id="vote">
-				<a href="#">&#x25B2;</a><br/>
-				<a href="#">&#x25BC;</a>
-				</div>
-				<div id="question">
-					<div id="user-picture">
-						<a href="#">
-							<img class="circular" src="http://www.biography.com/imported/images/Biography/Images/Profiles/S/Will-Smith-9542165-1-402.jpg" width="75" height="75" />
-						</a>
+			<!--
+			<div id="no-questions">
+				There is nothing here. Be the first to ask a question!
+			</div>-->
+			<div id="answered">
+				<div id="pair" ng-repeat="question in session.questions | filter:{'answered':qfilter}">
+					<div id="vote">
+					<a href="#">&#x25B2;</a><br/>
+					<a href="#">&#x25BC;</a>
 					</div>
-					<div id="main">
-						<div id="top-row">
-							<a id="user-name"href="#">Justin Hundley</a>
-							<div id="timestamp">1 hour ago</div>
-							<a href="#">reply</a>
-							<a href="#">permalink</a>
-							<div id="votes">175 votes</div>
+					<div id="question">
+						<div id="user-picture">
+							<a href="#">
+								<img class="circular" src="http://www.biography.com/imported/images/Biography/Images/Profiles/S/Will-Smith-9542165-1-402.jpg" width="75" height="75" />
+							</a>
 						</div>
-						<br/>
-						<div id="text">
-							What am I supposed to put here?  A random piece of text that is supposd to resemble a question?  I'm not really sure.
+						<div id="main">
+							<div id="top-row">
+								<a id="user-name"href="#">Justin Hundley</a>
+								<div id="timestamp">{{question.created | countdown}}</div>
+								<a href="#" ng-show="owner">reply</a>
+								<a href="#">permalink</a>
+								<div id="votes">{{question.score}} votes</div>
+							</div>
+							<br/>
+							<div id="text" ng-bind-html-unsafe="question.desc | markdown">
+							</div>
 						</div>
 					</div>
-				</div>
-				<div id="response">
-					<div id="user-picture">
-						<a href="#">
-							<img class="circular" src="http://www.biography.com/imported/images/Biography/Images/Profiles/S/Will-Smith-9542165-1-402.jpg" width="75" height="75" />
-						</a>
+					<div id="response" ng-show="question.answered">
+						<div id="user-picture">
+							<a href="#">
+								<img class="circular" src="http://www.biography.com/imported/images/Biography/Images/Profiles/S/Will-Smith-9542165-1-402.jpg" width="75" height="75" />
+							</a>
+						</div>
+						<div id="main">
+							<div id="top-row">
+								<a id="user-name" href="#">Justin Hundley</a>
+								<div id="timestamp">{{question.answer.created | countdown}}</div>
+							</div>
+							<br/>
+							<div id="text">
+								What am I supposed to put here?  A random piece of text that is supposd to resemble a question?  I'm not really sure.
+							</div>
+						</div>						
 					</div>
-					<div id="main">
-						<div id="top-row">
-							<a id="user-name" href="#">Justin Hundley</a>
-							<div id="timestamp">1 hour ago</div>
-						</div>
-						<br/>
-						<div id="text">
-							What am I supposed to put here?  A random piece of text that is supposd to resemble a question?  I'm not really sure.
-						</div>
-					</div>						
 				</div>
 			</div>
-		</div>
-		<div id="unanswered">
-			<div id="pair">
-				<div id="vote">
-				<a href="#">&#x25B2;</a><br/>
-				<a href="#">&#x25BC;</a>
-				</div>
-				<div id="question">
-					<div id="user-picture">
-						<a href="#">
-							<img class="circular" src="http://www.biography.com/imported/images/Biography/Images/Profiles/S/Will-Smith-9542165-1-402.jpg" width="75" height="75" />
-						</a>
+			{% endverbatim %}
+			<div id="unanswered">
+				<div id="pair">
+					<div id="vote">
+					<a href="#">&#x25B2;</a><br/>
+					<a href="#">&#x25BC;</a>
 					</div>
-					<div id="main">
-						<div id="top-row">
-							<a id="user-name"href="#">Justin Hundley</a>
-							<div id="timestamp">1 hour ago</div>
-							<a href="#">reply</a>
-							<a href="#">permalink</a>
-							<div id="votes">175 votes</div>
+					<div id="question">
+						<div id="user-picture">
+							<a href="#">
+								<img class="circular" src="http://www.biography.com/imported/images/Biography/Images/Profiles/S/Will-Smith-9542165-1-402.jpg" width="75" height="75" />
+							</a>
 						</div>
-						<br/>
-						<div id="text">
-							What am I supposed to put here?  A random piece of text that is supposd to resemble a question?  I'm not really sure.
+						<div id="main">
+							<div id="top-row">
+								<a id="user-name"href="#">Justin Hundley</a>
+								<div id="timestamp">1 hour ago</div>
+								<a href="#">reply</a>
+								<a href="#">permalink</a>
+								<div id="votes">175 votes</div>
+							</div>
+							<br/>
+							<div id="text">
+								What am I supposed to put here?  A random piece of text that is supposd to resemble a question?  I'm not really sure.
+							</div>
 						</div>
 					</div>
 				</div>

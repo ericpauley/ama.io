@@ -7,7 +7,7 @@ from django.views.decorators.cache import cache_page
 class CachedApi(Api):
     def wrap_view(self, view):
         return cache_page(Api.wrap_view(self, view),10)
-v1_api = CachedApi(api_name='v1')
+v1_api = Api(api_name='v1')
 v1_api.register(UserResource())
 v1_api.register(SessionResource())
 v1_api.register(QuestionResource())
@@ -32,7 +32,5 @@ urlpatterns = patterns('',
 
     #Static pages
     url(r'about/', views.static_page("2/about.html", "About"), name="about"),
-    url(r'session/', views.static_page("2/session_page.html", "Session"), name="session"),
-    url(r'sessions/', views.static_page("2/all_sessions.html", "Sessions"), name="sessions"),   
     url(r'demo/', views.static_page("session-demo.html", "Session Tutorial"), name="demo")
 )

@@ -222,16 +222,20 @@ class UserResource(ModelResource):
         return self.create_response(request, { 'success': False, 'reason': "Dup User"}, HttpNotFound)
     
 
-class SessionResource(CachedResource, ModelResource):
+class SessionResource(ModelResource):
     owner = fields.ForeignKey(UserResource, 'owner', readonly=True)
-    questions = fields.ToManyField('questions.api.QuestionResource', readonly=True, attribute='questions', null=True, use_in='detail', full=True, related_name='session')
+    questions = fields.ToManyField('questions.api.QuestionResource', lambda bundle:bundle.obj.get_marked_questions(bundle.request), readonly=True, null=True, use_in='detail', full=True, related_name='session')
     num_viewers = fields.IntegerField(attribute="num_viewers", readonly=True)
+    views = fields.IntegerField(readonly=True)
     time = fields.DateField()
     image = fields.CharField(attribute="auto_image", readonly=True)
     state = fields.CharField(attribute="state", readonly=True)
 
     def dehydrate_time(self, bundle):
         return timezone.now()
+
+    def dehydrate_views(self, bundle):
+        return bundle.obj.viewers.count()
 
     class Meta:
         queryset = AMASession.objects.all()
@@ -465,6 +469,14 @@ class QuestionResource(ModelResource):
     #html = fields.CharField(use_in = "detail")
     score = fields.IntegerField(attribute='score', default=0, readonly=True)
     asker = fields.ForeignKey('questions.api.UserResource', 'asker', full=True, readonly=True)
+    answered = fields.BooleanField(readonly=True)
+    vote = fields.IntegerField(attribute = "vote", default = 0)
+
+    def dehydrate_answered(self, bundle):
+        try:
+            return bundle.obj.answer is not None
+        except AMAAnswer.DoesNotExist:
+            return False
 
     class Meta:
         queryset = AMAQuestion.objects.all().order_by("-starred", "-score")
