@@ -615,11 +615,12 @@ class QuestionResource(ModelResource):
                 }, HttpBadRequest )
 
         AMAVote.objects.filter(question__pk=pk, user__username=request.user.username).delete()
+        print vote
         if vote != 0:
             AMAVote(user=request.user, question=AMAQuestion.objects.get(pk=pk), value=vote).save()
         return self.create_response(request, {
             'success': True,
-            'score': AMAQuestion.objects.all().annotate(_score=Sum('votes__value')).get(pk=pk).score
+            'score': AMAQuestion.objects.get(pk=pk).score
         })
 
 class AnswerResource(ModelResource):

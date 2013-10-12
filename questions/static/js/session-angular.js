@@ -12,6 +12,22 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $resour
 	repeat();
 	$scope.qfilter = "false"
 	$scope.owner = GLOBALS['owner']
+
+	$scope.vote = function(question, val){
+		$scope.apply(function(){
+			if(question.vote == val){
+				question.vote = 0;
+			}else{
+				question.vote = val;
+			}
+			$http({
+				method: 'POST',
+				url: question.resource_uri+"vote/",
+				data: $.param({vote:question.vote}),
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+			});
+		})
+	}
 });
 
 sessionApp.filter('markdown', function(){

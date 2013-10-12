@@ -91,8 +91,8 @@ GLOBALS['owner'] = true
 			<div id="answered">
 				<div id="pair" ng-repeat="question in session.questions | filter:{'answered':qfilter}">
 					<div id="vote">
-					<a href="#">&#x25B2;</a><br/>
-					<a href="#">&#x25BC;</a>
+					<a href="#" ng-click="vote(question, 1)" ng-class="{upvote: question.score == 1}">&#x25B2;</a><br/>
+					<a href="#" ng-click="vote(question, -1)" ng-class="{downvote: question.score == -1}">&#x25BC;</a>
 					</div>
 					<div id="question">
 						<div id="user-picture">
@@ -104,7 +104,7 @@ GLOBALS['owner'] = true
 							<div id="top-row">
 								<a id="user-name"href="#">Justin Hundley</a>
 								<div id="timestamp">{{question.created | countdown}}</div>
-								<a href="#" ng-show="owner">reply</a>
+								<a href="#" ng-show="owner && session.state == 'running'">reply</a>
 								<a href="#">permalink</a>
 								<div id="votes">{{question.score}} votes</div>
 							</div>
@@ -133,6 +133,7 @@ GLOBALS['owner'] = true
 				</div>
 			</div>
 			{% endverbatim %}
+			{%comment%}
 			<div id="unanswered">
 				<div id="pair">
 					<div id="vote">
@@ -161,6 +162,7 @@ GLOBALS['owner'] = true
 					</div>
 				</div>
 			</div>
+			{%endcomment%}
 		</div>
 	</div>
 </div>
