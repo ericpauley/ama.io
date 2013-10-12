@@ -433,7 +433,6 @@ class SessionResource(ModelResource):
                 'reason': 'no_session',
                 }, HttpBadRequest )
         question = request.POST['question']
-        desc = request.POST['desc']
 
         if(len(question) < 6):
             return self.create_response(request, {
@@ -452,7 +451,6 @@ class SessionResource(ModelResource):
         q.session = s
         q.target = s.owner
         q.question = question
-        q.desc = desc
         q.save()
         qr = QuestionResource()
         return self.create_response(request, {
@@ -587,6 +585,8 @@ class QuestionResource(ModelResource):
                 }, HttpBadRequest )
         question = AMAQuestion.objects.get(pk=pk)
         question.starred = bool(vote)
+        print vote
+        print question.starred
         question.save()
         return self.create_response(request, {
             'success': True,
@@ -615,7 +615,6 @@ class QuestionResource(ModelResource):
                 }, HttpBadRequest )
 
         AMAVote.objects.filter(question__pk=pk, user__username=request.user.username).delete()
-        print vote
         if vote != 0:
             AMAVote(user=request.user, question=AMAQuestion.objects.get(pk=pk), value=vote).save()
         return self.create_response(request, {

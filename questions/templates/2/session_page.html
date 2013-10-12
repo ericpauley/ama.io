@@ -58,7 +58,11 @@ GLOBALS['owner'] = true
 					{{session.num_viewers}} currently viewing
 				</div>
 				<div id="views" ng-show="session.state != 'running'">
-				{{session.views}} views
+					<ng-pluralize count="session.views"
+					when="{'0': '0 views',
+					'one': '1 view',
+					'other': '{} views'}">
+					</ng-pluralize>
 				</div>
 				<a id="twitter-name" href="//twitter.com/">
 					@willsmith
@@ -73,15 +77,17 @@ GLOBALS['owner'] = true
 	<div id="session-ask" ng-show="session.state != 'after'">
 		<div id="ask-box">
 			<h2>Ask Will Smith:</h2>
-			<textarea></textarea>
-			<a id="ask-btn" href="#">ASK!</a>
+			<textarea ng-model="question"></textarea>
+			<a id="ask-btn" class="clickable" ng-click="ask(question)">ASK!</a>
 		</div>
 	</div>
 	<div id="questions-area">
 		<div id="questions">
 			<div id="filter">
 				<div id="text">
-					<a class="filter-options" href="#" ng-click="qfilter = 'false'">Unanswered </a>|<a class="filter-options" href="#" ng-click="qfilter = 'true'"> Answered</a>
+					<a class="filter-options" ng-class="{clickable: tab != 'unanswered'}" ng-click="qfilter = {'answered':'false', 'starred':'false'}; tab = 'unanswered'">Unanswered </a> |
+					<a class="filter-options" ng-class="{clickable: tab != 'answered'}" ng-click="qfilter = {'answered':'true', 'starred':'false'}; tab = 'answered'"> Answered </a>|
+					<a class="filter-options" ng-class="{clickable: tab != 'starred'}" ng-click="qfilter = {'starred':'true'}; tab = 'starred'"> Starred</a>
 				</div>
 			</div>
 			<!--
@@ -89,10 +95,10 @@ GLOBALS['owner'] = true
 				There is nothing here. Be the first to ask a question!
 			</div>-->
 			<div id="answered">
-				<div id="pair" ng-repeat="question in session.questions | filter:{'answered':qfilter}">
+				<div id="pair" ng-repeat="question in session.questions | filter:qfilter | orderBy:'-score'">
 					<div id="vote">
-					<a href="#" ng-click="vote(question, 1)" ng-class="{upvote: question.score == 1}">&#x25B2;</a><br/>
-					<a href="#" ng-click="vote(question, -1)" ng-class="{downvote: question.score == -1}">&#x25BC;</a>
+						<a class="clickable" ng-click="vote(question, 1)" ng-class="{upvote: question.vote == 1}">&#x25B2;</a><br/>
+						<a class="clickable" ng-click="vote(question, -1)" ng-class="{downvote: question.vote == -1}">&#x25BC;</a>
 					</div>
 					<div id="question">
 						<div id="user-picture">
@@ -104,12 +110,20 @@ GLOBALS['owner'] = true
 							<div id="top-row">
 								<a id="user-name"href="#">Justin Hundley</a>
 								<div id="timestamp">{{question.created | countdown}}</div>
-								<a href="#" ng-show="owner && session.state == 'running'">reply</a>
+								<a class="clickable" ng-show="owner && session.state == 'running'">reply</a>
+								<a class="clickable" ng-show="owner && question.starred" ng-click="star(question, false)">unstar</a>
+								<a class="clickable" ng-show="owner && !question.starred" ng-click="star(question, true)">star</a>
 								<a href="#">permalink</a>
-								<div id="votes">{{question.score}} votes</div>
+								<div id="votes">
+									<ng-pluralize count="question.score"
+									when="{'0': '0 votes',
+									'one': '1 vote',
+									'other': '{} votes'}">
+									</ng-pluralize>
+								</div>
 							</div>
 							<br/>
-							<div id="text" ng-bind-html-unsafe="question.desc | markdown">
+							<div id="text" ng-bind-html-unsafe="question.question | markdown">
 							</div>
 						</div>
 					</div>
