@@ -1,9 +1,19 @@
 {% extends "2/base.html" %}
+{% load staticfiles %}
+{%block postscript%}
+<script type="text/javascript" src="{% static 'js/jquery.cycle.all.js' %}">
+</script>
+<script type="text/javascript" src="{% static 'js/cycle.js' %}">
+</script>
+{%endblock%}
 {% block content %}
 <div id="home-top">
 	<div id="box">
 		<div id="text">
-			Ask <span id="rotate">astronauts</span> anything
+			Ask <span id="rotate">YouTubers</span> anything
+		</div>
+		<div id="subtext">
+			Host and join Q&A sessions with the world
 		</div>
 		<a href="{% url 'twitter_login'%} ">
 			<img src="https://dev.twitter.com/sites/default/files/images_documentation/sign-in-with-twitter-gray.png" />

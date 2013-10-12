@@ -1,3 +1,4 @@
+/* COLORS */
 @blue: #2D68DC;
 @lightblue: #CCE4FF;
 @white: #ffffff;
@@ -11,6 +12,25 @@
 @main-font: 'Open Sans';
 
 /* MIXINS */
+
+.btn (@bg: @blue, @font: @grey, @width: 100px, @height: 30px) {
+	.rounded-corners;
+	text-indent:0;
+	display:inline-block;
+	font-style:normal;
+	height: 30px;
+	line-height: 30px;
+	text-decoration:none;
+	text-align:center;
+	background: @bg;
+	color: @font;
+	width: @width;
+
+	&:active{
+		position:relative;
+		top:1px;
+	}
+}
 
 .rounded-corners (@radius: 5px) {
 	-webkit-border-radius: @radius;
@@ -83,25 +103,6 @@ h2 {
 }
 
 /* GENERAL CLASSES */
-
-.btn (@bg: @blue, @font: @grey, @width: 100px, @height: 30px) {
-	.rounded-corners;
-	text-indent:0;
-	display:inline-block;
-	font-style:normal;
-	height: 30px;
-	line-height: 30px;
-	text-decoration:none;
-	text-align:center;
-	background: @bg;
-	color: @font;
-	width: @width;
-
-	&:active{
-		position:relative;
-		top:1px;
-	}
-}
 
 .tweet-btn{
 	.btn(@blue, @white, 125px);
@@ -251,27 +252,35 @@ h2 {
 	position: relative;
 
 	#box {
-		height: 200px;
-		width: 600px;
+		height: 210px;
+		width: 550px;
 		background: @white;
 		position: absolute;
 		top: 50%;
 		left: 50%;
-		margin: -100px 0 0 -300px;
+		margin: -105px 0 0 -275px;
 		text-align: center;
 
 		#text {
 			font-size: 40px;
-			margin-top: 40px;
-			margin-bottom: 15px;
+			font-weight: bold;
+			color: @darkgrey;
+			margin-top: 20px;
 
 			#rotate {
 				color: @blue;
 			}
 		}
 
+		#subtext {
+			font-size: 15px;
+			margin-bottom: 30px;
+			color: @grey;
+		}
+
 		#small-text {
 			font-size: 13px;
+			margin-bottom: 30px;
 			color: @teal;			
 		}
 	}
