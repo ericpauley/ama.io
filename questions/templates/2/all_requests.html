@@ -1,0 +1,27 @@
+{% extends "2/base.html" %}
+{% block content %}
+<div class="header-separator"></div>
+<div id="sessions-list">
+	<h2>AMA Requests</h2>
+	<a class="filter-options" id="current" href="#">Top</a> | <a class="filter-options" href="#">Rising</a>
+	<div id="requests-list-container">
+		<table align="center" cellpadding="10px">
+			{% for request in top_requests %}
+			<tr>
+				<td>
+					<strong>TEST</strong> @{{request.username}}
+				</td>
+				<td>
+					{{request.score}}
+					<a class="btn tweet-btn" href="{{request.tweet_url}}">Tweet them!</a>
+				</td>
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+</div>
+<div class="bottom-cta">
+	Want to invite your favorite musician or actor to host an AMA?  Well what are you waiting for?<br/>
+	<a href="#" class="tweet-btn">Request them!</a>
+</div>
+{% endblock %}
