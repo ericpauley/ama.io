@@ -1,6 +1,6 @@
 var sessionApp = angular.module('sessionApp', ['ngResource']);
 
-sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $resource, $timeout){
+sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $resource, $timeout, $rootScope){
 	function repeat(){
 		$timeout(function(){
 			repeat();
@@ -10,9 +10,8 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $resour
 		});
 	}
 	repeat();
-	$scope.qfilter = {'answered':'false', 'starred':'false'}
-	$scope.tab = "unanswered"
 	$scope.owner = GLOBALS['owner']
+	$scope.sessionId = GLOBALS['session']
 
 	$scope.vote = function(question, val){
 		var old = question.vote;
@@ -55,13 +54,53 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $resour
 		success(function(data, status, headers, config) {
 			$scope.session.questions.unshift(data.question);
 			$scope.question = null;
+			$scope.apply()
 		}).
 		error(function(data, status, headers, config) {
 			// called asynchronously if an error occurs
 			// or server returns response with an error status.
 		});
 	}
+
+	$rootScope.$on("tabChange", function(event, args){
+		$.extend($scope, args)
+	})
 });
+
+sessionApp.controller("UnansweredCtrl", function UnansweredCtrl($scope, $rootScope){
+	$rootScope.$broadcast("tabChange", {"qfilter":{'answered':'false'}, "tab":"unanswered"})
+})
+
+sessionApp.controller("AnsweredCtrl", function AnsweredCtrl($scope, $rootScope){
+	$rootScope.$broadcast("tabChange", {"qfilter":{'answered':'true'}, "tab":"answered"})
+})
+
+sessionApp.controller("StarredCtrl", function StarredCtrl($scope, $rootScope){
+	$rootScope.$broadcast("tabChange", {"qfilter":{'starred':'true'}, "tab":"starred"})
+})
+
+sessionApp.controller("QuestionCtrl", function QuestionCtrl($scope, $rootScope, $routeParams){
+	$rootScope.$broadcast("tabChange", {"qfilter":{'id':$routeParams.questionId.toString()}, "tab":"question"})
+})
+
+sessionApp.config(function($routeProvider, $locationProvider) {
+	$routeProvider.when('/s/:sessionId/unanswered', {
+		controller: 'UnansweredCtrl',
+		templateUrl: GLOBALS['session_html']
+	}).when('/s/:sessionId/answered', {
+		controller: 'AnsweredCtrl',
+		templateUrl: GLOBALS['session_html']
+	}).when('/s/:sessionId/starred', {
+		controller: 'StarredCtrl',
+		templateUrl: GLOBALS['session_html']
+	}).when('/q/:questionId', {
+		controller: 'QuestionCtrl',
+		templateUrl: GLOBALS['session_html']
+	}).otherwise({
+		redirectTo: '/s/'+GLOBALS['session']+'/unanswered'
+	});
+	$locationProvider.html5Mode(true);
+ });
 
 sessionApp.filter('markdown', function(){
 	return function(input){
