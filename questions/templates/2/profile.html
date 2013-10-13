@@ -1,0 +1,72 @@
+{% extends "2/base.html" %}
+
+{% block title %}Justin's Profile{% endblock %}
+
+{% block content %}
+<div class="header-separator"></div>
+<div id="profile-box">
+	<div id="profile-image">
+		<img src="http://www.biography.com/imported/images/Biography/Images/Profiles/S/Will-Smith-9542165-1-402.jpg" />
+	</div>
+	<div id="profile-info">
+		<div id="bio">
+			<div id="bio-header">
+				<h2>Will Smith</h2>
+				<div id="twitter-username">
+					@WillSmith
+				</div>
+			</div>
+			<p>Will Smith is an actor, and crazy awesome person.  Here is a bio for sample, demo purposes!
+			</p>
+		</div>
+		<div id="profile-stats">
+			<div class="stat-block">
+				<div class="stat">1842</div>
+				points
+			</div>
+			<div class="stat-block">
+				<div class="stat">1842</div>
+				sessions joined
+			</div>
+			<div class="stat-block">
+				<div class="stat">1842</div>
+				questions asked
+			</div>
+			<div class="stat-block">
+				<div class="stat">1842</div>
+				questions answered
+			</div>
+		</div>
+	</div>
+</div>
+<div id="activity">
+	<div id="activity-header">
+		<h2>Activity</h2>
+		<div id="filter">
+			<div id="text">
+				<a href="#" class="filter-options">Questions</a>&nbsp;|&nbsp; 
+				<a href="#" class="filter-options">Requests</a>&nbsp;|&nbsp;
+				<a href="#" class="filter-options">All</a>
+			</div>
+		</div>
+	</div>
+	<table id="activities">
+		<tr>
+			<td id="activity-timestamp">
+				5 minutes ago
+			</td>
+			<td id="activity-info">
+				Will Smith tweeted Kanye West to host an AMA session. asdfasdf asdf asdf asdf asdf asdf asdf asdf sadf  adfasdfadf asdfasdf bbb bbbbb
+			</td>
+		</tr>
+		<tr>
+			<td id="activity-timestamp">
+				5 minutes ago
+			</td>
+			<td id="activity-info">
+				Will Smith tweeted Kanye West to host an AMA session.
+			</td>
+		</tr>
+	</table>
+</div>
+{% endblock %}
