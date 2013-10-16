@@ -51,17 +51,11 @@ class Action():
     def __init__(self, action_type, date, object, **kwargs):
         self.action_type = action_type
         self.date = date
-        self.url = object.get_absolute_url()
-        info = kwargs
-
-class ActionResource(Resource):
-    action_type = fields.CharField(readonly=True)
-    date = fields.DateField(readonly=True)
-    url = fields.CharField(readonly=True)
-
-    def dehydrate(self, bundle):
-        bundle.data.update(bundle.obj.kwargs)
-        return bundle
+        try:
+            self.url = object.get_absolute_url()
+        except AttributeError:
+            pass
+        self.__dict__.update(kwargs)
 
 class UserResource(ModelResource):
     display = fields.CharField(readonly = True)
@@ -69,7 +63,7 @@ class UserResource(ModelResource):
     questions_asked = fields.IntegerField(readonly=True)
     questions_answered = fields.IntegerField(readonly=True)
     sessions_viewed = fields.IntegerField(readonly=True)
-    actions = fields.ToManyField(readonly=True)
+    activities = fields.ListField(readonly=True)
 
     def dehydrate_score(self, bundle):
         return AMAVote.objects.filter(question__asker=bundle.obj).aggregate(Sum("value"))['value__sum']
@@ -78,7 +72,7 @@ class UserResource(ModelResource):
         return bundle.obj.own_questions.count()
 
     def dehydrate_questions_answered(self, bundle):
-        return AMAAnswer.objects.filter(question__asker=bundle.obj).count()
+        return AMAAnswer.objects.filter(question__target=bundle.obj).count()
 
     def dehydrate_sessions_viewed(self, bundle):
         return bundle.obj.views.count()
@@ -86,8 +80,19 @@ class UserResource(ModelResource):
     def dehydrate_display(self, bundle):
         return bundle.obj.meta.full_name
 
-    def dehydrate_actions(self, bundle):
-        actions = []
+    def dehydrate_activities(self, bundle):
+        a = []
+        for q in bundle.obj.own_questions.order_by("-created").select_related()[:20]:
+            a.append(Action("question", q.created, q, user=q.target.meta.full_name, question=q.question))
+        for ans in AMAAnswer.objects.filter(question__target=bundle.obj).order_by("-created").select_related()[:20]:
+            a.append(Action("answer", ans.created, ans.question, user=ans.question.asker.meta.full_name, answer=ans.response))
+        for r in bundle.obj.request_votes.order_by("-created").select_related()[:20]:
+            a.append(Action("request", r.created, r, handle=r.request.username))
+        for s in bundle.obj.sessions.all():
+            a.append(Action("session_start", s.start_time, s, title=s.title))
+            a.append(Action("session_end", s.end_time, s, title=s.title))
+            a.append(Action("session_create", s.created, s, title=s.title))
+        return [i.__dict__ for i in sorted(a,key=lambda x:x.date, reverse=True)]
 
     class Meta:
         queryset = User.objects.all()

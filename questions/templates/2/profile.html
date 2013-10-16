@@ -68,29 +68,40 @@ GLOBALS['user'] = {{user.id}};
 			<h2>Activity</h2>
 			<div id="filter">
 				<div id="text">
-					<a href="#" class="filter-options">Questions</a>&nbsp;|&nbsp; 
-					<a href="#" class="filter-options">Requests</a>&nbsp;|&nbsp;
-					<a href="#" class="filter-options">All</a>
+					<a class="filter-options clickable" ng-class="{current: tab == 'questions'}" ng-click="qfilter={'action_type':'question'};tab='questions'">Questions</a>&nbsp;|&nbsp; 
+					<a class="filter-options clickable" ng-class="{current: tab == 'requests'}" ng-click="qfilter={'action_type':'request'};tab='requests'">Requests</a>&nbsp;|&nbsp;
+					<a class="filter-options clickable" ng-class="{current: tab == 'all'}" ng-click="qfilter={};tab='all'">All</a>
 				</div>
 			</div>
 		</div>
 		<table id="activities">
-			<tr>
-				<td id="activity-timestamp">
-					5 minutes ago
-				</td>
-				<td id="activity-info">
-					Will Smith tweeted Kanye West to host an AMA session. asdfasdf asdf asdf asdf asdf asdf asdf asdf sadf  adfasdfadf asdfasdf bbb bbbbb
-				</td>
-			</tr>
-			<tr>
-				<td id="activity-timestamp">
-					5 minutes ago
-				</td>
-				<td id="activity-info">
-					Will Smith tweeted Kanye West to host an AMA session.
-				</td>
-			</tr>
+			<tbody>
+				<tr ng-repeat="activity in user.activities|filter:qfilter">
+						<td id="activity-timestamp">
+							<a ng-href="{{activity.url}}">
+							{{activity.date | countdown}}
+							</a>
+						</td>
+						<td id="activity-info" ng-if="activity.action_type=='request'">
+							{{user.display}} tweeted {{activity.handle}} to host an AMA session.
+						</td>
+						<td id="activity-info" ng-if="activity.action_type=='question'">
+							{{user.display}} asked {{activity.user}} a question: <span ng-bind-html="activity.question | markdown | plain"></span>
+						</td>
+						<td id="activity-info" ng-if="activity.action_type=='answer'">
+							{{user.display}} answered {{activity.user}}'s a question: <span ng-bind-html="activity.answer | markdown | plain"></span>
+						</td>
+						<td id="activity-info" ng-if="activity.action_type=='session_start'">
+							{{user.display}} started a session: {{activity.title}}
+						</td>
+						<td id="activity-info" ng-if="activity.action_type=='session_create'">
+							{{user.display}} scheduled a session: {{activity.title}}
+						</td>
+						<td id="activity-info" ng-if="activity.action_type=='session_end'">
+							{{user.display}}'s' session ended: {{activity.title}}
+						</td>
+				</tr>
+			</tbody>
 		</table>
 	</div>
 </div>
