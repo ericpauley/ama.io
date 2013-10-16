@@ -253,6 +253,9 @@ class AMAQuestion(models.Model):
         else:
             return '[X]Q: %s' % self.question
 
+    def get_absolute_url(self):
+        return reverse('question', args=[self.id])
+
 class AMAAnswer(models.Model):
     '''
     Answers to questions are represented by this model.

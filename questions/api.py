@@ -46,11 +46,48 @@ class CachedResource():
     def wrap_view(self, view):
         return cache_page(Resource.wrap_view(self, view),10)
 
+class Action():
+
+    def __init__(self, action_type, date, object, **kwargs):
+        self.action_type = action_type
+        self.date = date
+        self.url = object.get_absolute_url()
+        info = kwargs
+
+class ActionResource(Resource):
+    action_type = fields.CharField(readonly=True)
+    date = fields.DateField(readonly=True)
+    url = fields.CharField(readonly=True)
+
+    def dehydrate(self, bundle):
+        bundle.data.update(bundle.obj.kwargs)
+        return bundle
+
 class UserResource(ModelResource):
     display = fields.CharField(readonly = True)
+    score = fields.IntegerField(readonly = True, default=0)
+    questions_asked = fields.IntegerField(readonly=True)
+    questions_answered = fields.IntegerField(readonly=True)
+    sessions_viewed = fields.IntegerField(readonly=True)
+    actions = fields.ToManyField(readonly=True)
+
+    def dehydrate_score(self, bundle):
+        return AMAVote.objects.filter(question__asker=bundle.obj).aggregate(Sum("value"))['value__sum']
+
+    def dehydrate_questions_asked(self, bundle):
+        return bundle.obj.own_questions.count()
+
+    def dehydrate_questions_answered(self, bundle):
+        return AMAAnswer.objects.filter(question__asker=bundle.obj).count()
+
+    def dehydrate_sessions_viewed(self, bundle):
+        return bundle.obj.views.count()
 
     def dehydrate_display(self, bundle):
         return bundle.obj.meta.full_name
+
+    def dehydrate_actions(self, bundle):
+        actions = []
 
     class Meta:
         queryset = User.objects.all()

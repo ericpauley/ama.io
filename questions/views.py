@@ -32,7 +32,7 @@ def question(request, question):
         question = AMAQuestion.objects.get(id=question)
     except AMAQuestion.DoesNotExist:
         raise Http404
-    return render(request, "question_page.html", {"question": question})
+    return session(request, question.session.slug)
 
 def requests(request, page="1"):
     page = int(page)
@@ -53,7 +53,7 @@ def user(request, username):
     past = AMASession.objects.past().filter(owner=user)[:4]
     upcoming = AMASession.objects.upcoming().filter(owner=user)[:4]
     live = AMASession.objects.live().filter(owner=user)[:1]
-    return render(request, "user.html", {'user': user, 'past':past, 'upcoming':upcoming, 'live':live})
+    return render(request, "2/profile.html", {'user': user, 'past':past, 'upcoming':upcoming, 'live':live})
 
 def user_sessions(request, username):
     try:

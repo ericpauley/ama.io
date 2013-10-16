@@ -15,13 +15,12 @@
 					Ended {{session.end_time | countdown}}
 				</div>
 			</div>
-			<div id="viewers" ng-show="session.state == 'running'">
+			<div id="viewers" ng-if="session.state == 'running'">
 				{{session.num_viewers}} currently viewing
 			</div>
-			<div id="views" ng-show="session.state != 'running'">
+			<div id="views" ng-if="session.state != 'running'">
 				<ng-pluralize count="session.views"
-				when="{'0': '0 views',
-				'one': '1 view',
+				when="{'one': '1 view',
 				'other': '{} views'}">
 				</ng-pluralize>
 			</div>
@@ -30,12 +29,12 @@
 			</a>
 		</div>
 		<div id="title-desc">
-			<h2>{{session.title}}<span id="live" ng-show="session.state == 'running'">[LIVE]</span></h2>
-			<div id="desc" ng-bind-html-unsafe="session.desc | markdown"></div>
+			<h2>{{session.title}}<span id="live" ng-if="session.state == 'running'">[LIVE]</span></h2>
+			<div id="desc" ng-bind-html="session.desc | markdown"></div>
 		</div>
 	</div>
 </div>
-<div id="session-ask" ng-show="session.state != 'after'">
+<div id="session-ask" ng-if="session.state != 'after'">
 	<div id="ask-box">
 		<h2>Ask Will Smith:</h2>
 		<textarea ng-model="question"></textarea>
@@ -46,8 +45,8 @@
 	<div id="questions">
 		<div id="filter">
 			<div id="text">
-				<a class="filter-options" ng-show="tab == 'question'" ng-href="/s/{{sessionId}}">Return to session </a>
-				<span ng-show="tab != 'question'">
+				<a class="filter-options" ng-if="tab == 'question'" ng-href="/s/{{sessionId}}">Return to session </a>
+				<span ng-if="tab != 'question'">
 				<a class="filter-options" ng-class="{current: tab == 'unanswered'}" ng-href="/s/{{sessionId}}/unanswered"> Unanswered </a> | 
 				<a class="filter-options" ng-class="{current: tab == 'answered'}" ng-href="/s/{{sessionId}}/answered"> Answered </a>|
 				<a class="filter-options" ng-class="{current: tab == 'starred'}" ng-href="/s/{{sessionId}}/starred"> Starred</a></span>
@@ -65,17 +64,17 @@
 				</div>
 				<div id="question">
 					<div id="user-picture">
-						<a href="#">
+						<a ng-href="/u/{{question.asker.username}}">
 							<img class="circular" src="http://www.biography.com/imported/images/Biography/Images/Profiles/S/Will-Smith-9542165-1-402.jpg" width="75" height="75" />
 						</a>
 					</div>
 					<div id="main">
 						<div id="top-row">
-							<a id="user-name"href="#">Justin Hundley</a>
+							<a id="user-name" ng-href="/u/{{question.asker.username}}">{{question.asker.display}}</a>
 							<div id="timestamp">{{question.created | countdown}}</div>
-							<a class="clickable" ng-show="owner && session.state == 'running'">reply</a>
-							<a class="clickable" ng-show="owner && question.starred" ng-click="star(question, false)">unstar</a>
-							<a class="clickable" ng-show="owner && !question.starred" ng-click="star(question, true)">star</a>
+							<a class="clickable" ng-if="owner && session.state == 'running'">reply</a>
+							<a class="clickable" ng-if="owner && question.starred" ng-click="star(question, false)">unstar</a>
+							<a class="clickable" ng-if="owner && !question.starred" ng-click="star(question, true)">star</a>
 							<a ng-href="/q/{{question.id}}">permalink</a>
 							<div id="votes">
 								<ng-pluralize count="question.score"
@@ -86,11 +85,11 @@
 							</div>
 						</div>
 						<br/>
-						<div id="text" ng-bind-html-unsafe="question.question | markdown">
+						<div id="text" ng-bind-html="question.question | markdown">
 						</div>
 					</div>
 				</div>
-				<div id="response" ng-show="question.answered">
+				<div id="response" ng-if="question.answered">
 					<div id="user-picture">
 						<a href="#">
 							<img class="circular" src="http://www.biography.com/imported/images/Biography/Images/Profiles/S/Will-Smith-9542165-1-402.jpg" width="75" height="75" />

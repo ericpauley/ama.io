@@ -1,6 +1,6 @@
-var sessionApp = angular.module('sessionApp', ['ngResource']);
+var sessionApp = angular.module('sessionApp', ['ngResource', 'ngRoute']);
 
-sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $resource, $timeout, $rootScope){
+sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $resource, $timeout, $rootScope, $sce){
 	function repeat(){
 		$timeout(function(){
 			repeat();
@@ -102,15 +102,15 @@ sessionApp.config(function($routeProvider, $locationProvider) {
 	$locationProvider.html5Mode(true);
  });
 
-sessionApp.filter('markdown', function(){
+sessionApp.filter('markdown', ['$sce', function($sce){
 	return function(input){
 		if(input == undefined){
 			return undefined;
 		}else{
-			return markdown.toHTML(input);
+			return $sce.trustAsHtml(markdown.toHTML(input));
 		}
 	};
-});
+}]);
 
 sessionApp.filter('countdown', function(){
 	return function(input){
