@@ -1,9 +1,16 @@
-var profileApp = angular.module('profileApp', []);
+var profileApp = angular.module('profileApp', ['restangular', 'ngRoute', 'ngSanitize']);
 
-profileApp.controller('ProfileCtrl', function ProfileCtrl($scope, $http, $timeout, $rootScope, $sce) {
-	$http.get("/api/v1/user/" + GLOBALS['user'] + "/").success(function(data) {
-		$scope.user = data;
+profileApp.config(function(RestangularProvider){
+	RestangularProvider.setRestangularFields({
+		selfLink: 'resource_uri'
 	});
+	RestangularProvider.setRequestSuffix('/');
+	RestangularProvider.setDefaultHttpFields({cache: true});
+})
+
+profileApp.controller('ProfileCtrl', function ProfileCtrl($scope, $http, $timeout, Restangular, $rootScope, $sce) {
+	var User = Restangular.one("api").one("v1").one("user")
+	$scope.user = User.one(GLOBALS['user']).get()
 	$scope.qfilter={"action_type":"question"}
 	$scope.tab="questions"
 });
@@ -20,11 +27,11 @@ profileApp.filter('markdown', ['$sce',
 	}
 ]);
 
-profileApp.filter('plain',['$sce', function($sce) {
+profileApp.filter('plain', function() {
 	return function(text) {
-		return $sce.trustAsHtml(String(text).replace(/<(?:.|\n)*?>/gm, ''));
+		return String(text).replace(/<(?:.|\n)*?>/gm, '');
 	}
-}]);
+});
 
 profileApp.filter('countdown', function() {
 	return function(input) {

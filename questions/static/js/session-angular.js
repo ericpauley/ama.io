@@ -63,7 +63,7 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $resour
 	}
 
 	$rootScope.$on("tabChange", function(event, args){
-		$.extend($scope, args)
+		angular.extend($scope, args)
 	})
 });
 

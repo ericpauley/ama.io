@@ -57,13 +57,17 @@ class Action():
             pass
         self.__dict__.update(kwargs)
 
+def p(x):
+    print x
+    return x
+
 class UserResource(ModelResource):
     display = fields.CharField(readonly = True)
     score = fields.IntegerField(readonly = True, default=0)
     questions_asked = fields.IntegerField(readonly=True)
     questions_answered = fields.IntegerField(readonly=True)
     sessions_viewed = fields.IntegerField(readonly=True)
-    activities = fields.ListField(readonly=True)
+    activities = fields.ListField(readonly=True, use_in=lambda b:p(b.related_name) is None)
 
     def dehydrate_score(self, bundle):
         return AMAVote.objects.filter(question__asker=bundle.obj).aggregate(Sum("value"))['value__sum']
@@ -81,6 +85,7 @@ class UserResource(ModelResource):
         return bundle.obj.meta.full_name
 
     def dehydrate_activities(self, bundle):
+        print bundle.related_obj
         a = []
         for q in bundle.obj.own_questions.order_by("-created").select_related()[:20]:
             a.append(Action("question", q.created, q, user=q.target.meta.full_name, question=q.question))
@@ -106,6 +111,8 @@ class UserResource(ModelResource):
             'username': ALL
 
         }
+        detail_uri_name = 'username'
+        cache = SimpleCache(timeout=60)
         
     def prepend_urls(self):
         return [
@@ -124,6 +131,9 @@ class UserResource(ModelResource):
             url(r'^(?P<resource_name>%s)/make_new%s$' %
                 (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('make_new'), name='api_make_new'),
+            url(r"^(?P<resource_name>%s)/(?P<username>[\w\d_.-]+)/$" % 
+                self._meta.resource_name,
+                self.wrap_view('dispatch_detail'), name="api_dispatch_detail"),
         ]
 
     def register(self, request, **kwargs):
@@ -508,7 +518,8 @@ class QuestionResource(ModelResource):
     #comments = fields.ToManyField('questions.api.CommentResource', readonly=True, attribute='comments', null=True, use_in="detail", full=True, related_name='question')
     #html = fields.CharField(use_in = "detail")
     score = fields.IntegerField(attribute='score', default=0, readonly=True)
-    asker = fields.ForeignKey('questions.api.UserResource', 'asker', full=True, readonly=True)
+    asker = fields.ForeignKey('questions.api.UserResource', 'asker', readonly=True)
+    target = fields.ForeignKey('questions.api.UserResource', 'target', readonly=True)
     answered = fields.BooleanField(readonly=True)
     vote = fields.IntegerField(attribute = "vote", default = 0)
 

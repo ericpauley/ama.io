@@ -6,7 +6,7 @@
 
 {%block postscript%}
 <script>
-GLOBALS['user'] = {{user.id}};
+GLOBALS['user'] = '{{user.username}}';
 </script>
 <script type="text/javascript" src="{% static 'js/profile-angular.js' %}">
 </script>
