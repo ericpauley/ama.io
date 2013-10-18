@@ -13,3 +13,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular-route.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular-sanitize.js"></script>
 <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="{% static 'js/jquery.leanModal.min.js' %}"></script>
+<script type="text/javascript">
+	$(function() {
+		$('a[rel*=leanModal]').leanModal({ top : 200, closeButton: ".modal_close" });		
+	});
+</script>
