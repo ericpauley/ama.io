@@ -29,8 +29,10 @@
 			</a>
 		</div>
 		<div id="title-desc">
-			<h2>{{session.title}}<span id="live" ng-if="session.state == 'running'">[LIVE]</span></h2>
+			<h2><span ng-show="state.edit != 'title'" ng-click="state.edit='title'">{{session.title}}</span><input id="edit-title" ng-model="session.title" ng-show="state.edit == 'title'" focus-on-show ng-blur="edit('title', session.title)"/><span id="live" ng-if="session.state == 'running'">[LIVE]</span></h2>
+			<textarea ng-model="session.desc" ng-show="state.edit == 'desc'" focus-on-show ng-blur="edit('desc', session.desc)"></textarea>
 			<div id="desc" ng-bind-html="session.desc | markdown"></div>
+			<a href="" ng-show="state.owner" ng-click="state.edit = 'desc'" ng-show="state.edit != 'desc'">[Edit Description]</a>
 		</div>
 	</div>
 </div>
@@ -72,9 +74,9 @@
 						<div id="top-row">
 							<a id="user-name" ng-href="/u/{{question.asker.username}}" target="_self">{{question.asker.display}}</a>
 							<div id="timestamp">{{question.created | countdown}}</div>
-							<a class="clickable" ng-if="owner && session.state == 'running'">reply</a>
-							<a class="clickable" ng-if="owner && question.starred" ng-click="star(question, false)">unstar</a>
-							<a class="clickable" ng-if="owner && !question.starred" ng-click="star(question, true)">star</a>
+							<a class="clickable" ng-if="state.owner && session.state == 'running'">reply</a>
+							<a class="clickable" ng-if="state.owner && question.starred" ng-click="star(question, false)">unstar</a>
+							<a class="clickable" ng-if="state.owner && !question.starred" ng-click="star(question, true)">star</a>
 							<a ng-href="/q/{{question.id}}">permalink</a>
 							<div id="votes">
 								<ng-pluralize count="question.score"

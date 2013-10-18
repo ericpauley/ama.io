@@ -1,17 +1,34 @@
-var sessionApp = angular.module('sessionApp', ['ngResource', 'ngRoute']);
+var sessionApp = angular.module('sessionApp', ['ngRoute']);
 
-sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $resource, $timeout, $rootScope, $sce){
+sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeout, $rootScope, $sce){
+	$scope.toApply = null;
 	function repeat(){
 		$timeout(function(){
 			repeat();
 		}, 10000);
 		$http.get("/api/v1/session/"+GLOBALS['session']+"/").success(function(data) {
-			$scope.session = data;
+			if($scope.state.edit == null){
+				$scope.session = data;
+			}else{
+				$scope.toApply = data;
+			}
 		});
 	}
 	repeat();
-	$scope.owner = GLOBALS['owner']
 	$scope.sessionId = GLOBALS['session']
+	$scope.state = $rootScope
+	$scope.state.edit = null;
+	$scope.state.owner = GLOBALS['owner']
+
+	$scope.$watch("state.edit", function(){
+		if($scope.toApply != null){
+			$scope.session = $scope.toApply;
+			$scope.toApply = null;
+		}
+		if($scope.state.edit == "title"){
+			$("#edit-title").focus();
+		}
+	})
 
 	$scope.vote = function(question, val){
 		var old = question.vote;
@@ -62,6 +79,19 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $resour
 		});
 	}
 
+	$scope.edit = function(field, value){
+		$scope.state.edit = null;
+		if($scope.toApply != null)
+			$scope.toApply[field] = value;
+		data = {}
+		data[field] = value;
+		$http({
+			method: 'PATCH',
+			url: $scope.session.resource_uri,
+			data: data,
+		})
+	}
+
 	$rootScope.$on("tabChange", function(event, args){
 		angular.extend($scope, args)
 	})
@@ -69,18 +99,22 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $resour
 
 sessionApp.controller("UnansweredCtrl", function UnansweredCtrl($scope, $rootScope){
 	$rootScope.$broadcast("tabChange", {"qfilter":{'answered':'false'}, "tab":"unanswered"})
+	$scope.state = $rootScope
 })
 
 sessionApp.controller("AnsweredCtrl", function AnsweredCtrl($scope, $rootScope){
 	$rootScope.$broadcast("tabChange", {"qfilter":{'answered':'true'}, "tab":"answered"})
+	$scope.state = $rootScope
 })
 
 sessionApp.controller("StarredCtrl", function StarredCtrl($scope, $rootScope){
 	$rootScope.$broadcast("tabChange", {"qfilter":{'starred':'true'}, "tab":"starred"})
+	$scope.state = $rootScope
 })
 
 sessionApp.controller("QuestionCtrl", function QuestionCtrl($scope, $rootScope, $routeParams){
 	$rootScope.$broadcast("tabChange", {"qfilter":{'id':$routeParams.questionId.toString()}, "tab":"question"})
+	$scope.state = $rootScope
 })
 
 sessionApp.config(function($routeProvider, $locationProvider) {
@@ -102,22 +136,33 @@ sessionApp.config(function($routeProvider, $locationProvider) {
 	$locationProvider.html5Mode(true);
  });
 
+sessionApp.directive('focusOnShow', function($timeout) {
+    return {
+        link: function ( scope, element, attrs ) {
+            scope.$watch( attrs.ngShow, function ( val ) {
+                if ( angular.isDefined( val ) && val ) {
+                    $timeout( function () { element[0].focus(); } );
+                }
+            }, true);
+
+            element.bind('blur', function () {
+                if ( angular.isDefined( attrs.ngFocusLost ) ) {
+                    scope.$apply( attrs.ngFocusLost );
+
+                }
+            });
+        }
+    };
+});
+
 sessionApp.filter('markdown', ['$sce', function($sce){
 	return function(input){
-		if(input == undefined){
-			return undefined;
-		}else{
-			return $sce.trustAsHtml(markdown.toHTML(input));
-		}
+		return $sce.trustAsHtml(markdown.toHTML(input));
 	};
 }]);
 
 sessionApp.filter('countdown', function(){
 	return function(input){
-		if(input == undefined){
-			return undefined;
-		}else{
-			return moment(input).fromNow()
-		}
+		return moment(input).fromNow()
 	};
 });
