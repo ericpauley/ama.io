@@ -32,5 +32,17 @@ function createOffset(date) {
 }
 
 $(function() {
-    $('a[rel*=leanModal]').leanModal({ top : 200, closeButton: ".modal_close" });       
+    $('a[rel*=leanModal]').leanModal({closeButton: ".modal_close" });       
+});
+
+$(function() {
+  $('#signup-bottom').click(function() {
+    $("#signup").css('display', 'none');
+  });
+});
+
+$(function() {
+  $('#signin-bottom').click(function() {
+    $("#signin").css('display', 'none');
+  });
 });

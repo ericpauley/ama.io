@@ -795,7 +795,7 @@ textarea {
 }
 
 .twitter-signin {
-	background: #fff;
+	background: @white;
 	margin: 0 auto;
 	text-align: center;
 	padding-top: 25px;
@@ -826,6 +826,18 @@ textarea {
 	}
 }
 
+.lightbox-button {
+	width: 97%;
+	background: @yellow;
+	height: 30px;
+	padding: 10px;
+	margin-bottom: 20px;
+	box-shadow: none;
+	border: none;
+	font-size: 11px;
+	color: @darkgrey;
+}
+
 .lightbox-content {
 	background: @white;
 	padding: 25px;
@@ -838,7 +850,7 @@ textarea {
 	margin: 0 auto;
 	text-align: center;
 
-	input[type="text"] {
+	input[type="text"], input[type="password"] {
 		background: @lightgrey;
 		height: 10px;
 		color: @darkgrey;
@@ -847,27 +859,15 @@ textarea {
 		padding: 10px;
 		margin-bottom: 10px;
 	}
-
-	#signup-button {
-		width: 97%;
-		background: @yellow;
-		height: 30px;
-		padding: 10px;
-		margin-bottom: 20px;
-		box-shadow: none;
-		border: none;
-		font-size: 11px;
-		color: @darkgrey;
-	}
-
-	#signup-bottom {
-		font-size: 11px;
-		margin-top: 30px;
-		color: @teal;
-	}
 }
 
-#signup {
+.lightbox-bottom-link {
+	font-size: 11px;
+	margin-top: 30px;
+	color: @teal;
+}
+
+#signup, #signin {
 	display: none;
 	width: 225px;
 	margin: 0 auto;

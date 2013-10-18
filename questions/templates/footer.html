@@ -27,6 +27,50 @@
 </footer>
 <div id="signup">
 	<div class="lightbox-header">
+		Sign Up
+	</div>
+	<div class="twitter-signin">
+		<a href="/accounts/twitter/login/ ">
+			<img src="https://dev.twitter.com/sites/default/files/images_documentation/sign-in-with-twitter-gray.png" />
+		</a>
+	</div>
+	<div class="lightbox-or-separator">
+		<span>or</span>
+	</div>
+	<div class="lightbox-content">
+		<input id="signup-email" placeholder="Email" type="text" />
+		<input id="signup-username" placeholder="Username" type="text" />
+		<input id="signup-password" placeholder="Password" type="password" />
+		<input id="signup-confirm-password" placeholder="Confirm password" type="password" />	
+		<input class="lightbox-button" type="submit" value="Go"/>
+		<a href="#signin" rel="leanModal" class="lightbox-bottom-link" id="signup-bottom">
+			Already have an account?
+		</a>
+	</div>
+</div>
+<div id="signin">
+	<div class="lightbox-header">
+		Sign In
+	</div>
+	<div class="twitter-signin">
+		<a href="/accounts/twitter/login/ ">
+			<img src="https://dev.twitter.com/sites/default/files/images_documentation/sign-in-with-twitter-gray.png" />
+		</a>
+	</div>
+	<div class="lightbox-or-separator">
+		<span>or</span>
+	</div>
+	<div class="lightbox-content">
+		<input id="email-or-username" placeholder="Username or Email" type="text" />
+		<input id="password" placeholder="Password" type="text" />
+		<input class="lightbox-button" type="submit" value="Go"/>
+		<a href="#signup" rel="leanModal" class="lightbox-bottom-link" id="signin-bottom">
+			Don't have an account?
+		</a>
+	</div>
+</div>
+<div id="signup">
+	<div class="lightbox-header">
 		Sign In
 	</div>
 	<div class="twitter-signin">
@@ -43,11 +87,8 @@
 		<input id="signup-password" placeholder="Password" type="text" />
 		<input id="signup-confirm-password" placeholder="Confirm password" type="text" />	
 		<input id="signup-button" type="submit" value="Go"/>
-		<a href="#" id="signup-bottom">
+		<a href="#" class="lightbox-bottom-link" id="signup-bottom">
 			Don't have an account?
-		</div>
+		</a>
 	</div>
 </div>
-				 </form>
-			</div>
-		</div>
