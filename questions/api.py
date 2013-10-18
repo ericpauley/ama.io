@@ -70,7 +70,7 @@ class UserResource(ModelResource):
     activities = fields.ListField(readonly=True, use_in=lambda b:p(b.related_name) is None)
 
     def dehydrate_score(self, bundle):
-        return AMAVote.objects.filter(question__asker=bundle.obj).aggregate(Sum("value"))['value__sum']
+        return AMAVote.objects.filter(question__asker=bundle.obj).aggregate(Sum("value"))['value__sum'] or 0
 
     def dehydrate_questions_asked(self, bundle):
         return bundle.obj.own_questions.count()
@@ -275,7 +275,7 @@ class UserResource(ModelResource):
     
 
 class SessionResource(ModelResource):
-    owner = fields.ForeignKey(UserResource, 'owner', readonly=True)
+    owner = fields.ForeignKey(UserResource, 'owner', readonly=True, full=True)
     questions = fields.ToManyField('questions.api.QuestionResource', lambda bundle:bundle.obj.get_marked_questions(bundle.request), readonly=True, null=True, use_in='detail', full=True, related_name='session')
     num_viewers = fields.IntegerField(attribute="num_viewers", readonly=True)
     views = fields.IntegerField(readonly=True)
@@ -518,7 +518,7 @@ class QuestionResource(ModelResource):
     #comments = fields.ToManyField('questions.api.CommentResource', readonly=True, attribute='comments', null=True, use_in="detail", full=True, related_name='question')
     #html = fields.CharField(use_in = "detail")
     score = fields.IntegerField(attribute='score', default=0, readonly=True)
-    asker = fields.ForeignKey('questions.api.UserResource', 'asker', readonly=True)
+    asker = fields.ForeignKey('questions.api.UserResource', 'asker', readonly=True, full=True)
     target = fields.ForeignKey('questions.api.UserResource', 'target', readonly=True)
     answered = fields.BooleanField(readonly=True)
     vote = fields.IntegerField(attribute = "vote", default = 0)

@@ -100,6 +100,20 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeou
 		})
 	}
 
+	$scope.answer = function(question, index, value){
+		$scope.state.edit = null;
+		$scope.toApply = null;
+		question.answerdraft = false;
+		question.answer.created = Date();
+		question.answered = (value != "")
+		$http({
+			method: 'POST',
+			url: question.resource_uri+"answer/",
+			data: $.param({answer: value}),
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+		})
+	}
+
 	$rootScope.$on("tabChange", function(event, args){
 		angular.extend($scope, args)
 	})
@@ -132,10 +146,7 @@ sessionApp.filter('plain', function() {
 
 sessionApp.filter('markdown', ['$sce', function($sce){
 	return function(input){
-		console.time("Markdown");
-		var x = $sce.trustAsHtml(markdown.toHTML(input));
-		console.timeEnd("Markdown")
-		return x;
+		return $sce.trustAsHtml(markdown.toHTML(input));
 	};
 }]);
 
