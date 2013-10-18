@@ -1,68 +1,69 @@
-{%extends "base.html"%}
-{%load cache%}
-
-{%block content%}
-	{%cache 10 homepage%}
-	<div class="cell white thumbnail firstIntro" data-intro="Check out the AMA sessions that are running now.  Ask questions and interact live!" data-step="4">
-		<h2>Live Sessions</h2>
-		{%if user.is_authenticated%}
-		{%else%}
-		{%endif%}
-		<div class="clearfix tile-wrap">
-		{%for session in live_sessions%}
-		{%include "session_tile.html"%}
-		{%endfor%}
-		</div>
-		{%if live_sessions%}
-		<a href="{% url 'live'%}">Click here to see all live sessions.</a>
-		{%else%}
-		<a href="{%if user.is_authenticated%}#sessionModal{%else%}#loginModal{%endif%}" data-toggle="modal">No live sessions currently running. Start your own?</a>
-		{%endif%}
-	</div>
-	<div class="cell white thumbnail home-cell firstIntro" data-intro="Here are the most anticipated upcoming AMA sessions.  Mark these dates on your calendar!" data-step="5">	
-		<h2>Upcoming</h2>
-		{%if user.is_authenticated%}
-
-		{%else%}
-
-		{%endif%}
-		<div class="clearfix tile-wrap">
-			{%for session in upcoming_sessions%}
-			{%include "session_tile.html"%}
-			{%endfor%}
-		</div>
-		{%if upcoming_sessions%}
-		<a href="{% url 'upcoming'%}">Click here to see all upcoming sessions.</a>
-		{%else%}
-		<a href="{%if user.is_authenticated%}#sessionModal{%else%}#loginModal{%endif%}" data-toggle="modal">No upcoming sessions. Schedule one?</a>	
-		{%endif%}
-	</div>
-	<div class="white cell thumbnail home-cell firstIntro" data-intro="If you want someone to do an AMA, request them here.  You can see top requests, and even tweet at people to encrouage them to come and start their own AMA session." data-step="6">
-		<div class="clearfix">
-			<h2 class="pull-left">Top Requests</h2>
-			{%if user.is_authenticated%}
-			<div class="btn btn-title-inline" href="#requestModal" data-toggle="modal">Request an AMA</div>
-			{%else%}
-			<div class="btn btn-title-inline" href="#loginModal" data-toggle="modal">Request an AMA</div>
-			{%endif%}
-		</div>
-		<div class="clearfix tile-wrap">
-			{%if top_requests%}
-			<table class="table table-striped table-bordered requests-table">
-				<tr>
-					<th>Person</th>
-					<th>Tweets</th>
-					<th>Action</th>
-				</tr>
-			{% for request in top_requests%}
-			{%include "request_tile.html"%}
-			{%endfor%}
-			</table>
-		</div>
-	<a href="{% url 'requests'%}">Click here to see all requests.</a>
-	{%else%}
-	<a href="{%if user.is_authenticated%}#requestModal{%else%}#loginModal{%endif%}" data-toggle="modal">No active requests.  Request someone?</a>
-	{%endif%}
-	</div>
-	{%endcache%}
+{% extends "base.html" %}
+{% load staticfiles %}
+{%block postscript%}
 {%endblock%}
+{% block content %}
+<div id="home-top">
+	<div id="box">
+		<div id="text">
+			Ask <span id="rotate">YouTubers</span> anything
+		</div>
+		<div id="subtext">
+			Host and join Q&A sessions with the world
+		</div>
+		<a href="{% url 'twitter_login'%} ">
+			<img src="https://dev.twitter.com/sites/default/files/images_documentation/sign-in-with-twitter-gray.png" />
+		</a><br/>
+		<a id="small-text" href="#">
+			or join with your email
+		</a>
+	</div>
+</div>
+<div id="home-live">
+	<h2>LIVE AMAs</h2>
+	<div class="desc">
+		<strong>What is an AMA?</strong> In an AMA session, a person interacts with their fans or followers in a fun, live question and answer interface.
+	</div>
+	{% include "session_list.html" with sessions=live_sessions %}
+	<a class="link-all" href="#">
+		View all AMAs
+	</a>
+</div>
+<div id="home-requests">
+	<div id="main">
+		<h2>TOP REQUESTS</h2>
+		<div class="desc">
+			Do you want to interact with your favorite people?  Request or tweet them to do an AMA session.
+		</div>
+		<table align="center" cellpadding="10px">
+			{% for request in top_requests %}
+			<tr>
+				<td>
+					<strong></strong> @{{request.username}}
+				</td>
+				<td>
+					{{request.score}}
+					<a class="btn tweet-btn" href="{{request.tweet_url}}">Tweet them!</a>
+				</td>
+			</tr>
+			{% endfor %}
+		</table>
+		<a class="link-all" href="#">
+			View all requests
+		</a>
+	</div>
+</div>
+{% if user.is_anonymous %}
+<div id="home-bottom">
+	<div id="main">
+		<h2 class="white">Join the party!</h2>
+		<a class="twitter-auth" href="{% url 'twitter_login' %}">
+			<img src="https://dev.twitter.com/sites/default/files/images_documentation/sign-in-with-twitter-gray.png" />
+		</a><br/>
+		<a id="small-text" class="white" href="#">
+			or register with your email
+		</a>
+	</div>
+</div>
+{% endif %}
+{% endblock %}

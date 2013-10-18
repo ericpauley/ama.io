@@ -128,6 +128,10 @@ class AMASession(SluggedModel):
                 return acc.get_avatar_url()
             return None
 
+    @property 
+    def object(self):
+        return self
+
     def get_marked_questions(self, request):
         return AMAQuestion.objects.vote_marked(request).filter(session=self)
 

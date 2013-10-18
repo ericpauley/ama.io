@@ -1,42 +1,20 @@
-{% load staticfiles %}
 <!DOCTYPE html>
-<html lang="en">
-<title>{% block title %}Project AMA{% endblock %}</title>
+<html lang="en" ng-app="sessionApp">
 <head>
-	{%include "head.html"%}
+<title>{%block title%}Home{%endblock%} | Project AMA</title>
+<script>GLOBALS={}</script>
+{%block prescript%}{%endblock%}
+{%include "head.html"%}
+{%block postscript%}{%endblock%}
 </head>
 <body>
-	<div class="navbar-wrapper">
-		<div class="container">
-			<div class="navbar navbar-inverse">
-				<div class="navbar-inner">
-					<div class="container">
-					{%include "navbar.html"%}
-					<!--/.nav-collapse -->
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="main container">
-		<div class="support">
-			<a id="support-text" href="#supportModal" data-toggle="modal">Support</a>
-		</div>
-		{% include "headers.html" %}
+<div class="container">
+	{%include "header.html"%}
+	<div id="content">
 		{%block content%}{%endblock%}
 	</div>
-	<div class="container">
-		{%block footer%}
-		<footer>
-			{%include "footer.html"%}
-		</footer>
-		{%endblock%}
-	</div>
-	<script type="text/javascript">
-		GLOBALS={}
-	</script>
-	{%block prescript%}{%endblock%}
-	{%include "scripts.html"%}
-	{%block postscript%}{%endblock%}
+	<div class="push"></div>
+</div>
+	{%include "footer.html"%}
 </body>
 </html>

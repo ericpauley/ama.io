@@ -1,19 +1,17 @@
-{%extends "base.html"%}
-{%load cache%}
-
-{%block content%}
-{%cache 10 session_list title%}
-<div class="thumbnail white cell">
-<h1>{{title}}</h1>
-<div class="clearfix">
-{%if sessions%}
-{%for session in sessions%}
-{%include "session_tile.html"%}
-{%endfor%}
-{%else%}
-<a href="{%if user.is_authenticated%}#sessionModal{%else%}#loginModal{%endif%}" data-toggle="modal">No sessions here. Start or schedule your own?</a>
-</div>
-{%endif%}
-</div>
-{%endcache%}
-{%endblock%}
+<table align="center" cellspacing="15px">
+	{% for session in sessions %}
+		{% with session=session.object%}
+			{% cycle 'hello' '' 'end' as rows silent %}
+			{% if rows == 'hello' %}
+			<tr id="tile-row">
+			{% endif %}
+			<td>
+				<a href="{{session.get_absolute_url}}"><img src="{{session.auto_image}}" width="150" height="150" />
+				</a>
+			</td>
+			{% if rows == 'end' %}
+			</tr>
+			{% endif %}
+		{%endwith%}
+	{% endfor %}
+</table>

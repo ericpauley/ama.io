@@ -97,7 +97,7 @@ class UserResource(ModelResource):
             a.append(Action("session_start", s.start_time, s, title=s.title))
             a.append(Action("session_end", s.end_time, s, title=s.title))
             a.append(Action("session_create", s.created, s, title=s.title))
-        return [i.__dict__ for i in sorted(a,key=lambda x:x.date, reverse=True)]
+        return [i.__dict__ for i in sorted(a,key=lambda x:x.date, reverse=True) if i.date < timezone.now()]
 
     class Meta:
         queryset = User.objects.all()

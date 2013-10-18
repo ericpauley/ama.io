@@ -1,237 +1,53 @@
-{% load now %}
-
-<p id="footer-info">
-&nbsp;
-</p>
-<div id="registerModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		<h3 id="registerModalLabel">
-			Register
-		</h3>
+<footer id="footer">
+	<div id="inside">
+		<table align="center" cellspacing="15px" cellspacing="0">
+			<tr>
+				<td>
+					<a href="{% url 'about' %}" >About</a>
+				</td>
+				<td>
+					<a href="#">Blog</a>
+				</td>
+				<td>
+					<a href="#">Press</a>
+				</td>
+				<td>
+					<a href="#">Support</a>
+				</td>
+				<td>
+					<a href="#">Follow us</a>
+				</td>
+				<td>
+					<a href="#">Like us</a>
+				</td>
+			</tr>
+		</table>
+		Copyright &copy;{{ now|date:"Y" }}. All rights reserved.
 	</div>
-	<div class="modal-body container-fluid">
-		<form id="reg_form" class="form-horizontal">
-			{%include "error.html" with id="reg_exists" message="That username is taken." only%}
-			{%include "error.html" with id="reg_email_exists" message="That email address has already been used." only%}
-			{%include "error.html" with id="reg_reserved" message="That username is taken." only%}
-			{%include "error.html" with id="reg_bad_username" message="Invalid username." only%}
-			{%include "error.html" with id="reg_bad_email" message="Please enter a valid email." only%}
-			{%include "error.html" with id="reg_pass_match" message="Passwords don't match." only%}
-			{%include "error.html" with id="reg_bad_password" message="Your password must be at least 6 characters long." only%}
-			<div align="center" class="oath-signin">
-				<a href="/accounts/twitter/login" aria-hidden="true" class="btn btn-info tweet-button">Sign in with Twitter</a>
-			</div>
-			<div align="center" class="or-seperator">
-			- or -
-			</div>
-			<div id="reg_username_group" class="control-group">
-				<label class="control-label" for="reg_username">Username</label>
-				<div class="controls">
-					<input type="text" name="username" id="reg_username" placeholder="Username">
-				</div>
-			</div>
-			<div id="reg_emailgroup" class="control-group">
-				<label class="control-label" for="reg_email">Email</label>
-				<div class="controls">
-					<input type="text" name="email" id="reg_email" placeholder="Email">
-				</div>
-			</div>
-			<div id="reg_password_group" class="control-group">
-				<label class="control-label" for="reg_password">Password</label>
-				<div class="controls">
-					<input type="password" name="password" id="reg_password" placeholder="Password">
-				</div>
-			</div>
-			<div id="reg_confirm_group" class="control-group">
-				<label class="control-label" for="reg_confirm">Confirm</label>
-				<div class="controls">
-					<input type="password" name="confirm" id="reg_confirm" placeholder="Confirm">
-				</div>
-			</div>
-		</form>
+</footer>
+<div id="signup">
+	<div class="lightbox-header">
+		Sign In
 	</div>
-	<div class="modal-footer">
-		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> <button id="reg_submit" class="btn btn-primary btn-success">Submit</button>
+	<div class="twitter-signin">
+		<a href="/accounts/twitter/login/ ">
+			<img src="https://dev.twitter.com/sites/default/files/images_documentation/sign-in-with-twitter-gray.png" />
+		</a>
+	</div>
+	<div class="lightbox-or-separator">
+		<span>or</span>
+	</div>
+	<div class="lightbox-content">
+		<input id="signup-email" placeholder="Email" type="text" />
+		<input id="signup-username" placeholder="Username" type="text" />
+		<input id="signup-password" placeholder="Password" type="text" />
+		<input id="signup-confirm-password" placeholder="Confirm password" type="text" />	
+		<input id="signup-button" type="submit" value="Go"/>
+		<a href="#" id="signup-bottom">
+			Don't have an account?
+		</div>
 	</div>
 </div>
-<div id="loginModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		<h3 id="loginModalLabel">Login</h3>
-	</div>
-	<form id="login-modal-form" class="form-horizontal">
-	<div class="modal-body">
-		
-			{%include "error.html" with id="login-disabled" message="Your account is has been disabled." only%}
-			{%include "error.html" with id="login-incorrect" message="Invalid username or password." only%}
-			<div align="center" class="oath-signin">
-				<a href="/accounts/twitter/login" aria-hidden="true" class="btn btn-info tweet-button">Sign in with Twitter</a>
+				 </form>
 			</div>
-			<div align="center" class="or-seperator">
-			- or -
-			</div>
-			<div class="control-group">
-				<label class="control-label" for="login-modal-username">Username</label>
-				<div class="controls">
-					<input type="text" name="username" id="login-modal-username" placeholder="Username">
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label" for="login-modal-password">Password</label>
-				<div class="controls">
-					<input type="password" name="password" id="login-modal-password" placeholder="Password"><br/>
-					<a href="{%url 'account_reset_password' %}" aria-hidden="true">Forgot pass?</a>
-				</div>
-			</div>
-		
-	</div>
-	</form>
-	<div class="modal-footer">
-		<div href="#registerModal" data-toggle="modal" data-dismiss="modal" class="btn pull-left">Register</div>
-		<div class="btn" data-dismiss="modal" aria-hidden="true">Close</div>
-		<div id="login-modal-submit" class="btn btn-success">Login</div>
-	</div>
-	
-</div>
-<div id="confirmModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		<h3 id="confirmModalLabel">Confirm</h3>
-	</div>
-	<div id="confirm-body" class="modal-body">
-		
-	</div>
-	<div class="modal-footer">
-		<div class="btn" data-dismiss="modal" aria-hidden="true">Cancel</div>
-		<div id="confirm-submit"data-dismiss="modal"  class="btn btn-danger">Yes</div>
-	</div>
-	
-</div>
-<div id="settingsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="settingsModalLabel" aria-hidden="true">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		<h3 id="settingsModalLabel">
-			Settings
-		</h3>
-	</div>
-	<div class="modal-body container-fluid">
-		<form id="reg_form" class="form-horizontal">
-			<div id="reg_password_group" class="control-group">
-				<label class="control-label" for="reg_password">Current Password</label>
-				<div class="controls">
-					<input type="password" name="password" id="reg_password" placeholder="Password">
-				</div>
-			</div>
-			<div id="reg_password_group" class="control-group">
-				<label class="control-label" for="reg_password">New Password</label>
-				<div class="controls">
-					<input type="password" name="password" id="reg_password" placeholder="Password">
-				</div>
-			</div>
-			<div id="reg_password_group" class="control-group">
-				<label class="control-label" for="reg_password">Confirm Password</label>
-				<div class="controls">
-					<input type="password" name="password" id="reg_password" placeholder="Password">
-				</div>
-			</div>
-			<hr>
-
-		</form>
-	</div>
-	<div class="modal-footer">
-		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> <button id="reg_submit" class="btn btn-primary btn-success">Save Changes</button>
-	</div>
-</div>
-<div id="sessionModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="sessionModalLabel" aria-hidden="true">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		<h3 id="sessionModalLabel">
-			Create QA Session
-		</h3>
-	</div>
-	<div class="modal-body container-fluid">
-		<form method="POST" action="/api/v1/session/create/?format=json" id="create-session-form" class="form" enctype="multipart/form-data" target="session-upload-iframe">
-			{%include "error.html" with id="no_title" message="Please enter a title." only%}
-			{%include "error.html" with id="no_subtitle" message="Please enter a subtitle." only%}
-			{%include "error.html" with id="no_desc" message="Please enter a description." only%}
-			{%include "error.html" with id="bad_timing" message="Check your start time and duration." only%}
-			{%include "error.html" with id="too_soon" message="You must wait an hour between making sessions." only%}
-			{%include "error.html" with id="too_short" message="You must have your AMA run for at least an hour." only%}
-			{%include "error.html" with id="bad_image" message="Only .png and .jpg images are supported." only%}
-			{%include "error.html" with id="small_image" message="Your image must be at least 220x220 pixels." only%}
-			{%include "error.html" with id="image_error" message="There was an error processing your image." only%}
-			<fieldset>
-				<input type="text" placeholder="Title (max 50 characters)" name="title" maxlength="50" id="session-create-title" class="createIntro" data-intro="Come up with a concise title to explain who you are." data-step="1"/> e.g. I am (name), AMA!
-				<input type="text" name="subtitle" placeholder="Subtitle (max 100 characters)" maxlength="100" id="session-create-title" class="createIntro" data-intro="You can include more information in the subtitle." data-step="2"/>
-				<input type="number" name="duration" placeholder="Approx. length (hours)" min="0" max="100" id="session-create-title" class="createIntro" data-intro="Estimate how long you plan to run your session.  You can always end early." data-step="3"/>
-				<textarea id="session-desc" name="desc" placeholder="Description" maxlength="2000" rows="5" class="createIntro" data-intro="Explain who you are, promote your social links, or include any other information in the description." data-step="4"></textarea>	
-				<span class="createIntro" data-intro="Decide when you want to do your AMA.  For best results, schedule it at least a few days later." data-step="5">
-					<input type="date" name="date" value="{{now|date:'Y-m-d' }}" id="session-create-date"/> Schedule a Date<br/>
-					<input type="time" name="time" value="{{now|date:'H:i' }}" id="sesion-create-time"/> Schedule a Time
-				</span>
-				<input type="file" name="image" id="session-create-image" class="createIntro" data-intro="Choose an image for your AMA session.  It's good to take a current image of yourself, as proof that you are who you say you are." data-step="6"/> Set the image.
-			</fieldset>
-		</form>
-	</div>
-	<div class="modal-footer">
-		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> <button id="reg_submit" class="btn btn-primary btn-success createIntro" onclick="$('#create-session-form').submit()" data-intro="Click here to schedule your AMA!" data-step="7">Schedule</button>
-	</div>
-	<iframe id="session-upload-iframe" style="display:none"></iframe>
-</div>
-<div id="requestModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="sessionModalLabel" aria-hidden="true">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		<h3 id="requestModalLabel">
-			Request an AMA
-		</h3>
-	</div>
-	<div class="modal-body container-fluid">
-		<form method="POST" action="#" id="request-form" class="form-horizontal" >{% csrf_token %}
-			{%include "error.html" with id="req_bad_provider" message="Please select a valid Social Media service." only%}
-			{%include "error.html" with id="req_bad_username" message="Invalid username" only%}
-			{%include "error.html" with id="req_duplicate" message="That person has already recieved a request." only%}
-			{%include "error.html" with id="req_bad_timing" message="You can only request a new person once every hour." only%}
-			<div class="control-group" style="display:none">
-				<label class="control-label" for="request_provider">Service</label>
-				<div class="controls">
-					<select id="request_provider" name="provider">
-				  	<option value="twitter">Twitter</option> 
-				</select>
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label" for="request_person">Username</label>
-				<div class="controls">
-					<input type="text" name="username" id="request_username"></input>
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="checkbox">
-				<div class="controls">
-					<input type="checkbox" name="send" id='request-send-tweet'>Send them a tweet?</input>
-				</label>
-				</div>
-			</div>
-		</form>
-	</div>
-	<div class="modal-footer">
-		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> <button id="request_submit" class="btn btn-primary btn-success" onclick="$('#request-form').submit()">Request</button>
-	</div>
-</div>
-<div id="supportModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="sessionModalLabel" aria-hidden="true">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		<h3 id="supportModalLabel">
-			Support
-		</h3>
-	</div>
-	<div class="modal-body container-fluid">
-		General Support: <a href="mailto:support@ama.io">support@ama.io</a><br/>
-		Business Inquiries: <a href="mailto:support@ama.io">business@ama.io</a><br/><br/>
-		Tutorials: <a href="/about/" aria-hidden="true">Click Here</a>
-	</div>
-	<div class="modal-footer">
-		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-	</div>
-</div>
+		</div>

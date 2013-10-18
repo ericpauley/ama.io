@@ -1,4 +1,4 @@
-{% extends "2/base.html" %}
+{% extends "base.html" %}
 {%load staticfiles%}
 {% load jstemplate %}
 
@@ -21,22 +21,12 @@ GLOBALS['owner'] = true
 {%endblock%}
 
 {%block postscript%}
-<script type="text/javascript" src="{% static 'js/session-angular.js' %}">
+<script type="text/javascript" src="{% static 'js/session-routing.js' %}">
 </script>
-{%comment%}{%if session.owner == user%}
-<script type="text/javascript" src="{% static 'js/session-owner.js' %}">
-</script>
-{%endif%}
-<script type="text/javascript" src="{% static 'js/session.js' %}">
-</script>
-
-{%mustachejs "comment"%}
-{%mustachejs "question"%}
-{%endcomment%}
 {%endblock%}
 
 {% block content %}
-<div ng-app="sessionApp" ng-controller="SessionCtrl">
+<div ng-controller="SessionCtrl">
 	<div ng-view></div>
 </div>
 {% endblock %}

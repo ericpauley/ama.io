@@ -31,8 +31,9 @@ urlpatterns = patterns('',
     url(r'^api/', include(v1_api.urls)),
 
     #Static pages
-    url(r'about/', views.static_page("2/about.html", "About"), name="about"),
-    url(r'profile/', views.static_page("2/profile.html", "Profile"), name="profile"),
-    url(r'allrequests/', views.static_page("2/all_requests.html", "Requests"), name="requests"),
+    url(r'about/', views.static_page("about.html", "About"), name="about"),
+    url(r'profile/', views.static_page("profile.html", "Profile"), name="profile"),
+    url(r'allrequests/', views.static_page("all_requests.html", "Requests"), name="requests"),
+    url(r'searchresults/', views.static_page("search_results.html", "Requests"), name="requests"),
     url(r'demo/', views.static_page("session-demo.html", "Session Tutorial"), name="demo")
 )

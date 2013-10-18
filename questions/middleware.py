@@ -7,6 +7,4 @@ class TimezoneMiddleware(object):
         try:
             timezone.activate(pytz.timezone(request.COOKIES['tzname']))
         except:
-            print "NO TIMEZONE"
             timezone.deactivate()
-        print datetime.now(timezone.get_current_timezone()).tzname()

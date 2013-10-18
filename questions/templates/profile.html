@@ -1,4 +1,4 @@
-{% extends "2/base.html" %}
+{% extends "base.html" %}
 
 {%load staticfiles%}
 
@@ -8,14 +8,12 @@
 <script>
 GLOBALS['user'] = '{{user.username}}';
 </script>
-<script type="text/javascript" src="{% static 'js/profile-angular.js' %}">
-</script>
 {%endblock%}
 
 {% block content %}
 {%verbatim%}
 <div class="header-separator"></div>
-<div ng-app="profileApp" ng-controller="ProfileCtrl">
+<div ng-controller="ProfileCtrl">
 	<div id="profile-box">
 		<div id="profile-image">
 			<img src="http://www.biography.com/imported/images/Biography/Images/Profiles/S/Will-Smith-9542165-1-402.jpg" />

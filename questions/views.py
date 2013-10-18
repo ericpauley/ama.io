@@ -19,7 +19,7 @@ def upcoming(request):
 
 def home(request):
     top_requests = Request.objects.all()[:5]
-    return render(request, "2/home.html", {
+    return render(request, "home.html", {
         'live_sessions': AMASession.objects.live()[:6],
 #        'upcoming_sessions': AMASession.objects.upcoming()[:6],
 #        'past_sessions': AMASession.objects.past()[:6],
@@ -53,7 +53,7 @@ def user(request, username):
     past = AMASession.objects.past().filter(owner=user)[:4]
     upcoming = AMASession.objects.upcoming().filter(owner=user)[:4]
     live = AMASession.objects.live().filter(owner=user)[:1]
-    return render(request, "2/profile.html", {'user': user, 'past':past, 'upcoming':upcoming, 'live':live})
+    return render(request, "profile.html", {'user': user, 'past':past, 'upcoming':upcoming, 'live':live})
 
 def user_sessions(request, username):
     try:
@@ -79,7 +79,7 @@ def session(request, slug):
                 messages.add_message(request, messages.WARNING, 'This user has not verified their account with Twitter. Beware of impersonators.')
     except AMASession.DoesNotExist:
         raise Http404
-    return render(request, "2/session_page.html", {'session':s, 'unanswered': unanswered, 'answered': answered, 'votes':votes})
+    return render(request, "session_page.html", {'session':s, 'unanswered': unanswered, 'answered': answered, 'votes':votes})
 
 def settings(request):
     if request.user.is_anonymous():

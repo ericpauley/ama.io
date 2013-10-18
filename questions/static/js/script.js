@@ -30,3 +30,7 @@ function createOffset(date) {
     var minutes = pad(offset % 60);
     return sign + hours + ":" + minutes;
 }
+
+$(function() {
+    $('a[rel*=leanModal]').leanModal({ top : 200, closeButton: ".modal_close" });       
+});

@@ -1,4 +1,3 @@
 {{object.title}}
-{{object.subtitle}}
 {{object.desc}}
 {{object.owner.meta.full_name}}
