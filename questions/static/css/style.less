@@ -827,11 +827,10 @@ textarea {
 }
 
 .lightbox-button {
-	width: 97%;
+	width: 100%;
 	background: @yellow;
 	height: 30px;
 	padding: 10px;
-	margin-bottom: 20px;
 	box-shadow: none;
 	border: none;
 	font-size: 11px;
@@ -848,8 +847,20 @@ textarea {
 	border-bottom-right-radius: 5px;
 	border-bottom-left-radius: 5px;
 	margin: 0 auto;
-	text-align: center;
+}
 
+.lightbox-bottom-link {
+	font-size: 11px;
+	margin-top: 15px;
+	color: @teal;
+}
+
+#signup, #signin {
+	display: none;
+	width: 225px;
+	margin: 0 auto;
+	text-align: center;
+	
 	input[type="text"], input[type="password"] {
 		background: @lightgrey;
 		height: 10px;
@@ -861,15 +872,83 @@ textarea {
 	}
 }
 
-.lightbox-bottom-link {
-	font-size: 11px;
-	margin-top: 30px;
-	color: @teal;
-}
-
-#signup, #signin {
+#create-session {
 	display: none;
-	width: 225px;
+	width: 400px;
 	margin: 0 auto;
+
+	#create-session-image {
+		float: left;
+		margin-right: 25px;
+		width: 63%;
+	}
+
+	#create-session-length {
+		float: left;
+		width: 25%;
+	}
+
+	#create-session-date {
+		float: left;
+		width: 40%;
+		margin-right: 45px; 
+	}
+
+	#create-session-time {
+		float: right;
+		width: 30%;
+		margin-right: 18px;
+	}
+
+	#create-session-button {
+		margin-top: 25px;
+	}
+
+	input[type="text"], input[type="password"] {
+		background: @lightgrey;
+		height: 10px;
+		width: 95%;
+		color: @darkgrey;
+		box-shadow: none;
+		border: none;
+		padding: 10px;
+		margin-bottom: 10px;
+	}
+
+	input[type="number"] {
+		background: @lightgrey;
+		color: @darkgrey;
+		width: 100%;
+		box-shadow: none;
+		border: none;
+		padding: 10px;
+		margin-bottom: 10px;
+	}
+
+	input[type="file"] {
+		display: block;
+		border: none;
+		box-shadow: none;
+		margin-bottom: 10px;
+	}
+
+	input[type="date"], input[type="time"] {
+		background: @lightgrey;
+		color: @darkgrey;
+		font-family: @main-font, sans-serif;
+		display: block;
+		border: none;
+		box-shadow: none;
+		padding: 10px;
+		margin-bottom: 10px;
+		width: 100%;
+	}
+
+	textarea {
+		height: 75px;
+		background: @lightgrey;
+		font-family: @main-font, sans-serif;
+		margin-bottom: 10px;
+	}
 }
 
