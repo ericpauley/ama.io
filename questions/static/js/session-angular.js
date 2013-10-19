@@ -1,4 +1,4 @@
-var sessionApp = angular.module('sessionApp', ['ngRoute', 'ngSanitize']);
+var sessionApp = angular.module('sessionApp', ['ngRoute', 'ngSanitize', 'homepage']);
 
 sessionApp.controller('ProfileCtrl', function ProfileCtrl($scope, $http, $timeout, $rootScope, $sce) {
 	$http.get("/api/v1/user/"+GLOBALS['user']+"/").success(function(data) {

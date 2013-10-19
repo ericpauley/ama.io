@@ -100,7 +100,7 @@
 					<div id="main">
 						<div id="top-row">
 							<a id="user-name" ng-href="/u/{{session.owner.username}}" target="_self">{{session.owner.display}}</a>
-							<div id="timestamp">{{question.answer.created | countdown}}</div>
+							<div id="timestamp" ng-if="question.answered">{{question.answer.created | countdown}}</div>
 						</div>
 						<br/>
 						<div id="text" ng-bind-html="question.answer.response | markdown" ng-if="!question.answerdraft">

@@ -6,17 +6,19 @@
 <div id="home-top">
 	<div id="box">
 		<div id="text">
-			Ask <span id="rotate">YouTubers</span> anything
+			Ask <span id="rotate" ng-controller="RotateCtrl" ng-bind="item"></span> anything
 		</div>
 		<div id="subtext">
 			Host and join Q&A sessions with the world
 		</div>
+		{% if user.is_anonymous%}
 		<a href="{% url 'twitter_login'%} ">
 			<img src="https://dev.twitter.com/sites/default/files/images_documentation/sign-in-with-twitter-gray.png" />
 		</a><br/>
 		<a id="small-text" href="#">
 			or join with your email
 		</a>
+		{%endif%}
 	</div>
 </div>
 <div id="home-live">
