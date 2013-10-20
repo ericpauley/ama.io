@@ -9,13 +9,13 @@ from django.contrib import messages
 from json import dumps
 
 def live(request):
-    return render(request, "session_list.html", {'sessions': AMASession.objects.live()[:50], 'title':'Live Sessions'})
+    return render(request, "session_list_page.html", {'sessions': AMASession.objects.live()[:50], 'title':'Live Sessions'})
 
 def past(request):
-    return render(request, "session_list.html", {'sessions': AMASession.objects.past()[:50], 'title':'Past Sessions'})
+    return render(request, "session_list_page.html", {'sessions': AMASession.objects.past()[:50], 'title':'Past Sessions'})
 
 def upcoming(request):
-    return render(request, "session_list.html", {'sessions': AMASession.objects.upcoming()[:50], 'title':'Upcoming Sessions'})
+    return render(request, "session_list_page.html", {'sessions': AMASession.objects.upcoming()[:50], 'title':'Upcoming Sessions'})
 
 def home(request):
     top_requests = Request.objects.all()[:5]
@@ -43,7 +43,7 @@ def requests(request, page="1"):
     next = None if 20*page >= num else reverse("requests", kwargs={"page":page+1})
     top_requests = top_requests = Request.objects.all()[(page-1)*20:page*20]
     title = "Requests"
-    return render(request, "request_list.html", locals())
+    return render(request, "all_requests.html", locals())
 
 def user(request, username):
     try:

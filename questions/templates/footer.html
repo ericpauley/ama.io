@@ -73,38 +73,39 @@
 		</div>
 	</div>
 </div>
-<div id="create-session">
+<form id="create-session" action="/api/v1/session/create/" method=target="create-iframe" ng-controller="CreateCtrl">
 	<div class="lightbox-header">
 		Create QA Session
 	</div>
 	<div class="lightbox-content">
 		<label for="title">Title</label>
-		<input id="create-session-title" name="title" placeholder="ex: I am a YouTuber, ask me anything!" type="text" />
+		<input id="create-session-title" name="title" placeholder="ex: I am a YouTuber, ask me anything!" type="text" ng-model="title"/>
 		<label for="title">Name</label>
-		<input id="create-session-name" name="name" placeholder="ex: John Doe" type="text" />
+		<input id="create-session-name" name="name" placeholder="ex: John Doe" type="text" ng-model="name"/>
 		<label for="title">Role</label>
-		<input id="create-session-role" name="role" placeholder="ex: Vlogger on YouTuber" type="text" />
+		<input id="create-session-role" name="role" placeholder="ex: Vlogger or YouTuber" type="text" ng-model="role"/>
 		<label for="desc">Description</label>
 		<textarea id="create-session-desc" name="desc" placeholder="Enter more details about your session here..."></textarea>
 		<div id="create-session-image">
 			<label for="image">Session Image</label><br/>
-			<input type="file" name="image" />
+			<input type="file" name="image"/>
 		</div>
+		{{file}}
 		<div id="create-session-length">
 			<label for="duration">Duration (Hrs)</label>
 			<br/>
-			<input name="duration" type="number" />
+			<input name="duration" type="number" ng-model="duration"/>
 		</div>
 		<div id="create-session-date">
 			<label for="date">Date</label>
 			<br/>
-			<input name="date" type="date" />
+			<input name="date" type="date" ng-model="date"/>
 		</div>
 		<div id="create-session-time">
 			<label for="time">Time</label>
 			<br/>
-			<input name="time" type="time" />
+			<input name="time" type="time" ng-model="time"/>
 		</div>
 		<input class="lightbox-button" id="create-session-button" type="submit" value="Schedule!"/>
 	</div>
-</div>
+</form>

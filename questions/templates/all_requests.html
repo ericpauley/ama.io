@@ -3,7 +3,7 @@
 <div class="header-separator"></div>
 <div id="sessions-list">
 	<h2>AMA Requests</h2>
-	<a class="filter-options" id="current" href="#">Top</a> | <a class="filter-options" href="#">Rising</a>
+	{%comment%}<a class="filter-options" id="current" href="#">Top</a> | <a class="filter-options" href="#">Rising</a>{%endcomment%}
 	<div id="requests-list-container">
 		<table align="center" cellpadding="10px">
 			{% for request in top_requests %}
@@ -20,6 +20,12 @@
 		</table>
 	</div>
 </div>
+{%if prev%}
+<a href="{{prev}}">previous</a>
+{%endif%}
+{%if next%}
+<a href="{{next}}">previous</a>
+{%endif%}
 <div class="bottom-cta">
 	Want to invite your favorite musician or actor to host an AMA?  Well what are you waiting for?<br/>
 	<a href="#" class="tweet-btn">Request them!</a>
