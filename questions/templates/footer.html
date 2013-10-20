@@ -26,7 +26,7 @@
 		Copyright &copy;{{ now|date:"Y" }}. All rights reserved.
 	</div>
 </footer>
-<form id="signup">
+<form id="signup" ng-controller="RegisterCtrl" ng-submit="register()">
 	<div class="lightbox-header">
 		Sign Up
 	</div>
@@ -38,12 +38,22 @@
 	<div class="lightbox-or-separator">
 		<span>or</span>
 	</div>
+	<div class="lightbox-error" ng-switch="error">
+		<div ng-switch-when="bad_username">Your username must be 4-30 characters.</div>
+		<div ng-switch-when="bad_password">Your password must be 6-50 characters.</div>
+		<div ng-switch-when="bad_email">Please enter a valid email address.</div>
+		<div ng-switch-when="pass_match">Your passwords don't match.</div>
+		<div ng-switch-when="exists">That username is already taken.</div>
+		<div ng-switch-when="email_exists">That email is already in use.</div>
+		<div ng-switch-when="reserved">That username has been reserved.</div>
+		<div ng-switch-when="error">There was a problem registering.</div>
+	</div>
 	<div class="lightbox-content">
-		<input id="signup-email" placeholder="Email" type="text"/>
-		<input id="signup-username" placeholder="Username" type="text"/>
-		<input id="signup-password" placeholder="Password" type="password"/>
-		<input id="signup-confirm-password" placeholder="Confirm password" type="password"/>	
-		<input class="lightbox-button" type="submit" value="Go"/>
+		<input id="signup-email" placeholder="Email" type="text" ng-model="email"/>
+		<input id="signup-username" placeholder="Username" type="text" ng-model="username"/>
+		<input id="signup-password" placeholder="Password" type="password" ng-model="password"/>
+		<input id="signup-confirm-password" placeholder="Confirm password" type="password" ng-model="confirm"/>	
+		<input class="lightbox-button" type="submit" value="Go" ng-disabled="working"/>
 		<div class="lightbox-bottom-link">
 			<a href="#signin" rel="leanModal" class="lightbox-bottom-link" id="signup-bottom">
 				Already have an account?
@@ -66,6 +76,7 @@
 	<div class="lightbox-error" ng-switch="error">
 		<div ng-switch-when="incorrect">Incorrect username or password</div>
 		<div ng-switch-when="disabled">Your account has been disabled.</div>
+		<div ng-switch-when="error">There was a problem rsigning in.</div>
 	</div>
 	<div class="lightbox-content">
 		<input id="email-or-username" placeholder="Username or Email" type="text" ng-model="username"/>

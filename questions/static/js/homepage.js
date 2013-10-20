@@ -14,7 +14,7 @@ homepage.controller("CreateCtrl", function CreateCtrl($scope, $http){
 
 homepage.controller("SigninCtrl", function SigninCtrl($scope, $http){
     $scope.error = null;
-    $scope.working = null;
+    $scope.working = false;
     $scope.login = function(){
         $scope.error = null;
         $scope.working = true;
@@ -28,11 +28,36 @@ homepage.controller("SigninCtrl", function SigninCtrl($scope, $http){
         }).success(function(data){
             location.reload();
         }).error(function(data){
-            $scope.error = data.reason;
+            $scope.error = data.reason || 'error';
             $scope.working = false;
         });
     }
 });
+
+homepage.controller("RegisterCtrl", function RegisterCtrl($scope, $http){
+    $scope.error = null;
+    $scope.working = false;
+
+    $scope.register = function(){
+        $scope.error = null;
+        $scope.working = true;
+        $http({
+            method: 'POST',
+            url: "/api/v1/user/register/",
+            data: $.param({
+                username: $scope.username,
+                password: $scope.password,
+                confirm: $scope.confirm,
+                email: $scope.email}),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function(data){
+            location.reload();
+        }).error(function(data){
+            $scope.error = data.reason || 'error';
+            $scope.working = false;
+        });
+    }
+})
 
 homepage.directive("fileread", [function () {
     return {
