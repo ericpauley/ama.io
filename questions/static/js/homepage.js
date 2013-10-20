@@ -1,4 +1,4 @@
-rotated = ['Justin', 'Eric', 'Jared', 'Max']
+rotated = ['YouTubers', 'actors', 'musicians', 'athletes', 'politicians', 'astronauts', 'comedians', 'anyone'];
 
 var homepage = angular.module('homepage', []);
 
