@@ -13,7 +13,7 @@
 		</div>
 		{% if user.is_anonymous%}
 		<a href="{% url 'twitter_login'%} ">
-			<img src="https://dev.twitter.com/sites/default/files/images_documentation/sign-in-with-twitter-gray.png" />
+			<img src="{% static 'images/twitter-signin.png' %}" />
 		</a><br/>
 		<a id="small-text" href="#">
 			or join with your email

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load staticfiles %}
 {% block title %}About{% endblock %}
 
 {% block content %}
@@ -15,7 +15,7 @@
 		<table align="center" id="members">
 			<tr>
 				<td id="member">
-					<img src="http://www.biography.com/imported/images/Biography/Images/Profiles/S/Will-Smith-9542165-1-402.jpg" width="125" height="125"/><br/>
+					<img src="{% static 'images/justin.jpg' %}" width="125" height="125"/><br/>
 					<strong>Justin Hundley</strong><br/>
 					Project Manager<br/>
 				</td>

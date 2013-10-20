@@ -1,24 +1,25 @@
+{% load staticfiles %}
 <footer id="footer">
 	<div id="inside">
 		<table align="center" cellspacing="15px" cellspacing="0">
 			<tr>
 				<td>
-					<a href="{% url 'about' %}" >About</a>
+					<a href="{% url 'about' %}">About</a>
 				</td>
 				<td>
-					<a href="#">Blog</a>
+					<a href="{% url 'blog' %}">Blog</a>
 				</td>
 				<td>
-					<a href="#">Press</a>
+					<a href="{% url 'press' %}">Press</a>
 				</td>
 				<td>
-					<a href="#">Support</a>
+					<a href="{% url 'about' %}">Support</a>
 				</td>
 				<td>
-					<a href="#">Follow us</a>
+					<a href="http://twitter.com/askmeit" target="_blank">Follow us</a>
 				</td>
 				<td>
-					<a href="#">Like us</a>
+					<a href="http://facebook.com/liveaskme" target="_blank">Like us</a>
 				</td>
 			</tr>
 		</table>
@@ -31,7 +32,7 @@
 	</div>
 	<div class="twitter-signin">
 		<a href="/accounts/twitter/login/ ">
-			<img src="https://dev.twitter.com/sites/default/files/images_documentation/sign-in-with-twitter-gray.png" />
+			<img src="{% static 'images/twitter-signin.png' %}" />
 		</a>
 	</div>
 	<div class="lightbox-or-separator">
@@ -56,19 +57,19 @@
 	</div>
 	<div class="twitter-signin">
 		<a href="/accounts/twitter/login/ ">
-			<img src="https://dev.twitter.com/sites/default/files/images_documentation/sign-in-with-twitter-gray.png" />
+			<img src="{% static 'images/twitter-signin.png' %}" />
 		</a>
 	</div>
 	<div class="lightbox-or-separator">
 		<span>or</span>
 	</div>
-	<div ng-switch="error">
+	<div class="lightbox-error" ng-switch="error">
 		<div ng-switch-when="incorrect">Incorrect username or password</div>
 		<div ng-switch-when="disabled">Your account has been disabled.</div>
 	</div>
 	<div class="lightbox-content">
 		<input id="email-or-username" placeholder="Username or Email" type="text" ng-model="username"/>
-		<input id="password" placeholder="Password" type="text" ng-model="password"/>
+		<input id="password" placeholder="Password" type="password" ng-model="password"/>
 		<input class="lightbox-button" type="submit" ng-disabled="working" value="Go"/>
 		<div class="lightbox-bottom-link">
 			<a href="#signup" rel="leanModal" class="lightbox-bottom-link" id="signin-bottom">
