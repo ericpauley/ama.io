@@ -41,7 +41,7 @@
 			{% for request in top_requests %}
 			<tr>
 				<td>
-					<strong></strong> @{{request.username}}
+					<strong>{{request.desc}}</strong> @{{request.username}}
 				</td>
 				<td>
 					{{request.score}}
@@ -50,7 +50,7 @@
 			</tr>
 			{% endfor %}
 		</table>
-		<a class="link-all" href="#">
+		<a class="link-all" href="{%url 'requests'%}">
 			View all requests
 		</a>
 	</div>

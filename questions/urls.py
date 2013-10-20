@@ -29,8 +29,5 @@ urlpatterns = patterns('',
 
     #Static pages
     url(r'about/', views.static_page("about.html", "About"), name="about"),
-    url(r'profile/', views.static_page("profile.html", "Profile"), name="profile"),
-    url(r'allrequests/', views.static_page("all_requests.html", "Requests"), name="requests"),
-    url(r'searchresults/', views.static_page("search_results.html", "Requests"), name="requests"),
     url(r'demo/', views.static_page("session-demo.html", "Session Tutorial"), name="demo")
 )

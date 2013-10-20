@@ -41,6 +41,8 @@ from allauth.account.models import EmailAddress
 from allauth.socialaccount.models import SocialApp
 from django.utils import timezone
 from allauth.socialaccount.providers.oauth.client import OAuth
+from django.conf import settings
+from tweepy.error import TweepError
 
 class CachedResource():
     def wrap_view(self, view):
@@ -749,7 +751,14 @@ class RequestResource(ModelResource):
                 'success': False,
                 'reason': 'bad_username',
                 }, HttpBadRequest )
-        desc = request.POST.get('desc',"")
+        try:
+            user = settings.TWITTER_API.get_user(username)
+            desc = user.name
+        except TweepError:
+            return self.create_response(request, {
+                'success': False,
+                'reason': 'bad_username',
+                }, HttpBadRequest )
         try:
             ama_request = Request.objects.get(provider=provider, username__iexact=username)
         except Request.DoesNotExist:

@@ -25,7 +25,7 @@
 		Copyright &copy;{{ now|date:"Y" }}. All rights reserved.
 	</div>
 </footer>
-<div id="signup">
+<form id="signup">
 	<div class="lightbox-header">
 		Sign Up
 	</div>
@@ -38,10 +38,10 @@
 		<span>or</span>
 	</div>
 	<div class="lightbox-content">
-		<input id="signup-email" placeholder="Email" type="text" />
-		<input id="signup-username" placeholder="Username" type="text" />
-		<input id="signup-password" placeholder="Password" type="password" />
-		<input id="signup-confirm-password" placeholder="Confirm password" type="password" />	
+		<input id="signup-email" placeholder="Email" type="text"/>
+		<input id="signup-username" placeholder="Username" type="text"/>
+		<input id="signup-password" placeholder="Password" type="password"/>
+		<input id="signup-confirm-password" placeholder="Confirm password" type="password"/>	
 		<input class="lightbox-button" type="submit" value="Go"/>
 		<div class="lightbox-bottom-link">
 			<a href="#signin" rel="leanModal" class="lightbox-bottom-link" id="signup-bottom">
@@ -49,8 +49,8 @@
 			</a>
 		</div>
 	</div>
-</div>
-<div id="signin">
+</form>
+<form id="signin" ng-controller="SigninCtrl" ng-submit="login()">
 	<div class="lightbox-header">
 		Sign In
 	</div>
@@ -62,17 +62,21 @@
 	<div class="lightbox-or-separator">
 		<span>or</span>
 	</div>
+	<div ng-switch="error">
+		<div ng-switch-when="incorrect">Incorrect username or password</div>
+		<div ng-switch-when="disabled">Your account has been disabled.</div>
+	</div>
 	<div class="lightbox-content">
-		<input id="email-or-username" placeholder="Username or Email" type="text" />
-		<input id="password" placeholder="Password" type="text" />
-		<input class="lightbox-button" type="submit" value="Go"/>
+		<input id="email-or-username" placeholder="Username or Email" type="text" ng-model="username"/>
+		<input id="password" placeholder="Password" type="text" ng-model="password"/>
+		<input class="lightbox-button" type="submit" ng-disabled="working" value="Go"/>
 		<div class="lightbox-bottom-link">
 			<a href="#signup" rel="leanModal" class="lightbox-bottom-link" id="signin-bottom">
 				Don't have an account?
 			</a>
 		</div>
 	</div>
-</div>
+</form>
 <form id="create-session" action="/api/v1/session/create/" method=target="create-iframe" ng-controller="CreateCtrl">
 	<div class="lightbox-header">
 		Create QA Session

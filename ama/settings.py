@@ -1,6 +1,7 @@
 # Django settings for ama project.
 
 import os
+import tweepy
 
 DEBUG = True
 
@@ -244,11 +245,25 @@ DEBUG_TOOLBAR_PANELS = (
 
 ENV = dict(os.environ)
 
+TWITTER_CONSUMER_KEY = ENV.get("TWITTER_CONSUMER_KEY","")
+TWITTER_CONSUMER_SECRET = ENV.get("TWITTER_CONSUMER_SECRET")
+
+TWITTER_ACCESS_TOKEN = ENV.get("TWITTER_ACCESS_TOKEN")
+TWITTER_ACCESS_TOKEN_SECRET = ENV.get("TWITTER_ACCESS_TOKEN_SECRET")
+
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+
 try:
     from ama.settings_local import *
     print("Using local settings...")
 except ImportError:
     pass
+
+TWITTER_AUTH = tweepy.auth.OAuthHandler(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET)
+TWITTER_AUTH.set_access_token(TWITTER_ACCESS_TOKEN, TWITTER_ACCESS_TOKEN_SECRET)
+
+TWITTER_API = tweepy.API(TWITTER_AUTH)
+del(TWITTER_AUTH)
 
 TEMPLATE_DEBUG = DEBUG
 THUMBNAIL_DEBUG = True
