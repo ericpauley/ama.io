@@ -13,8 +13,8 @@
 	<div id="content">
 		{%block content%}{%endblock%}
 	</div>
-	<div class="push"></div>
+	{% block push %}<div class="push"></div>{% endblock %}
 </div>
-	{%include "footer.html"%}
+	{% include "footer.html" %}
 </body>
 </html>
