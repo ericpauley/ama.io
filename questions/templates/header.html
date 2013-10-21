@@ -18,8 +18,12 @@
 				<div id="header-profile-name">
 					{{user.first_name|default:user.username}}
 				</div>
-				<div class="dropdown">&#9660;</div>
+				<div class="dropdown-arrow">&#9660;</div>
 			</a>
+			<ul>
+				<a href="{% url 'user' user.username %}"><li>Profile</li></a>
+				<a href="#"><li>Change&nbsp;Password</li></a>
+			</ul>
 		</div>
 		{% endif %}
 		<form id="search" method="GET" action="/search/">
