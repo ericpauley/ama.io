@@ -11,14 +11,21 @@
 		<div id="subtext">
 			Host and join Q&A sessions with the world
 		</div>
-		{% if user.is_anonymous%}
+		{% if user.is_anonymous %}
 		<a href="{% url 'twitter_login'%} ">
 			<img src="{% static 'images/twitter-signin.png' %}" />
 		</a><br/>
 		<a id="small-text" href="#">
 			or join with your email
 		</a>
-		{%endif%}
+		{% else %}
+		<a href="#request" rel="leanModal">
+			<div class="box-btn-left">Request Someone</div>
+		</a>
+		<a href="#create-session" rel="leanModal">
+			<div class="box-btn-right">Create a Session</div>
+		</a>
+		{% endif %}
 	</div>
 </div>
 <div id="home-live">
