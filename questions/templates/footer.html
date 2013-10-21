@@ -89,6 +89,21 @@
 		</div>
 	</div>
 </form>
+<form id="request">
+	<div class="lightbox-header">
+		Request
+	</div>
+	<div class="lightbox-error" ng-switch="error">
+		<div ng-switch-when="incorrect">Could not identify that user.</div>
+	</div>
+	<div class="lightbox-content">
+		<input id="email-or-username" placeholder="Twitter Username" type="text" ng-model="username"/>
+		<div id="send-tweet">
+			<input id="checkbox" value="Tweet" type="checkbox">  Send them a tweet?
+		</div>
+		<input class="lightbox-button" type="submit" ng-disabled="working" value="Submit"/>
+	</div>
+</form>
 <form id="create-session" action="/api/v1/session/create/" method=target="create-iframe" ng-controller="CreateCtrl">
 	<div class="lightbox-header">
 		Create QA Session
