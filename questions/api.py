@@ -339,11 +339,17 @@ class SessionResource(ModelResource):
                     'success': False,
                     'reason': 'no_title',
                 }, HttpBadRequest)
-        s.subtitle = request.POST['subtitle']
-        if s.subtitle == "":
+        s.name = request.POST['name']
+        if s.name == "":
             return self.create_response(request, {
                     'success': False,
-                    'reason': 'no_subtitle',
+                    'reason': 'no_name',
+                }, HttpBadRequest)
+        s.role = request.POST['role']
+        if s.role == "":
+            return self.create_response(request, {
+                    'success': False,
+                    'reason': 'no_role',
                 }, HttpBadRequest)
         s.desc = request.POST['desc']
         if s.desc == "":

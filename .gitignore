@@ -167,6 +167,7 @@ sqlite.db
 #Django Stuff
 /static/
 /media/
+/ama/settings_local.py
 
 /.elasticbeanstalk/
 *.komodoproject

@@ -38,7 +38,7 @@
 </div>
 <div id="session-ask" ng-if="session.state != 'after'">
 	<div id="ask-box">
-		<h2>Ask Will Smith:</h2>
+		<h2>Ask {{session.name}}:</h2>
 		<textarea ng-model="question"></textarea>
 		<a id="ask-btn" class="clickable" ng-click="ask(question)">ASK!</a>
 	</div>

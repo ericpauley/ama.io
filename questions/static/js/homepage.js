@@ -10,6 +10,16 @@ homepage.controller("CreateCtrl", function CreateCtrl($scope, $http){
 	$scope.date = moment().format("YYYY-MM-DD");
 	$scope.time = moment().format("HH:mm");
 	$scope.duration = 1;
+    $("#create-session").ajaxForm({
+        success:function(data){
+            document.location = "/s/"+data.slug;
+        },
+        error:function(xhr){
+            var err = xhr.responseText && $.parseJSON(xhr.responseText) || {};
+            $scope.error = err.reason || 'error';
+            $scope.$apply();
+        }
+    })
 });
 
 homepage.controller("SigninCtrl", function SigninCtrl($scope, $http){
@@ -59,21 +69,20 @@ homepage.controller("RegisterCtrl", function RegisterCtrl($scope, $http){
     }
 })
 
-homepage.directive("fileread", [function () {
+homepage.directive('fileRead', function () {
     return {
-        scope: {
-            fileread: "="
-        },
-        link: function (scope, element, attributes) {
-            element.bind("change", function (changeEvent) {
-                var reader = new FileReader();
-                reader.onload = function (loadEvent) {
-                    scope.$apply(function () {
-                        scope.fileread = loadEvent.target.result;
-                    });
-                }
-                reader.readAsDataURL(changeEvent.target.files[0]);
+        require: '?ngModel',
+        link: function (scope, el, attrs, ngModel) {
+            if(!ngModel) return;
+            ngModel.$render = function () {
+                alert(el[0].files[0].name)
+                ngModel.$setViewValue(el[0].files[0]);
+            };
+
+            el.bind('change', function (e) {
+                var file = (e.srcElement || e.target).files[0];
+                scope.$apply(ngModel.$render);
             });
         }
-    }
-}]);
+    };
+});
