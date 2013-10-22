@@ -54,10 +54,9 @@
 				<a class="filter-options" ng-class="{current: tab == 'starred'}" ng-href="/s/{{sessionId}}/starred"> Starred</a></span>
 			</div>
 		</div>
-		<!--
-		<div id="no-questions">
+		<div id="no-questions" ng-if="!session.questions.length">
 			There is nothing here. Be the first to ask a question!
-		</div>-->
+		</div>
 		<div id="answered">
 			<div id="pair" ng-repeat="question in session.questions | filter:qfilter | orderBy:'-score'">
 				<div id="vote">
