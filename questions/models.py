@@ -17,6 +17,7 @@ from random import choice
 from django import db
 from django.utils import timezone
 from django.core.urlresolvers import reverse
+from django.templatetags.static import static
 
 try:
     from urllib import urlencode
@@ -124,10 +125,10 @@ class AMASession(SluggedModel):
     def auto_image(self):
         try:
             return self.image.url
-        except ValueError:
+        except ValueError as e:
             for acc in self.owner.socialaccount_set.all():
                 return acc.get_avatar_url()
-            return None
+            return static("images/defalt-session.png")
 
     @property 
     def object(self):

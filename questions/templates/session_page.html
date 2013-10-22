@@ -26,10 +26,10 @@ GLOBALS['owner'] = true
 {%endblock%}
 
 {% block content %}
+<form id="image-edit" action="/api/v1/session/{{session.slug}}/image/" method="post" enctype="multipart/form-data">
+	<input type="file" id="image-edit-file" name="image" onchange="changeImage()"/>
+</form>
 <div ng-controller="SessionCtrl">
-	<form id="image-edit" action="/api/v1/session/{{session.slug}}/image/" method="post" enctype="multipart/form-data" ng-if="session.owner">
-		<input type="file" id="image-edit-file" name="image" onchange="changeImage()"/>
-	</form>
 	<div ng-view></div>
 </div>
 {% endblock %}
