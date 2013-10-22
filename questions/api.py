@@ -282,7 +282,7 @@ class SessionResource(ModelResource):
     num_viewers = fields.IntegerField(attribute="num_viewers", readonly=True)
     views = fields.IntegerField(readonly=True)
     time = fields.DateField()
-    image = fields.CharField(attribute="auto_image", readonly=True)
+    image = fields.CharField(attribute="auto_image", readonly=True, default="")
     state = fields.CharField(attribute="state", readonly=True)
 
     def dehydrate_time(self, bundle):
