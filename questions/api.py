@@ -745,7 +745,7 @@ class RequestResource(ModelResource):
                 'success': False,
                 'reason': 'not_logged_in',
                 }, HttpUnauthorized )
-        provider = request.POST['provider']
+        provider = "twitter"
         if not provider or not (provider in [p.id for p in providers.registry.get_list()]):
             return self.create_response(request, {
                 'success': False,
@@ -758,17 +758,18 @@ class RequestResource(ModelResource):
                 'reason': 'bad_username',
                 }, HttpBadRequest )
         try:
-            user = settings.TWITTER_API.get_user(username)
-            desc = user.name
-        except TweepError:
-            return self.create_response(request, {
-                'success': False,
-                'reason': 'bad_username',
-                }, HttpBadRequest )
-        try:
             ama_request = Request.objects.get(provider=provider, username__iexact=username)
         except Request.DoesNotExist:
-            if not request.user.is_staff and Request.objects.filter(creator=request.user, created__gte=datetime.datetime.now() - datetime.timedelta(hours=1)).count():
+            try:
+                user = settings.TWITTER_API.get_user(username)
+                username = user.screen_name
+                desc = user.name
+            except TweepError:
+                return self.create_response(request, {
+                    'success': False,
+                    'reason': 'bad_username',
+                    }, HttpBadRequest )
+            if not request.user.is_staff and Request.objects.filter(creator=request.user, created__gte=timezone.now() - datetime.timedelta(hours=1)).count():
                 return self.create_response(request, {
                     'success': False,
                     'reason': 'bad_timing',

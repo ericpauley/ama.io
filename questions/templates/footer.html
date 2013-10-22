@@ -89,19 +89,22 @@
 		</div>
 	</div>
 </form>
-<form id="request">
+<form id="request" ng-controller="RequestCtrl" ng-submit="request()">
 	<div class="lightbox-header">
 		Request
 	</div>
-	<div class="lightbox-error" ng-switch="error">
-		<div ng-switch-when="incorrect">Could not identify that user.</div>
+	<div class="lightbox-error" ng-switch="error" ng-if="error">
+		<div ng-switch-when="bad_username">Could not identify that user.</div>
+		<div ng-switch-when="bad_timing">You must wait at least an hour between submitting requests.</div>
+		<div ng-switch-default>There was an error submitting your request.</div>
 	</div>
 	<div class="lightbox-content">
 		<input id="email-or-username" placeholder="Twitter Username" type="text" ng-model="username"/>
 		<div id="send-tweet">
-			<input id="checkbox" value="Tweet" type="checkbox">  Send them a tweet?
+			<input id="checkbox" value="Tweet" type="checkbox" ng-model="tweet">  Send them a tweet?
 		</div>
-		<input class="lightbox-button" type="submit" ng-disabled="working" value="Submit"/>
+		<input class="lightbox-button" type="submit" ng-disabled="working" value="Submit" ng-if="!tweet"/>
+		<input class="lightbox-button" type="submit" ng-disabled="working" value="Submit and Tweet" ng-if="tweet"/>
 	</div>
 </form>
 <form id="create-session" action="/api/v1/session/create/" method="post"

@@ -69,6 +69,26 @@ homepage.controller("RegisterCtrl", function RegisterCtrl($scope, $http){
     }
 })
 
+homepage.controller("RequestCtrl", function RequestCtrl($scope, $http){
+    $scope.tweet = true;
+    $scope.username = "";
+    $scope.request = function(){
+        $scope.working = true;
+        $http({
+            method: 'POST',
+            url: "/api/v1/request/create/",
+            data: $.param({
+                username: $scope.username}),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function(data){
+            location.reload();
+        }).error(function(data){
+            $scope.error = data.reason || 'error';
+            $scope.working = false;
+        });
+    }
+})
+
 homepage.directive('fileRead', function () {
     return {
         require: '?ngModel',
