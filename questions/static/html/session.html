@@ -36,7 +36,7 @@
 		</div>
 	</div>
 </div>
-<div id="session-ask" ng-if="session.state != 'after'">
+<div id="session-ask" ng-if="session.state != 'after' && tab !='question'">
 	<div id="ask-box">
 		<h2>Ask {{session.name}}:</h2>
 		<textarea ng-model="question"></textarea>
