@@ -284,12 +284,18 @@ class SessionResource(ModelResource):
     time = fields.DateField()
     image = fields.CharField(attribute="auto_image", readonly=True, default="")
     state = fields.CharField(attribute="state", readonly=True)
+    twitter = fields.CharField(readonly=True, null=True)
 
     def dehydrate_time(self, bundle):
         return timezone.now()
 
     def dehydrate_views(self, bundle):
         return bundle.obj.viewers.count()
+
+    def dehydrate_twitter(self, bundle):
+        for account in bundle.obj.owner.socialaccount_set.all():
+            return account.extra_data['screen_name']
+        return None
 
     class Meta:
         queryset = AMASession.objects.all()

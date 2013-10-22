@@ -1,7 +1,7 @@
 <div id="session-header">
 	<div id="info">
 		<div id="img-stats">
-			<a id="img" href="#">
+			<a id="img" href="" onclick="$('#image-edit-file').click()">
 				<img ng-src="{{session.image}}" width="150" height="150" />
 			</a>
 			<div ng-switch="session.state">
@@ -24,8 +24,8 @@
 				'other': '{} views'}">
 				</ng-pluralize>
 			</div>
-			<a id="twitter-name" href="//twitter.com/">
-				@willsmith
+			<a id="twitter-name" href="//twitter.com/{{session.twitter}}" ng-if="session.twitter" target="_blank">
+				@{{session.twitter}}
 			</a>
 		</div>
 		<div id="title-desc">

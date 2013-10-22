@@ -117,6 +117,15 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeou
 	$rootScope.$on("tabChange", function(event, args){
 		angular.extend($scope, args)
 	})
+
+	changeImage = function(){
+		$("#image-edit").ajaxSubmit({
+			success:function(data){
+	            $scope.session.image = data.thumbnail;
+	            $scope.$apply();
+	        }
+		})
+	}
 });
 
 sessionApp.directive('focusOnShow', function($timeout) {
