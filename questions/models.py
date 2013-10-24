@@ -128,7 +128,7 @@ class AMASession(SluggedModel):
         except ValueError as e:
             for acc in self.owner.socialaccount_set.all():
                 return acc.get_avatar_url()
-            return static("images/defalt-session.png")
+            return static("images/default-session.png")
 
     @property 
     def object(self):
