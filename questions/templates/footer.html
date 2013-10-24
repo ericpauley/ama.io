@@ -157,18 +157,19 @@ enctype="multipart/form-data" ng-controller="CreateCtrl">
 		<input class="lightbox-button" id="create-session-button" type="submit" value="Schedule!"/>
 	</div>
 </form>
-<form id="change-password">
+<form id="change-password" ng-controller="PasswordCtrl" ng-submit="change()">
 	<div class="lightbox-header">
 		Change Password
 	</div>
 	<div class="lightbox-error" ng-switch="error">
-		<div ng-switch-when="incorrect">Passwords do not match</div>
-		<div ng-switch-when="incorrect">Password incorrect</div>
+		<div ng-switch-when="no_match">Passwords do not match</div>
+		<div ng-switch-when="bad_current">Password incorrect</div>
+		<div ng-switch-when="too_short">Your new password must be at least 6 characters long.</div>
 	</div>
 	<div class="lightbox-content">
-		<input id="password" placeholder="Current Password" type="password" ng-model="password"/>
-		<input id="password" placeholder="New Password" type="password" ng-model="password"/>
-		<input id="password" placeholder="Confirm Password" type="password" ng-model="password"/>
+		<input id="password" placeholder="Current Password" type="password" ng-model="current"/>
+		<input id="password" placeholder="New Password" type="password" ng-model="new1"/>
+		<input id="password" placeholder="Confirm Password" type="password" ng-model="new2"/>
 		<input class="lightbox-button" type="submit" ng-disabled="working" value="Submit"/>
 	</div>
 </form>

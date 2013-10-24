@@ -24,7 +24,7 @@
 				<a href="{% url 'user' user.username %}"><li>Profile</li></a>
 				<a href="#create-session" rel="leanModal"><li>Create Session</li></a>
 				<a href="#change-password" rel="leanModal"><li>Change&nbsp;Password</li></a>
-				<a href="#"><li>Logout</li></a>
+				<a href="{%url 'logout'%}"><li>Logout</li></a>
 			</ul>
 		</div>
 		{% endif %}

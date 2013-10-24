@@ -70,6 +70,18 @@ class UserResource(ModelResource):
     questions_answered = fields.IntegerField(readonly=True)
     sessions_viewed = fields.IntegerField(readonly=True)
     activities = fields.ListField(readonly=True, use_in=lambda b:p(b.related_name) is None)
+    twitter = fields.CharField(readonly=True)
+    desc = fields.CharField(readonly=True)
+
+    def dehydrate_twitter(self, bundle):
+        for account in bundle.obj.socialaccount_set.all():
+            return account.extra_data['screen_name']
+        return None
+
+    def dehydrate_desc(self, bundle):
+        for account in bundle.obj.socialaccount_set.all():
+            return account.extra_data['description']
+        return None
 
     def dehydrate_score(self, bundle):
         return AMAVote.objects.filter(question__asker=bundle.obj).aggregate(Sum("value"))['value__sum'] or 0
@@ -127,6 +139,9 @@ class UserResource(ModelResource):
             url(r'^(?P<resource_name>%s)/register%s$' %
                 (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('register'), name='api_register'),
+            url(r'^(?P<resource_name>%s)/change_password%s$' %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('change_password'), name='api_register'),
             url(r'^(?P<resource_name>%s)/make_old%s$' %
                 (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('make_old'), name='api_make_old'),
@@ -257,6 +272,21 @@ class UserResource(ModelResource):
             #print "User is now "+str(user.meta.new)
             return self.create_response(request, { 'success': True})
         return self.create_response(request, { 'success': False, 'reason': "Dup User"}, HttpNotFound)
+
+    def change_password(self, request, **kwargs):
+        self.method_check(request, allowed=['post'])
+        current = request.POST.get('current', '')
+        new = request.POST.get('new', '')
+        if len(new) < 6:
+            return self.create_response(request, {'success': False, 'reason': 'too_short'}, HttpBadRequest)
+        if not request.user.is_authenticated():
+            return self.create_response(request, {'success': False}, HttpUnauthorized)
+        if authenticate(username=request.user.username, password=current):
+            request.user.set_password(new)
+            request.user.save()
+            return self.create_response(request, {'success':True})
+        else:
+            return self.create_response(request, { 'success': False, 'reason': "bad_current"}, HttpUnauthorized)
     
     def make_new(self, request, **kwargs):
         self.method_check(request, allowed=['post'])

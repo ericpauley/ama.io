@@ -22,11 +22,13 @@ GLOBALS['user'] = '{{user.username}}';
 			<div id="bio">
 				<div id="bio-header">
 					<h2>{{user.display}}</h2>
-					<div id="twitter-username">
-						@WillSmith
+					<div id="twitter-username" ngif="user.twitter">
+						<a ng-href="https://twitter.com/{{user.twitter}}">
+						@{{user.twitter}}
+						</a>
 					</div>
 				</div>
-				<p>Will Smith is an actor, and crazy awesome person.  Here is a bio for sample, demo purposes!
+				<p ng-if="user.desc">{{user.desc}}
 				</p>
 			</div>
 			<div id="profile-stats">

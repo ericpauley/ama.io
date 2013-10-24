@@ -69,17 +69,16 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeou
 		});
 	}
 
-	$scope.ask = function(question){
+	$scope.ask = function(){
 		$http({
 			method: 'POST',
 			url: $scope.session.resource_uri+"ask/",
-			data: $.param({question:question}),
+			data: $.param({question:$scope.state.question}),
 			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 		}).
 		success(function(data, status, headers, config) {
 			$scope.session.questions.unshift(data.question);
-			$scope.question = null;
-			$scope.apply()
+			$scope.state.question = "";
 		}).
 		error(function(data, status, headers, config) {
 			// called asynchronously if an error occurs
@@ -155,6 +154,9 @@ sessionApp.filter('plain', function() {
 
 sessionApp.filter('markdown', ['$sce', function($sce){
 	return function(input){
+		if(! input){
+			return undefined
+		}
 		return $sce.trustAsHtml(markdown.toHTML(input));
 	};
 }]);

@@ -73,6 +73,7 @@ homepage.controller("RequestCtrl", function RequestCtrl($scope, $http){
     $scope.tweet = true;
     $scope.username = "";
     $scope.request = function(){
+        $scope.error = null;
         $scope.working = true;
         $http({
             method: 'POST',
@@ -86,6 +87,36 @@ homepage.controller("RequestCtrl", function RequestCtrl($scope, $http){
             $scope.error = data.reason || 'error';
             $scope.working = false;
         });
+    }
+})
+
+homepage.controller("PasswordCtrl", function RequestCtrl($scope, $http){
+    $scope.current = "";
+    $scope.new1 = "";
+    $scope.new2 = "";
+    $scope.working = false;
+    $scope.error = null;
+    $scope.change = function(){
+        $scope.error = null;
+        if($scope.new1 != $scope.new2){
+            $scope.error = "no_match"
+        }else{
+            $scope.working = true;
+            $http({
+                method: 'POST',
+                url: '/api/v1/user/change_password/',
+                data: $.param({
+                    current: $scope.current,
+                    new: $scope.new1
+                }),
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            }).success(function(data){
+                location.reload();
+            }).error(function(data){
+                $scope.error = data.reason || 'error';
+                $scope.working = false;
+            });
+        }
     }
 })
 
