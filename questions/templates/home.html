@@ -33,6 +33,11 @@
 	<div class="desc">
 		<strong>What is an AMA?</strong> In an AMA session, a person interacts with their fans or followers in a fun, live question and answer interface.
 	</div>
+	{% if not live_sessions.all %}
+	<div class="empty-content">
+		There are currently no live AMA sessions.
+	</div>
+	{% endif %}
 	{% include "session_list.html" with sessions=live_sessions %}
 	<a class="link-all" href="#">
 		View all AMAs

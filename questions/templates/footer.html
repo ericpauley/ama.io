@@ -26,7 +26,7 @@
 		Copyright &copy;{{ now|date:"Y" }}. All rights reserved.
 	</div>
 </footer>
-<form id="signup" ng-controller="RegisterCtrl" ng-submit="register()">
+<form class="lightbox" id="signup" ng-controller="RegisterCtrl" ng-submit="register()">
 	<div class="lightbox-header">
 		Sign Up
 	</div>
@@ -61,7 +61,7 @@
 		</div>
 	</div>
 </form>
-<form id="signin" ng-controller="SigninCtrl" ng-submit="login()">
+<form class="lightbox" id="signin" ng-controller="SigninCtrl" ng-submit="login()">
 	<div class="lightbox-header">
 		Sign In
 	</div>
@@ -89,7 +89,7 @@
 		</div>
 	</div>
 </form>
-<form id="request" ng-controller="RequestCtrl" ng-submit="request()">
+<form class="lightbox" id="request" ng-controller="RequestCtrl" ng-submit="request()">
 	<div class="lightbox-header">
 		Request
 	</div>
@@ -107,7 +107,7 @@
 		<input class="lightbox-button" type="submit" ng-disabled="working" value="Submit and Tweet" ng-if="tweet"/>
 	</div>
 </form>
-<form id="create-session" action="/api/v1/session/create/" method="post"
+<form class="lightbox" id="create-session" action="/api/v1/session/create/" method="post"
 enctype="multipart/form-data" ng-controller="CreateCtrl">
 	<div class="lightbox-header">
 		Create QA Session
@@ -157,7 +157,7 @@ enctype="multipart/form-data" ng-controller="CreateCtrl">
 		<input class="lightbox-button" id="create-session-button" type="submit" value="Schedule!"/>
 	</div>
 </form>
-<form id="change-password" ng-controller="PasswordCtrl" ng-submit="change()">
+<form class="lightbox" id="change-password" ng-controller="PasswordCtrl" ng-submit="change()">
 	<div class="lightbox-header">
 		Change Password
 	</div>

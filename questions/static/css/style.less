@@ -30,6 +30,11 @@
 		position:relative;
 		top:1px;
 	}
+
+	&[disabled] {
+		background: @lightgrey;
+		color: @darkgrey;
+	}
 }
 
 .rounded-corners (@radius: 5px) {
@@ -106,6 +111,14 @@ h2 {
 	font-weight: bold;
 	margin-bottom: 10px;
 	color: @darkgrey;
+}
+
+textarea {
+	width: 99.5%;
+	height: 75px;
+	border: none;
+	resize: none;
+	.rounded-corners;
 }
 
 /* GENERAL CLASSES */
@@ -196,6 +209,9 @@ h2 {
 }
 
 .bottom-cta {
+	position: absolute;
+	bottom: 78px;
+	width: 100%;
 	padding: 30px 0 30px 0;
 	background: @lightgrey;
 	text-align: center;
@@ -213,6 +229,11 @@ h2 {
 
 .push-grey {
 	background: @lightgrey;
+}
+
+.empty-content {
+	margin: 30px 0 30px 0;
+	font-style: italic;
 }
 
 /* HEADER */
@@ -273,6 +294,7 @@ h2 {
 					padding: 10px;
 					line-height: 25px;
 					float: none;
+					.rounded-corners;
 
 					&:hover {
 						background: @lightgrey;
@@ -526,165 +548,110 @@ h2 {
 	}
 }
 
-textarea {
-	width: 99.5%;
-	height: 75px;
-	border: none;
-	resize: none;
-	.rounded-corners;
-}
-
 #questions-area {
 	background: @lightgrey;
 	min-height: 300px;
+}
 
-	#questions {
-		.main-center(800px, 45px, 0px);
+#questions {
+	.main-center(800px, 45px, 0px);
 
-		img {
-			.circular;
+	img {
+		.circular;
+	}
+
+	#filter {
+		float: right;
+		margin-right: 38px;
+
+		#text {
+			float: left;
 		}
 
-		#filter {
+		#filter-box {
 			float: right;
-			margin-right: 38px;
+		}
+	}
 
-			#text {
-				float: left;
-			}
+	#no-questions {
+		height: 150px;
+		text-align: center;
+		padding-top: 50px;
+	}
+}
 
-			#filter-box {
-				float: right;
-			}
+.pair {
+	margin-top: 35px;
+
+	#question {
+		width: 90%;
+		margin: 0 auto;
+	}
+
+	#user-picture {
+		float: left;
+		margin-left: -35px;
+		margin-right: 21px;
+	}
+		
+	#main {
+		background: @lightblue;
+		padding: 10px 60px 10px 60px;
+		min-height: 55px;
+	}
+
+	#top-row {
+		font-size: 11px;
+
+		a, div {
+			float: left;
+			padding-right: 10px;
 		}
 
-		#no-questions {
-			height: 150px;
-			text-align: center;
-			padding-top: 50px;
+		#votes {
+			float: right;
+			padding-right: 0px;
 		}
 
-		#answered {
-			#pair {
-				margin-top: 35px;
+		#user-name {
+			color: @teal;
+		}
+	}
 
-				#question {
-					width: 90%;
-					margin: 0 auto;
+	#response {
+		width: 90%;
+		margin: 0 auto;
 
-					#user-picture {
-						float: left;
-						margin-left: -35px;
-						margin-right: 21px;
-					}
-					
-					#main {
-						background: @lightblue;
-						padding: 10px 60px 10px 60px;
-						min-height: 55px;
+		#user-picture {
+			float: right;
+			margin-right: -35px;
+			margin-left: 25px;
+		}
+		
+		#main {
+			background: @white;
+			padding: 10px 60px 10px 60px;
+			min-height: 55px;
 
-						#top-row {
-							font-size: 11px;
+			#top-row {
+				font-size: 11px;
 
-							a, div {
-								float: left;
-								padding-right: 10px;
-							}
-
-							#votes {
-								float: right;
-								padding-right: 0px;
-							}
-
-							#user-name {
-								color: @teal;
-							}
-						}
-					}
+				a, div {
+					float: left;
+					padding-right: 10px;
 				}
 
-				#response {
-					width: 90%;
-					margin: 0 auto;
-
-					#user-picture {
-						float: right;
-						margin-right: -35px;
-						margin-left: 25px;
-					}
-					
-					#main {
-						background: @white;
-						padding: 10px 60px 10px 60px;
-						min-height: 55px;
-
-						#top-row {
-							font-size: 11px;
-							
-							a, div {
-								float: left;
-								padding-right: 10px;
-							}
-
-							#user-name {
-								color: @teal;
-							}
-						}
-					}
-				}
-
-				#vote {
-					float: right;
-					margin-right: 20px;
-					font-size: 20px;
+				#user-name {
+					color: @teal;
 				}
 			}
 		}
+	}
 
-		#unanswered {
-			#pair {
-				margin-top: 35px;
-
-				#question {
-					width: 90%;
-					margin: 0 auto;
-
-					#user-picture {
-						float: left;
-						margin-left: -35px;
-						margin-right: 21px;
-					}
-					
-					#main {
-						background: @lightblue;
-						padding: 10px 60px 10px 60px;
-
-						#top-row {
-							font-size: 11px;
-
-							a, div {
-								float: left;
-								padding-right: 10px;
-							}
-
-							#votes {
-								float: right;
-							}
-
-							#user-name {
-								color: @teal;
-							}
-						}
-					}
-				}
-
-				#vote {
-					float: right;
-					margin-right: 20px;
-					font-size: 20px;
-				}
-			}
-		}
+	#vote {
+		float: right;
+		margin-right: 20px;
+		font-size: 20px;
 	}
 }
 
@@ -984,6 +951,7 @@ textarea {
 .lightbox-bottom-link {
 	font-size: 11px;
 	margin-top: 15px;
+	text-align: center;
 	color: @teal;
 }
 
@@ -992,11 +960,10 @@ textarea {
 	color: red;
 }
 
-#signup, #signin, #request, #change-password {
+.lightbox {
 	display: none;
 	width: 225px;
 	margin: 0 auto;
-	text-align: center;
 }
 
 #request {

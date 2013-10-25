@@ -57,8 +57,8 @@
 		<div id="no-questions" ng-if="!session.questions.length">
 			There is nothing here. Be the first to ask a question!
 		</div>
-		<div id="answered">
-			<div id="pair" ng-repeat="question in session.questions | filter:qfilter | orderBy:'-score'">
+		<div class="question-wrapper">
+			<div class="pair" ng-repeat="question in session.questions | filter:qfilter | orderBy:'-score'">
 				<div id="vote">
 					<a class="clickable" ng-click="vote(question, 1)" ng-class="{upvote: question.vote == 1}">&#x25B2;</a><br/>
 					<a class="clickable" ng-click="vote(question, -1)" ng-class="{downvote: question.vote == -1}">&#x25BC;</a>
