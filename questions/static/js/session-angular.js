@@ -1,7 +1,9 @@
 var sessionApp = angular.module('sessionApp', ['ngRoute', 'ngSanitize', 'homepage']);
 
 sessionApp.controller('ProfileCtrl', function ProfileCtrl($scope, $http, $timeout, $rootScope, $sce) {
-	$http.get("/api/v1/user/"+GLOBALS['user']+"/").success(function(data) {
+	$http.get("/api/v1/user/"+GLOBALS['user']+"/", {
+		params: {full_pages: true}
+	}).success(function(data) {
 		$scope.user = data;
 	});
 	$scope.qfilter={"action_type":"question"}

@@ -107,6 +107,28 @@
 						<textarea ng-if="state.owner" ng-show="question.answerdraft" ng-model="question.answer.response" focus-on-show ng-blur="answer(question, $index, question.answer.response)"></textarea>
 					</div>						
 				</div>
+				<div id="question" ng-if="tab == 'question'">
+					<form id="main">
+						<textarea placeholder="Comment on this question..."></textarea>
+						<button class="clickable" ng-click="ask()">ASK!</button>
+					</form>
+				</div>
+				<div id="question" ng-repeat="comment in comments">
+					<div id="user-picture">
+						<a ng-href="/u/{{comment.user.username}}" target="_self" ng-if="comment.user.image">
+							<img class="circular" src="{{comment.user.image}}" width="75" height="75" />
+						</a>
+					</div>
+					<div id="main">
+						<div id="top-row">
+							<a id="user-name" ng-href="/u/{{comment.user.username}}" target="_self">{{comment.user.display}}</a>
+							<div id="timestamp">{{comment.created | countdown}}</div>
+						</div>
+						<br/>
+						<div id="text" ng-bind-html="comment.comment | markdown">
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

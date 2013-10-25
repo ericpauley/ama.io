@@ -72,6 +72,12 @@ class UserResource(ModelResource):
     activities = fields.ListField(readonly=True, use_in=lambda b:p(b.related_name) is None)
     twitter = fields.CharField(readonly=True)
     desc = fields.CharField(readonly=True)
+    image = fields.CharField(readonly=True)
+
+    def dehydrate_image(self, bundle):
+        for account in bundle.obj.socialaccount_set.all():
+            return account.get_avatar_url()
+        return None
 
     def dehydrate_twitter(self, bundle):
         for account in bundle.obj.socialaccount_set.all():
@@ -99,19 +105,19 @@ class UserResource(ModelResource):
         return bundle.obj.meta.full_name
 
     def dehydrate_activities(self, bundle):
-        print bundle.related_obj
-        a = []
-        for q in bundle.obj.own_questions.order_by("-created").select_related()[:20]:
-            a.append(Action("question", q.created, q, user=q.target.meta.full_name, question=q.question))
-        for ans in AMAAnswer.objects.filter(question__target=bundle.obj).order_by("-created").select_related()[:20]:
-            a.append(Action("answer", ans.created, ans.question, user=ans.question.asker.meta.full_name, answer=ans.response))
-        for r in bundle.obj.request_votes.order_by("-created").select_related()[:20]:
-            a.append(Action("request", r.created, r, handle=r.request.username))
-        for s in bundle.obj.sessions.all():
-            a.append(Action("session_start", s.start_time, s, title=s.title))
-            a.append(Action("session_end", s.end_time, s, title=s.title))
-            a.append(Action("session_create", s.created, s, title=s.title))
-        return [i.__dict__ for i in sorted(a,key=lambda x:x.date, reverse=True) if i.date < timezone.now()]
+        if bundle.request.GET.get('full_pages'):
+            a = []
+            for q in bundle.obj.own_questions.order_by("-created").select_related()[:20]:
+                a.append(Action("question", q.created, q, user=q.target.meta.full_name, question=q.question))
+            for ans in AMAAnswer.objects.filter(question__target=bundle.obj).order_by("-created").select_related()[:20]:
+                a.append(Action("answer", ans.created, ans.question, user=ans.question.asker.meta.full_name, answer=ans.response))
+            for r in bundle.obj.request_votes.order_by("-created").select_related()[:20]:
+                a.append(Action("request", r.created, r, handle=r.request.username))
+            for s in bundle.obj.sessions.all():
+                a.append(Action("session_start", s.start_time, s, title=s.title))
+                a.append(Action("session_end", s.end_time, s, title=s.title))
+                a.append(Action("session_create", s.created, s, title=s.title))
+            return [i.__dict__ for i in sorted(a,key=lambda x:x.date, reverse=True) if i.date < timezone.now()]
 
     class Meta:
         queryset = User.objects.all()

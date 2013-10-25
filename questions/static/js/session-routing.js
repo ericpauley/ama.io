@@ -13,9 +13,17 @@ sessionApp.controller("StarredCtrl", function StarredCtrl($scope, $rootScope){
 	$scope.state = $rootScope
 })
 
-sessionApp.controller("QuestionCtrl", function QuestionCtrl($scope, $rootScope, $routeParams){
-	$rootScope.$broadcast("tabChange", {"qfilter":{'id':$routeParams.questionId.toString()}, "tab":"question"})
-	$scope.state = $rootScope
+sessionApp.controller("QuestionCtrl", function QuestionCtrl($scope, $rootScope, $routeParams, $http){
+	$rootScope.$broadcast("tabChange", {
+		"qfilter":{'id':$routeParams.questionId.toString()},
+		"tab":"question"
+	})
+	$scope.state = $rootScope;
+	$http.get("/api/v1/comment/", {
+		params: {question:$routeParams.questionId}
+	}).success(function(data){
+		$scope.comments = data.objects;
+	});
 })
 
 sessionApp.config(function($routeProvider, $locationProvider) {

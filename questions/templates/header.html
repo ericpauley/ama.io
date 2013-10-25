@@ -14,17 +14,17 @@
 		</div>
 		{% else %}
 		<div id="header-profile">
-			<a href="{% url 'user' user.username %}">
+			<a href="{% url 'user' user.username %}" target="_self">
 				<div id="header-profile-name">
 					{{user.first_name|default:user.username}}
 				</div>
 				<div class="dropdown-arrow">&#9660;</div>
 			</a>
 			<ul>
-				<a href="{% url 'user' user.username %}"><li>Profile</li></a>
-				<a href="#create-session" rel="leanModal"><li>Create Session</li></a>
-				<a href="#change-password" rel="leanModal"><li>Change&nbsp;Password</li></a>
-				<a href="{%url 'logout'%}"><li>Logout</li></a>
+				<a href="{% url 'user' user.username %}" target="_self"><li>Profile</li></a>
+				<a href="#create-session" rel="leanModal" target="_self"><li>Create Session</li></a>
+				<a href="#change-password" rel="leanModal" target="_self"><li>Change&nbsp;Password</li></a>
+				<a href="{%url 'logout'%}" target="_self"><li>Logout</li></a>
 			</ul>
 		</div>
 		{% endif %}
