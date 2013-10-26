@@ -13,9 +13,14 @@ sessionApp.controller('ProfileCtrl', function ProfileCtrl($scope, $http, $timeou
 sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeout, $rootScope, $sce){
 	$scope.toApply = null;
 	function repeat(){
-		$timeout(function(){
-			repeat();
-		}, 10000);
+		if(GLOBALS['owner'])
+			$timeout(function(){
+				repeat();
+			}, 10000);
+		else
+			$timeout(function(){
+				repeat();
+			}, 30000);
 		$http.get("/api/v1/session/"+GLOBALS['session']+"/").success(function(data) {
 			if($scope.state.edit == null){
 				$scope.session = data;
