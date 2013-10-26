@@ -9,5 +9,4 @@ class CommentForm(forms.Form):
 		fields = ['question', 'comment']
 class SessionForm(forms.Form):
 	title = forms.CharField(min_length=1, max_length=50)
-	subtitle = forms.CharField(min_length=1, max_length=100)
 	desc = forms.CharField(min_length=1, max_length=1000)
