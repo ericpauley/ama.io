@@ -11,7 +11,9 @@
                 {%for session in page.object_list%}
                 {%with session=session.object%}
                 <div class="session-tile">
-                    <img class="img150" src="http://www.biography.com/imported/images/Biography/Images/Profiles/S/Will-Smith-9542165-1-402.jpg" /><br/>
+                    <a href="{{session.get_absolute_url}}">
+                        <img class="img150" src="http://www.biography.com/imported/images/Biography/Images/Profiles/S/Will-Smith-9542165-1-402.jpg" />
+                    </a><br/>
                     <div id="session-tile-info">
                         <strong>{{session.title}}</strong><br/>
                         {% if session.state == 'running'%}

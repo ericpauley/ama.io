@@ -167,6 +167,7 @@ textarea {
 	padding: 20.83px;
 	display: table-cell;
 	text-align: center;
+	width: 150px;
 
 	.img225 {
 		width: 225px;
@@ -209,8 +210,6 @@ textarea {
 }
 
 .bottom-cta {
-	position: absolute;
-	bottom: 78px;
 	width: 100%;
 	padding: 30px 0 30px 0;
 	background: @lightgrey;
@@ -339,20 +338,26 @@ textarea {
 }
 
 /* HOME PAGE */
-#home-top {
+#home-top-wrapper {
 	background: @blue;
 	height: 350px;
 	width: 100%;
 	position: relative;
 
+	#home-top-bg {
+		background: url('/static/images/home-background.png') no-repeat center;
+		height: 339px;
+		padding: 5px 0 5px 0;
+	}
+
 	#box {
-		height: 210px;
+		height: 200px;
 		width: 550px;
 		background: @white;
 		position: absolute;
 		top: 50%;
 		left: 50%;
-		margin: -105px 0 0 -275px;
+		margin: -100px 0 0 -275px;
 		text-align: center;
 
 		#text {
@@ -383,13 +388,13 @@ textarea {
 .box-btn-left {
 	display: inline-block;
 	margin-right: 10px;
-	.btn(@blue, @white, 150px);
+	.btn(@yellow, @darkgrey, 150px);
 }
 
 .box-btn-right {
 	display: inline-block;
 	margin-left: 10px;
-	.btn(@blue, @white, 150px);
+	.btn(@yellow, @darkgrey, 150px);
 }
 
 #home-live {
@@ -481,11 +486,11 @@ textarea {
 
 #search-results-container {
 	width: 100%;
+	overflow: hidden;
 	background: @lightgrey;
 
 	#search-results {
 		.main-center(800px, 30px, 0px);
-		overflow: hidden;
 	}
 }
 
@@ -689,6 +694,9 @@ textarea {
 
 			#twitter-username {
 				line-height: 34px;
+				a {
+					color: @teal;
+				}
 			}
 
 			h2 {
@@ -736,6 +744,7 @@ textarea {
 	#activities {
 		width: 100%;
 		table-layout: fixed;
+		margin-bottom: 30px;
 
 		td {
 			width: 100%;

@@ -3,29 +3,32 @@
 {%block postscript%}
 {%endblock%}
 {% block content %}
-<div id="home-top">
-	<div id="box">
-		<div id="text">
-			Ask <span id="rotate" ng-controller="RotateCtrl" ng-bind="item"></span> anything
+<div id="home-top-wrapper">
+	<!-- Photos from http://www.flickr.com/photos/gregpc/ via http://randomuser.me/ -->
+	<div id="home-top-bg">
+		<div id="box">
+			<div id="text">
+				Ask <span id="rotate" ng-controller="RotateCtrl" ng-bind="item"></span> anything
+			</div>
+			<div id="subtext">
+				Host and join Q&A sessions with the world
+			</div>
+			{% if user.is_anonymous %}
+			<a href="{% url 'twitter_login'%} ">
+				<img src="{% static 'images/twitter-signin.png' %}" />
+			</a><br/>
+			<a id="small-text" href="#signup" rel="leanModal">
+				or join with your email
+			</a>
+			{% else %}
+			<a href="#request" rel="leanModal">
+				<div class="box-btn-left">Request Someone</div>
+			</a>
+			<a href="#create-session" rel="leanModal">
+				<div class="box-btn-right">Create a Session</div>
+			</a>
+			{% endif %}
 		</div>
-		<div id="subtext">
-			Host and join Q&A sessions with the world
-		</div>
-		{% if user.is_anonymous %}
-		<a href="{% url 'twitter_login'%} ">
-			<img src="{% static 'images/twitter-signin.png' %}" />
-		</a><br/>
-		<a id="small-text" href="#signup" rel="leanModal">
-			or join with your email
-		</a>
-		{% else %}
-		<a href="#request" rel="leanModal">
-			<div class="box-btn-left">Request Someone</div>
-		</a>
-		<a href="#create-session" rel="leanModal">
-			<div class="box-btn-right">Create a Session</div>
-		</a>
-		{% endif %}
 	</div>
 </div>
 <div id="home-live">

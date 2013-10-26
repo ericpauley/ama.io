@@ -6,8 +6,14 @@
 			<tr id="tile-row">
 			{% endif %}
 			<td>
-				<a href="{{session.get_absolute_url}}"><img src="{{session.auto_image}}" width="150" height="150" />
-				</a>
+                <div class="session-tile">
+                    <a href="{{session.get_absolute_url}}"><img src="{{session.auto_image}}" width="150" height="150" />
+					</a>
+                    <div id="session-tile-info">
+                        <strong>{{session.name}}</strong><br/>
+                        {{session.role}}
+                    </div>
+                </div> 
 			</td>
 			{% if rows == 'end' %}
 			</tr>
