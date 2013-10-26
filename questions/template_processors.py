@@ -1,4 +1,4 @@
-from questions.models import Request
+from questions.models import Request, AMASession
 from allauth.socialaccount import providers
 from django.utils import timezone
 from questions.api import UserResource
@@ -20,6 +20,10 @@ def recent_sessions(request):
 		return {"recent_sessions": request.user.sessions.order_by("-start_time")[:5]}
 	else:
 		return {}
+
+@process
+def live_sessions(request):
+	return {'live_sessions': AMASession.objects.live()[:9]}
 
 @process
 def oauth_providers(request):

@@ -14,7 +14,7 @@
 				{% if session.state == 'running'%}
 				{{session.num_viewers}} in AMA session{%else%}
 				{{session.num_viewers}} views{%endif%}<br/>
-				<a id="join-button" href="#">Join AMA</a>
+				<a id="join-button" href="{{session.get_absolute_url}}">Join AMA</a>
 			</div>
 		</div>  
 	</div>

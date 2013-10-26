@@ -15,7 +15,7 @@
 		<a href="{% url 'twitter_login'%} ">
 			<img src="{% static 'images/twitter-signin.png' %}" />
 		</a><br/>
-		<a id="small-text" href="#">
+		<a id="small-text" href="#signup" rel="leanModal">
 			or join with your email
 		</a>
 		{% else %}
@@ -39,7 +39,7 @@
 	</div>
 	{% endif %}
 	{% include "session_list.html" with sessions=live_sessions %}
-	<a class="link-all" href="#">
+	<a class="link-all" href="/live">
 		View all AMAs
 	</a>
 </div>
@@ -74,7 +74,7 @@
 		<a class="twitter-auth" href="{% url 'twitter_login' %}">
 			<img src="https://dev.twitter.com/sites/default/files/images_documentation/sign-in-with-twitter-gray.png" />
 		</a><br/>
-		<a id="small-text" class="white" href="#">
+		<a id="small-text" class="white" href="#signup" rel="leanModal">
 			or register with your email
 		</a>
 	</div>
