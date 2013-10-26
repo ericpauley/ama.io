@@ -40,7 +40,10 @@ sessionApp.controller("QuestionCtrl", function QuestionCtrl($scope, $rootScope, 
 	}
 })
 
-sessionApp.config(function($routeProvider, $locationProvider) {
+sessionApp.config(function($routeProvider, $locationProvider, $sceDelegateProvider) {
+	$sceDelegateProvider.resourceUrlWhitelist([
+    'self',
+    'http://static.ama.io/**']);
 	$routeProvider.when('/s/:sessionId/unanswered', {
 		controller: 'UnansweredCtrl',
 		templateUrl: GLOBALS['session_html']
