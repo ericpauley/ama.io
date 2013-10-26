@@ -5,7 +5,7 @@
 		</a>
 		<div id="links">
 			<a href="#create-session" rel="leanModal" target="_self">sessions</a>
-			<a href="#request" rel="leanModal" target="_self">requests</a>
+			<a href="{% url 'requests' %}" target="_self">requests</a>
 			<a href="{% url 'about' %}" target="_self">about</a>
 		</div>
 		{% if user.is_anonymous %}
