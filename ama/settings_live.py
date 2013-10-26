@@ -50,7 +50,7 @@ STORAGES_S3BOTO_MULTI = {
     }
 }
 
-HAYSTACK_CONNECTIONS = {
+'''HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack_cloudsearch.cloudsearch_backend.CloudsearchSearchEngine',
         'AWS_ACCESS_KEY_ID' : os.environ['AWS_ACCESS_KEY_ID'],
@@ -63,7 +63,7 @@ HAYSTACK_CONNECTIONS = {
                                     # If True, continue with upload
         #'REGION': 'us-east-1', # The region you want to create the search domain in. Defaults to 'us-east-1'
     }
-}
+}'''
 
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
