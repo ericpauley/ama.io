@@ -19,11 +19,25 @@ sessionApp.controller("QuestionCtrl", function QuestionCtrl($scope, $rootScope, 
 		"tab":"question"
 	})
 	$scope.state = $rootScope;
+	$scope.state.comment = "";
 	$http.get("/api/v1/comment/", {
 		params: {question:$routeParams.questionId}
 	}).success(function(data){
 		$scope.comments = data.objects;
 	});
+	$scope.postComment = function(){
+		$http.post("/api/v1/comment/", {
+			question:"/api/v1/question/"+$routeParams.questionId+"/",
+			comment: $scope.state.comment
+		}).success(function(data, status, headers){
+			$scope.state.comment = "";
+			$http.get(headers("Location")).success(function(data){
+				$scope.comments.unshift(data);
+			});
+		}).error(function(data){
+
+		})
+	}
 })
 
 sessionApp.config(function($routeProvider, $locationProvider) {

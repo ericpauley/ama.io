@@ -1,0 +1,17 @@
+[global]
+ApplicationName=AMA
+AwsCredentialFile=C:\Users\Eric\.elasticbeanstalk\aws_credential_file
+DevToolsEndpoint=git.elasticbeanstalk.us-east-1.amazonaws.com
+EnvironmentName=AMA-env
+OptionSettingFile=.elasticbeanstalk\optionsettings
+Region=us-east-1
+ServiceEndpoint=https://elasticbeanstalk.us-east-1.amazonaws.com
+
+[branches]
+master=AMA-live
+
+[branch:master]
+ApplicationVersionName=Sample Application
+EnvironmentName=AMA-live
+OptionSettingFile=C:\Users\Eric\Dropbox\Code\AMA\.elasticbeanstalk\optionsettings.AMA-live
+

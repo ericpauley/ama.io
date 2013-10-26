@@ -1,6 +1,7 @@
 from questions.models import Request
 from allauth.socialaccount import providers
 from django.utils import timezone
+from questions.api import UserResource
 
 processors = []
 

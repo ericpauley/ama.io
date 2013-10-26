@@ -66,7 +66,7 @@
 				<div id="question">
 					<div id="user-picture">
 						<a ng-href="/u/{{question.asker.username}}" target="_self">
-							<img class="circular" src="http://www.biography.com/imported/images/Biography/Images/Profiles/S/Will-Smith-9542165-1-402.jpg" width="75" height="75" />
+							<img class="circular" ng-src="{{question.asker.image}}" width="75" height="75" />
 						</a>
 					</div>
 					<div id="main">
@@ -107,16 +107,16 @@
 						<textarea ng-if="state.owner" ng-show="question.answerdraft" ng-model="question.answer.response" focus-on-show ng-blur="answer(question, $index, question.answer.response)"></textarea>
 					</div>						
 				</div>
-				<div id="question" ng-if="tab == 'question'">
-					<form id="main">
-						<textarea placeholder="Comment on this question..."></textarea>
-						<button class="clickable" ng-click="ask()">ASK!</button>
+				<div id="question" ng-if="tab == 'question' && state.user">
+					<form id="main" ng-submit="postComment()">
+						<textarea placeholder="Comment on this question..." ng-model="state.comment" maxlength="500"></textarea>
+						<button type="submit">Post Comment</button> <span ng-if="state.comment">{{500 - state.comment.length}} characters left.</span>
 					</form>
 				</div>
 				<div id="question" ng-repeat="comment in comments">
 					<div id="user-picture">
 						<a ng-href="/u/{{comment.user.username}}" target="_self" ng-if="comment.user.image">
-							<img class="circular" src="{{comment.user.image}}" width="75" height="75" />
+							<img class="circular" ng-src="{{comment.user.image}}" width="75" height="75" />
 						</a>
 					</div>
 					<div id="main">

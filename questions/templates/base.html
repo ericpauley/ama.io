@@ -3,6 +3,7 @@
 <head>
 <title>{%block title%}Home{%endblock%} | Project AMA</title>
 <script>GLOBALS={}</script>
+{%if user.is_authenticated%}<script>GLOBALS['user']='{{user.username}}'</script>{%endif%}
 {%block prescript%}{%endblock%}
 {%include "head.html"%}
 {%block postscript%}{%endblock%}

@@ -27,6 +27,7 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeou
 	repeat();
 	$scope.sessionId = GLOBALS['session']
 	$scope.state = $rootScope
+	$scope.state.user = GLOBALS['user']
 	$scope.state.edit = null;
 	$scope.state.owner = GLOBALS['owner']
 
