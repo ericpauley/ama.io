@@ -569,7 +569,7 @@ class QuestionResource(ModelResource):
     #html = fields.CharField(use_in = "detail")
     score = fields.IntegerField(attribute='score', default=0, readonly=True)
     asker = fields.ForeignKey('questions.api.UserResource', 'asker', readonly=True, full=True)
-    target = fields.ForeignKey('questions.api.UserResource', 'target', readonly=True)
+    target = fields.ForeignKey('questions.api.UserResource', 'target', readonly=True, full=True)
     answered = fields.BooleanField(readonly=True)
     vote = fields.IntegerField(attribute = "vote", default = 0)
 

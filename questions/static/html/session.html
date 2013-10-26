@@ -93,7 +93,7 @@
 				<div id="response" ng-if="question.answered || question.answerdraft">
 					<div id="user-picture">
 						<a ng-href="/u/{{session.owner.username}}" target="_self">
-							<img class="circular" ng-src="{{session.image}}" width="75" height="75" />
+							<img class="circular" ng-src="{{question.target.image}}" width="75" height="75" />
 						</a>
 					</div>
 					<div id="main">
