@@ -1,31 +1,29 @@
 {% load staticfiles %}
-<footer id="footer">
-	<div id="inside">
-		<table align="center" cellspacing="15px" cellspacing="0">
-			<tr>
-				<td>
-					<a href="{% url 'about' %}">About</a>
-				</td>
-				<td>
-					<a href="{% url 'blog' %}">Blog</a>
-				</td>
-				<td>
-					<a href="{% url 'press' %}">Press</a>
-				</td>
-				<td>
-					<a href="{% url 'about' %}">Support</a>
-				</td>
-				<td>
-					<a href="http://twitter.com/askmeit" target="_blank">Follow us</a>
-				</td>
-				<td>
-					<a href="http://facebook.com/liveaskme" target="_blank">Like us</a>
-				</td>
-			</tr>
-		</table>
-		Copyright &copy;{{ now|date:"Y" }}. All rights reserved.
-	</div>
-</footer>
+<div id="inside">
+	<table align="center" cellspacing="15px" cellspacing="0">
+		<tr>
+			<td>
+				<a href="{% url 'about' %}">About</a>
+			</td>
+			<td>
+				<a href="{% url 'blog' %}">Blog</a>
+			</td>
+			<td>
+				<a href="{% url 'press' %}">Press</a>
+			</td>
+			<td>
+				<a href="{% url 'about' %}">Support</a>
+			</td>
+			<td>
+				<a href="http://twitter.com/askmeit" target="_blank">Follow us</a>
+			</td>
+			<td>
+				<a href="http://facebook.com/liveaskme" target="_blank">Like us</a>
+			</td>
+		</tr>
+	</table>
+	Copyright &copy;{{ now|date:"Y" }}. All rights reserved.
+</div>
 <form class="lightbox" id="signup" ng-controller="RegisterCtrl" ng-submit="register()">
 	<div class="lightbox-header">
 		Sign Up
