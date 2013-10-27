@@ -4,31 +4,34 @@
 
 {% block content %}
     <div id="search-results-container">
-        <div id="search-results">
-            <h2>AMAs matching "{{query}}"</h2>
-    {% if query and page.object_list %}
-        
-                {%for session in page.object_list%}
-                {%with session=session.object%}
-                <div class="session-tile">
-                    <a href="{{session.get_absolute_url}}">
-                        <img class="img150" src="http://www.biography.com/imported/images/Biography/Images/Profiles/S/Will-Smith-9542165-1-402.jpg" />
-                    </a><br/>
-                    <div id="session-tile-info">
-                        <strong>{{session.title}}</strong><br/>
-                        {% if session.state == 'running'%}
-                        {{session.num_viewers}} in AMA session{%else%}
-                        {{session.num_views}} views{%endif%}<br/>
-                        <a id="join-button" href="{{session.get_absolute_url}}">Join AMA</a>
-                    </div>
-                </div>  
-                {%endwith%}
-                {%endfor%}
-            
-    {% else %}
-        Sorry, no results found.  Check out the sessions below or make a request.
-    {% endif %}
+        <div class="four-sessions-list">
+            <div class="session-overflow">
+                <h2>AMAs matching "{{query}}"</h2>
+                    {% if query and page.object_list %}
+                        
+                                {%for session in page.object_list%}
+                                {%with session=session.object%}
+                                <div class="session-tile">
+                                    <a href="{{session.get_absolute_url}}">
+                                        <img class="img150" src="http://www.biography.com/imported/images/Biography/Images/Profiles/S/Will-Smith-9542165-1-402.jpg" />
+                                    </a><br/>
+                                    <div id="session-tile-info">
+                                        <strong>{{session.title}}</strong><br/>
+                                        {% if session.state == 'running'%}
+                                        {{session.num_viewers}} in AMA session{%else%}
+                                        {{session.num_views}} views{%endif%}<br/>
+                                        <a id="join-button" href="{{session.get_absolute_url}}">Join AMA</a>
+                                    </div>
+                                </div>  
+                                {%endwith%}
+                                {%endfor%}
+                            
+                    {% else %}
+                        Sorry, no results found.  Check out the sessions below or make a request.
+                    {% endif %}
+            </div>
         </div>
+    </div>
     </div>
     <div id="home-live">
         <h2>LIVE AMAs</h2>
