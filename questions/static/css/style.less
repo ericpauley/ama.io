@@ -13,18 +13,19 @@
 
 /* MIXINS */
 
-.btn (@bg: @blue, @font: @grey, @width: 100px, @height: 30px) {
+.btn (@bg: @blue, @font: @grey, @width: 100px, @height: 30px, @lineheight: 30px) {
 	.rounded-corners;
 	text-indent:0;
 	display:inline-block;
 	font-style:normal;
 	height: 30px;
-	line-height: 30px;
+	line-height: @lineheight;
 	text-decoration:none;
 	text-align:center;
 	background: @bg;
 	color: @font;
 	width: @width;
+	cursor: pointer;
 
 	&:active{
 		position:relative;
@@ -887,14 +888,11 @@ textarea {
 }
 
 .lightbox-button {
-	width: 100%;
-	background: @yellow;
-	height: 30px;
-	padding: 10px;
 	box-shadow: none;
 	border: none;
 	font-size: 11px;
 	color: @darkgrey;
+	.btn(@yellow, @darkgrey, 100%, 30px, 11px);
 }
 
 .lightbox-content {
@@ -973,6 +971,7 @@ textarea {
 .lightbox-error {
 	background: @white;
 	color: red;
+	text-align: center;
 }
 
 .lightbox {
