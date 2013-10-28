@@ -132,6 +132,14 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeou
 		$scope.state.answering = false
 	})
 
+	$scope.endSession = function(){
+		$http({
+			method: "PATCH",
+			url: "/api/v1/session/"+GLOBALS['session']+"/",
+			data: {end_time: Date()}
+		})
+	}
+
 	changeImage = function(){
 		$("#image-edit").ajaxSubmit({
 			success:function(data){
