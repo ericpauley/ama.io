@@ -43,6 +43,7 @@ from django.utils import timezone
 from allauth.socialaccount.providers.oauth.client import OAuth
 from django.conf import settings
 from tweepy.error import TweepError
+from django.templatetags.static import static
 
 class CachedResource():
     def wrap_view(self, view):
@@ -77,7 +78,7 @@ class UserResource(ModelResource):
     def dehydrate_image(self, bundle):
         for account in bundle.obj.socialaccount_set.all():
             return account.get_avatar_url()
-        return None
+        return static("images/default-session.png")
 
     def dehydrate_twitter(self, bundle):
         for account in bundle.obj.socialaccount_set.all():
