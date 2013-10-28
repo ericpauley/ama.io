@@ -7,6 +7,7 @@ from datetime import datetime
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from json import dumps
+from django.contrib.auth import logout
 
 def live(request):
     return render(request, "session_list_page.html", {'sessions': AMASession.objects.live()[:50], 'title':'Live Sessions'})
@@ -81,14 +82,11 @@ def session(request, slug):
         raise Http404
     return render(request, "session_page.html", {'session':s, 'unanswered': unanswered, 'answered': answered, 'votes':votes})
 
-def settings(request):
-    if request.user.is_anonymous():
-        return redirect("home")
-    else:
-        return render(request, "settings.html")
-
 def static_page(page, title):
     return lambda request: render(request, page, {"title": title})
 
-def settings_submit(request):
-    pass
+def logout_view(request):
+    if(request.user.is_authenticated):
+        logout(request)
+        request.session['has_logged_in'] = True
+    return redirect("home")

@@ -10,7 +10,11 @@
 		</div>
 		{% if user.is_anonymous %}
 		<div id="sign-in">
+			{%if request.session.has_logged_in%}
+			<a href="#signin" rel="leanModal" id="btnc">Sign In/Register</a>
+			{%else%}
 			<a href="#signup" rel="leanModal" id="btnc">Sign In/Register</a>
+			{%endif%}
 		</div>
 		{% else %}
 		<div id="header-profile">

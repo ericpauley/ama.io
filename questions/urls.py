@@ -27,6 +27,8 @@ urlpatterns = patterns('',
     url(r'^q/(?P<question>\d{1,5})', views.question, name="question"),
     url(r'^api/', include(v1_api.urls)),
 
+    url(r'^logout/$', views.logout_view, name='logout'),
+
     #Static pages
     url(r'about/', views.static_page("about.html", "About"), name="about"),
     url(r'blog/', views.static_page("blog.html", "Blog"), name="blog"),
