@@ -41,8 +41,10 @@
 <div id="session-ask" ng-if="session.state != 'after' && tab !='question'">
 	<div id="ask-box">
 		<h2>Ask {{session.name}}:</h2>
-		<textarea ng-model="state.question"></textarea>
-		<a id="ask-btn" class="clickable" ng-click="ask()">ASK!</a>
+		<textarea ng-model="state.question" maxlength="1000"></textarea>
+		<span ng-if="state.question && state.question.length < 6">{{6 - state.question.length}} characters to go...</span>
+		<span ng-if="state.question && state.question.length >= 6">{{1000 - state.question.length}} characters to go...</span>
+		<a id="ask-btn" class="clickable" ng-click="ask()" ng-disabled="state.question.length < 6 || state.question.length > 500">ASK!</a>
 	</div>
 </div>
 <div id="questions-area">
@@ -60,10 +62,10 @@
 			There is nothing here. Be the first to ask a question!
 		</div>
 		<div class="question-wrapper">
-			<div class="pair" ng-repeat="question in session.questions | filter:qfilter | orderBy:'-score'">
+			<div class="pair" ng-repeat="question in session.questions | filter:qfilter | orderBy:'-score'" ng-click="state.drafts[state.answering || -1] = state.answerdraft;state.answering = state.owner && question.id; state.answerdraft = state.drafts[question.id] || question.answer.response || ''">
 				<div id="vote">
-					<a class="clickable" ng-click="vote(question, 1)" ng-class="{upvote: question.vote == 1}">&#x25B2;</a><br/>
-					<a class="clickable" ng-click="vote(question, -1)" ng-class="{downvote: question.vote == -1}">&#x25BC;</a>
+					<a class="clickable" ng-click="vote(question, 1); $event.stopPropagation()" ng-class="{upvote: question.vote == 1}">&#x25B2;</a><br/>
+					<a class="clickable" ng-click="vote(question, -1); $event.stopPropagation()" ng-class="{downvote: question.vote == -1}">&#x25BC;</a>
 				</div>
 				<div id="question">
 					<div id="user-picture">
@@ -75,13 +77,13 @@
 						<div id="top-row">
 							<a id="user-name" ng-href="/u/{{question.asker.username}}" target="_self">{{question.asker.display}}</a>
 							<div id="timestamp">{{question.created | countdown}}</div>
-							<a class="clickable" ng-if="state.owner && session.state == 'running'" ng-click="question.answerdraft = true; state.edit = 'answer'">
+							<a class="clickable" ng-if="state.owner && session.state == 'running'">
 								<i class="fa fa-comment"></i>&nbsp;reply
 							</a>
-							<a class="clickable" ng-if="state.owner && question.starred" ng-click="star(question, false)">
+							<a class="clickable" ng-if="state.owner && question.starred" ng-click="star(question, false); $event.stopPropagation()">
 								<i class="fa fa-star"></i>&nbsp;unstar
 							</a>
-							<a class="clickable" ng-if="state.owner && !question.starred" ng-click="star(question, true)">
+							<a class="clickable" ng-if="state.owner && !question.starred" ng-click="star(question, true); $event.stopPropagation()">
 								<i class="fa fa-star"></i>&nbsp;star
 							</a>
 							<a ng-href="/q/{{question.id}}">
@@ -100,7 +102,7 @@
 						</div>
 					</div>
 				</div>
-				<div id="response" ng-if="question.answered || question.answerdraft">
+				<div id="response" ng-if="question.answered || state.answering == question.id">
 					<div id="user-picture">
 						<a ng-href="/u/{{session.owner.username}}" target="_self">
 							<img class="circular" ng-src="{{question.target.image}}" width="75" height="75" />
@@ -110,20 +112,25 @@
 						<div id="top-row">
 							<a id="user-name" ng-href="/u/{{session.owner.username}}" target="_self">{{session.owner.display}}</a>
 							<div id="timestamp" ng-if="question.answered">{{question.answer.created | countdown}}</div>
+							<a class="clickable" ng-if="state.owner && question.answered" ng-click="answer(question, ''); $event.stopPropagation()">
+								<i class="fa fa-trash-o"></i>&nbsp;delete
+							</a>
 						</div>
 						<br/>
-						<div id="text" ng-bind-html="question.answer.response | markdown" ng-if="!question.answerdraft">
+						<div id="text" ng-bind-html="question.answer.response | markdown" ng-if="state.answering != question.id">
 						</div>
-						<textarea ng-if="state.owner" ng-show="question.answerdraft" ng-model="question.answer.response" focus-on-show ng-blur="answer(question, $index, question.answer.response)"></textarea>
+						<textarea ng-if="state.owner" ng-show="state.answering == question.id" ng-model="state.answerdraft" focus-on-show ng-click="$event.stopPropagation()"></textarea>
+						<button ng-if="state.owner" ng-show="state.answering == question.id" ng-click="answer(question, state.answerdraft); $event.stopPropagation()">Answer</button>
+						<button ng-click="state.drafts[question.id] = state.answerdraft;state.answering = false; $event.stopPropagation()" ng-if="state.owner" ng-show="state.answering == question.id">Cancel</button>
 					</div>						
 				</div>
-				<div id="question" ng-if="tab == 'question' && state.user">
+				<div id="question" ng-if="tab == 'question' && state.user" ng-click="$event.stopPropagation()">
 					<form id="main" ng-submit="postComment()">
-						<textarea placeholder="Comment on this question..." ng-model="state.comment" maxlength="500"></textarea>
+						<textarea placeholder="Comment on this question..." ng-model="state.comment" maxlength="500" focus-on-show></textarea>
 						<button type="submit">Post Comment</button> <span ng-if="state.comment">{{500 - state.comment.length}} characters left.</span>
 					</form>
 				</div>
-				<div id="question" ng-repeat="comment in comments">
+				<div id="question" ng-repeat="comment in comments" ng-click="$event.stopPropagation()">
 					<div id="user-picture">
 						<a ng-href="/u/{{comment.user.username}}" target="_self" ng-if="comment.user.image">
 							<img class="circular" ng-src="{{comment.user.image}}" width="75" height="75" />

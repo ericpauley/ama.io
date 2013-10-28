@@ -49,6 +49,4 @@ class CommentAuthorization(ReadOnlyAuthorization):
         return bundle.request.user.is_authenticated()
 
 class QuestionAuthorization(ReadOnlyAuthorization):
-    @permcheck
-    def delete_detail(self, object_list, bundle):
-        return bundle.obj.target == bundle.request.user or bundle.obj.session.owner == bundle.request.user
+    pass

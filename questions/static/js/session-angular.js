@@ -35,6 +35,8 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeou
 	$scope.state.user = GLOBALS['user']
 	$scope.state.edit = null;
 	$scope.state.owner = GLOBALS['owner']
+	$scope.state.question = ""
+	$scope.state.drafts = {}
 
 	$scope.$watch("state.edit", function(){
 		if($scope.toApply != null){
@@ -107,11 +109,15 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeou
 		})
 	}
 
-	$scope.answer = function(question, index, value){
+	$scope.answer = function(question, value){
 		$scope.state.edit = null;
 		$scope.toApply = null;
-		question.answerdraft = false;
-		question.answer.created = Date();
+		$scope.state.answerdraft = false;
+		$scope.state.answering = false;
+		question.answer = {
+			response: value,
+			created: Date()
+		}
 		question.answered = (value != "")
 		$http({
 			method: 'POST',
@@ -123,6 +129,7 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeou
 
 	$rootScope.$on("tabChange", function(event, args){
 		angular.extend($scope, args)
+		$scope.state.answering = false
 	})
 
 	changeImage = function(){
