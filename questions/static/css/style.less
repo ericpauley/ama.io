@@ -503,61 +503,49 @@ textarea {
 
 /* SESSION PAGE */
 
-#session-header {
-	height: 340px;
-	background: @darkgrey;
-	color: @white;
+.question-structure (@bg: @white, @minheight: 55px) {
+	width: 90%;
+	margin: 0 auto;
+	min-height: @minheight;
 
-	h2, a {
-		color: @white;
-
-		#live {
-			color: @green;
-		}
+	form {
+		margin-bottom: 5px;
 	}
 
+	textarea {
+		border: 1px solid @lightgrey;
+	}
+	
+	#main {
+		background: @bg;
+		padding: 10px 60px 10px 60px;
+		min-height: 55px;
 
-	#info {
-		.main-center(800px, 45px, 0px);
+		#top-row {
+			font-size: 11px;
 
-		#img-stats {
-			float: left;
-			margin-right: 15px;
-			line-height: 30px;
-
-			#time-left {
-				color: @green;
+			a, div {
+				float: left;
+				padding-right: 10px;
 			}
-		}
 
-		#title-desc {
-			margin-left: 165px;
-			#desc {
-				margin-top: 10px;
+			#user-name {
+				color: @teal;
 			}
 		}
 	}
-
 }
 
-#session-ask {
-	height: 200px;
-	background: @blue;
+.user-picture-right {
+	float: right;
+	margin-right: -35px;
+	margin-left: 25px;
+}
 
-	#ask-box {
-		.main-center(800px, 15px, 0px);
-
-		h2 {
-			color: @white;
-			margin-bottom: 5px;
-		}
-
-		#ask-btn {
-			.btn (@yellow, @grey, @width: 100px, @height: 30px);
-			float: right;
-			margin-top: 5px;
-		}
-	}
+.user-picture-left {
+	float: left;
+	margin-left: -35px;
+	margin-right: 21px;
 }
 
 #questions-area {
@@ -595,75 +583,87 @@ textarea {
 .pair {
 	margin-top: 35px;
 
-	#question {
-		width: 90%;
-		margin: 0 auto;
-	}
+	#vote {
+        float: right;
+        margin-right: 20px;
+        font-size: 20px;
+    }
+}
 
-	#user-picture {
-		float: left;
-		margin-left: -35px;
-		margin-right: 21px;
-	}
+#question {
+	.question-structure(@white);
+}
 		
-	#main {
-		background: @lightblue;
-		padding: 10px 60px 10px 60px;
-		min-height: 55px;
+#response {
+	.question-structure(@lightblue);
+}
+
+.comment {
+	.question-structure(@white, 80px)
+}
+
+.comment-from-owner {
+	.question-structure(@lightblue, 80px);
+}
+
+.comment-btn {
+	.btn (@yellow, @darkgrey, 125px);
+	float: right;
+}
+
+#session-header {
+	height: 340px;
+	background: @darkgrey;
+	color: @white;
+
+	h2, a {
+		color: @white;
+
+		#live {
+			color: @green;
+		}
 	}
 
-	#top-row {
-		font-size: 11px;
 
-		a, div {
+	#info {
+		.main-center(800px, 45px, 0px);
+
+		#img-stats {
 			float: left;
-			padding-right: 10px;
+			margin-right: 15px;
+			line-height: 30px;
+
+			#time-left {
+				color: @green;
+			}
 		}
 
-		#votes {
-			float: right;
-			padding-right: 0px;
-		}
-
-		#user-name {
-			color: @teal;
-		}
-	}
-
-	#response {
-		width: 90%;
-		margin: 0 auto;
-
-		#user-picture {
-			float: right;
-			margin-right: -35px;
-			margin-left: 25px;
-		}
-		
-		#main {
-			background: @white;
-			padding: 10px 60px 10px 60px;
-			min-height: 55px;
-
-			#top-row {
-				font-size: 11px;
-
-				a, div {
-					float: left;
-					padding-right: 10px;
-				}
-
-				#user-name {
-					color: @teal;
-				}
+		#title-desc {
+			margin-left: 165px;
+			#desc {
+				margin-top: 10px;
 			}
 		}
 	}
+}
 
-	#vote {
-		float: right;
-		margin-right: 20px;
-		font-size: 20px;
+#session-ask {
+	height: 200px;
+	background: @blue;
+
+	#ask-box {
+		.main-center(800px, 15px, 0px);
+
+		h2 {
+			color: @white;
+			margin-bottom: 5px;
+		}
+
+		#ask-btn {
+			.btn (@yellow, @grey, @width: 100px, @height: 30px);
+			float: right;
+			margin-top: 5px;
+		}
 	}
 }
 

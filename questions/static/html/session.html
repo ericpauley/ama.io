@@ -68,7 +68,7 @@
 					<a class="clickable" ng-click="vote(question, -1); $event.stopPropagation()" ng-class="{downvote: question.vote == -1}">&#x25BC;</a>
 				</div>
 				<div id="question">
-					<div id="user-picture">
+					<div class="user-picture-left">
 						<a ng-href="/u/{{question.asker.username}}" target="_self">
 							<img class="circular" ng-src="{{question.asker.image}}" width="75" height="75" />
 						</a>
@@ -103,7 +103,7 @@
 					</div>
 				</div>
 				<div id="response" ng-if="question.answered || state.answering == question.id">
-					<div id="user-picture">
+					<div class="user-picture-right">
 						<a ng-href="/u/{{session.owner.username}}" target="_self">
 							<img class="circular" ng-src="{{question.target.image}}" width="75" height="75" />
 						</a>
@@ -127,11 +127,13 @@
 				<div id="question" ng-if="tab == 'question' && state.user" ng-click="$event.stopPropagation()">
 					<form id="main" ng-submit="postComment()">
 						<textarea placeholder="Comment on this question..." ng-model="state.comment" maxlength="500" focus-on-show></textarea>
-						<button type="submit">Post Comment</button> <span ng-if="state.comment">{{500 - state.comment.length}} characters left.</span>
+						<span ng-if="state.comment">{{500 - state.comment.length}} characters left.</span>
+						<div class="comment-btn" type="submit">Post Comment</div>
+						<div style="clear: both"></div>
 					</form>
 				</div>
-				<div id="question" ng-repeat="comment in comments" ng-click="$event.stopPropagation()">
-					<div id="user-picture">
+				<div class="comment" ng-repeat="comment in comments" ng-click="$event.stopPropagation()">
+					<div class="user-picture-left">
 						<a ng-href="/u/{{comment.user.username}}" target="_self" ng-if="comment.user.image">
 							<img class="circular" ng-src="{{comment.user.image}}" width="75" height="75" />
 						</a>
