@@ -74,13 +74,16 @@
 		<span>or</span>
 	</div>
 	<div class="lightbox-error" ng-switch="error">
-		<div ng-switch-when="incorrect">Incorrect username or password</div>
+		<div ng-switch-when="incorrect">Incorrect username or password.</div>
 		<div ng-switch-when="disabled">Your account has been disabled.</div>
-		<div ng-switch-when="error">There was a problem rsigning in.</div>
+		<div ng-switch-when="error">There was a problem signing in.</div>
 	</div>
 	<div class="lightbox-content">
 		<input id="email-or-username" placeholder="Username or Email" type="text" ng-model="username"/>
 		<input id="password" placeholder="Password" type="password" ng-model="password"/>
+		<div class="forgot-pass">
+			<a class="forgot-pass">Forgot password?</a>
+		</div>
 		<input class="lightbox-button" type="submit" ng-disabled="working" value="Go"/>
 		<div class="lightbox-bottom-link">
 			<a href="#signup" rel="leanModal" class="lightbox-bottom-link" id="signin-bottom">
