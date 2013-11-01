@@ -125,10 +125,10 @@
 					</div>						
 				</div>
 				<div id="question" ng-if="tab == 'question' && state.user" ng-click="$event.stopPropagation()">
-					<form id="main" ng-submit="postComment()">
+					<form id="main">
 						<textarea placeholder="Comment on this question..." ng-model="state.comment" maxlength="500" focus-on-show></textarea>
 						<span ng-if="state.comment">{{500 - state.comment.length}} characters left.</span>
-						<div class="comment-btn" type="submit">Post Comment</div>
+						<div class="comment-btn" ng-click="postComment()">Post Comment</div>
 						<div style="clear: both"></div>
 					</form>
 				</div>
