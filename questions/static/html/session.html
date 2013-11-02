@@ -29,8 +29,8 @@
 			</a>
 		</div>
 		<div id="title-desc">
-			<h2><span ng-show="state.edit != 'title'" ng-click="!state.owner || (state.edit='title')">{{session.title}}</span><input id="edit-title" ng-model="session.title" ng-show="state.edit == 'title'" focus-on-show ng-blur="edit('title', session.title)"/><span id="live" ng-if="session.state == 'running'">&nbsp;[LIVE]</span></h2>
-			<textarea ng-model="session.desc" ng-show="state.edit == 'desc'" focus-on-show ng-blur="edit('desc', session.desc)"></textarea>
+			<h2><span ng-show="state.edit != 'title'" ng-click="!state.owner || (state.edit='title')">{{session.title}}</span><input id="edit-title" ng-model="session.title" ng-show="state.edit == 'title'" focus-on-show ng-blur="edit('title', session.title)" maxlength="125"/><span id="live" ng-if="session.state == 'running'">&nbsp;[LIVE]</span></h2>
+			<textarea ng-model="session.desc" ng-show="state.edit == 'desc'" focus-on-show ng-blur="edit('desc', session.desc)" maxlength="1500"></textarea>
 			<div id="desc" ng-bind-html="session.desc | markdown"></div>
 			<a href="" ng-if="state.owner" ng-show="state.edit != 'desc'" ng-click="!state.owner || (state.edit = 'desc')" ng-show="state.edit != 'desc'">
 				<i class="fa fa-pencil"></i> Edit
@@ -43,8 +43,8 @@
 		<h2>Ask {{session.name}}:</h2>
 		<textarea ng-model="state.question" maxlength="1000"></textarea>
 		<span ng-if="state.question && state.question.length < 6">{{6 - state.question.length}} characters to go...</span>
-		<span ng-if="state.question && state.question.length >= 6">{{1000 - state.question.length}} characters to go...</span>
-		<a id="ask-btn" class="clickable" ng-click="ask()" ng-disabled="state.question.length < 6 || state.question.length > 500">ASK!</a>
+		<span ng-if="state.question && state.question.length >= 6">{{1000 - state.question.length}} characters left...</span>
+		<a id="ask-btn" class="clickable" ng-click="ask()" ng-disabled="state.question.length < 6 || state.question.length > 1000">ASK!</a>
 	</div>
 </div>
 <div id="questions-area">
@@ -86,8 +86,14 @@
 							<a class="clickable" ng-if="state.owner && !question.starred" ng-click="star(question, true); $event.stopPropagation()">
 								<i class="fa fa-star"></i>&nbsp;star
 							</a>
+							<a class="clickable" ng-if="question.asker" ng-click="star(question, false); $event.stopPropagation()">
+								<i class="fa fa-pencil"></i>&nbsp;edit
+							</a>
+							<a class="clickable" ng-if="question.asker" ng-click="star(question, true); $event.stopPropagation()">
+								<i class="fa fa-trash-o"></i>&nbsp;delete
+							</a>
 							<a ng-href="/q/{{question.id}}">
-								<i class="fa fa-external-link"></i>&nbsp;permalink
+								<i class="fa fa-external-link"></i>&nbsp;See comments
 							</a>
 							<div id="votes">
 								<ng-pluralize count="question.score"

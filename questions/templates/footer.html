@@ -131,13 +131,13 @@ enctype="multipart/form-data" ng-controller="CreateCtrl">
 			<div ng-switch-when="error">There was a problem creating your session.</div>
 		</div>
 		<label for="title">Title</label>
-		<input id="create-session-title" name="title" placeholder="ex: I am a YouTuber, ask me anything!" type="text" name="title"/>
+		<input id="create-session-title" name="title" placeholder="ex: I am a YouTuber, ask me anything!" type="text" name="title" maxlength="125" />
 		<label for="title">Name</label>
-		<input id="create-session-name" name="name" placeholder="ex: {{user.first_name|default:'John'}} {{user.last_name|default:'Doe'}}" type="text" name="name"/>
+		<input id="create-session-name" name="name" placeholder="ex: {{user.first_name|default:'John'}} {{user.last_name|default:'Doe'}}" type="text" name="name" maxlength="50" />
 		<label for="title">Role</label>
-		<input id="create-session-role" name="role" placeholder="ex: Vlogger or YouTuber" type="text" name="role"/>
+		<input id="create-session-role" name="role" placeholder="ex: Vlogger or YouTuber" type="text" name="role" max-length="75" />
 		<label for="desc">Description</label>
-		<textarea id="create-session-desc" name="desc" placeholder="Enter more details about your session here..."></textarea>
+		<textarea id="create-session-desc" name="desc" placeholder="Enter more details about your session here..." maxlength="1500"></textarea>
 		<div id="create-session-image">
 			<label for="image">Session Image</label><br/>
 			<input type="file" name="image"/>
