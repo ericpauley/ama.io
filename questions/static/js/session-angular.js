@@ -22,7 +22,7 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeou
 				repeat();
 			}, 30000);
 		$http.get("/api/v1/session/"+GLOBALS['session']+"/").success(function(data) {
-			if($scope.state.edit == null){
+			if($scope.state.edit == null && $scope.refresh){
 				$scope.session = data;
 			}else{
 				$scope.toApply = data;
@@ -37,6 +37,7 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeou
 	$scope.state.owner = GLOBALS['owner']
 	$scope.state.question = ""
 	$scope.state.drafts = {}
+	$scope.refresh = true;
 
 	$scope.$watch("state.edit", function(){
 		if($scope.toApply != null){

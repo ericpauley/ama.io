@@ -29,6 +29,60 @@ GLOBALS['owner'] = true
 	<input type="file" id="image-edit-file" name="image" onchange="changeImage()"/>
 </form>
 <div ng-controller="SessionCtrl">
+	{%verbatim%}
+	<div id="session-header">
+		<div id="info">
+			<div id="img-stats">
+				<a id="img" href="" onclick="$('#image-edit-file').click()">
+					<img ng-src="{{session.image}}" width="150" height="150" />
+				</a>
+				<div ng-switch="session.state">
+					<div id="time-left" ng-switch-when="running">
+						<i class="fa fa-clock-o"></i> Ends {{session.end_time | countdown}}
+					</div>
+					<div id="time-left" ng-switch-when="before">
+						Starts {{session.start_time | countdown}}
+					</div>
+					<div id="time-left" ng-switch-when="after">
+						Ended {{session.end_time | countdown}}
+					</div>
+				</div>
+				<div id="viewers" ng-if="session.state == 'running'">
+					{{session.num_viewers}} currently viewing
+				</div>
+				<div id="views" ng-if="session.state != 'running'">
+					<ng-pluralize count="session.views"
+					when="{'one': '1 view',
+					'other': '{} views'}">
+					</ng-pluralize>
+				</div>
+				<a id="twitter-name" href="//twitter.com/{{session.twitter}}" ng-if="session.twitter" target="_blank">
+					@{{session.twitter}}
+				</a>
+				{%endverbatim%}
+				{%if user.is_staff%}
+				<div>
+					<input type="checkbox" ng-model="refresh" name="refresh">
+					<label for="refresh">Auto-refresh</label>
+				</div>
+				{%endif%}
+				{%verbatim%}
+			</div>
+			<div id="title-desc">
+				<h2>
+					<span ng-show="state.edit != 'title'" ng-click="!state.owner || (state.edit='title')">{{session.title}}</span>
+					<input id="edit-title" ng-model="session.title" ng-show="state.edit == 'title'" focus-on-show ng-blur="edit('title', session.title)"/>
+					<span id="live" ng-if="session.state == 'running'">&nbsp;[LIVE]</span>
+				</h2>
+				<textarea ng-model="session.desc" ng-show="state.edit == 'desc'" focus-on-show ng-blur="edit('desc', session.desc)"></textarea>
+				<div id="desc" ng-bind-html="session.desc | linky: '_blank'| linesplit"></div>
+				<a href="" ng-if="state.owner" ng-show="state.edit != 'desc'" ng-click="!state.owner || (state.edit = 'desc')" ng-show="state.edit != 'desc'">
+					<i class="fa fa-pencil"></i> Edit
+				</a>
+			</div>
+		</div>
+	</div>
+	{%endverbatim%}
 	<div ng-view></div>
 </div>
 {% endblock %}
