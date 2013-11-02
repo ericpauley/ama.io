@@ -29,9 +29,13 @@
 			</a>
 		</div>
 		<div id="title-desc">
-			<h2><span ng-show="state.edit != 'title'" ng-click="!state.owner || (state.edit='title')">{{session.title}}</span><input id="edit-title" ng-model="session.title" ng-show="state.edit == 'title'" focus-on-show ng-blur="edit('title', session.title)" maxlength="125"/><span id="live" ng-if="session.state == 'running'">&nbsp;[LIVE]</span></h2>
-			<textarea ng-model="session.desc" ng-show="state.edit == 'desc'" focus-on-show ng-blur="edit('desc', session.desc)" maxlength="1500"></textarea>
-			<div id="desc" ng-bind-html="session.desc | markdown"></div>
+			<h2>
+				<span ng-show="state.edit != 'title'" ng-click="!state.owner || (state.edit='title')">{{session.title}}</span>
+				<input id="edit-title" ng-model="session.title" ng-show="state.edit == 'title'" focus-on-show ng-blur="edit('title', session.title)"/>
+				<span id="live" ng-if="session.state == 'running'">&nbsp;[LIVE]</span>
+			</h2>
+			<textarea ng-model="session.desc" ng-show="state.edit == 'desc'" focus-on-show ng-blur="edit('desc', session.desc)"></textarea>
+			<div id="desc" ng-bind-html="session.desc | linky: '_blank'| linesplit"></div>
 			<a href="" ng-if="state.owner" ng-show="state.edit != 'desc'" ng-click="!state.owner || (state.edit = 'desc')" ng-show="state.edit != 'desc'">
 				<i class="fa fa-pencil"></i> Edit
 			</a>
@@ -104,7 +108,7 @@
 							</div>
 						</div>
 						<br/>
-						<div id="text" ng-bind-html="question.question | markdown">
+						<div id="text" ng-bind-html="question.question | linky: '_blank' | linesplit">
 						</div>
 					</div>
 				</div>
@@ -123,7 +127,7 @@
 							</a>
 						</div>
 						<br/>
-						<div id="text" ng-bind-html="question.answer.response | markdown" ng-if="state.answering != question.id">
+						<div id="text" ng-bind-html="question.answer.response | linky: '_blank'| linesplit" ng-if="state.answering != question.id">
 						</div>
 						<textarea ng-if="state.owner" ng-show="state.answering == question.id" ng-model="state.answerdraft" focus-on-show ng-click="$event.stopPropagation()"></textarea>
 						<button ng-if="state.owner" ng-show="state.answering == question.id" ng-click="answer(question, state.answerdraft); $event.stopPropagation()">Answer</button>
@@ -150,7 +154,7 @@
 							<div id="timestamp">{{comment.created | countdown}}</div>
 						</div>
 						<br/>
-						<div id="text" ng-bind-html="comment.comment | markdown">
+						<div id="text" ng-bind-html="comment.comment | linky: '_blank'| linesplit">
 						</div>
 					</div>
 				</div>

@@ -175,12 +175,11 @@ sessionApp.filter('plain', function() {
 	}
 });
 
-sessionApp.filter('markdown', ['$sce', function($sce){
+sessionApp.filter('linesplit', ['$sce', function($sce){
 	return function(input){
-		if(! input){
-			return undefined
-		}
-		return $sce.trustAsHtml(markdown.toHTML(input));
+		input = $.trim(input)
+		input = "<p>"+input.replace(/(\&\#10;)/g, "<br/>")+"</p>"
+		return $sce.trustAsHtml(input);
 	};
 }]);
 

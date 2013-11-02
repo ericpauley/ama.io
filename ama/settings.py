@@ -145,7 +145,6 @@ INSTALLED_APPS = (
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.twitter',
-    "jstemplate",
     'south',
     'easy_thumbnails',
     'haystack',
@@ -245,7 +244,7 @@ DEBUG_TOOLBAR_PANELS = (
 
 ENV = dict(os.environ)
 
-TWITTER_CONSUMER_KEY = ENV.get("TWITTER_CONSUMER_KEY","")
+TWITTER_CONSUMER_KEY = ENV.get("TWITTER_CONSUMER_KEY")
 TWITTER_CONSUMER_SECRET = ENV.get("TWITTER_CONSUMER_SECRET")
 
 TWITTER_ACCESS_TOKEN = ENV.get("TWITTER_ACCESS_TOKEN")
