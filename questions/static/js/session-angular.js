@@ -1,4 +1,4 @@
-var sessionApp = angular.module('sessionApp', ['ngRoute', 'ngSanitize', 'homepage']);
+var sessionApp = angular.module('sessionApp', ['ngRoute', 'ngSanitize', 'homepage', 'ngCookies']);
 
 sessionApp.controller('ProfileCtrl', function ProfileCtrl($scope, $http, $timeout, $rootScope, $sce) {
 	$http.get("/api/v1/user/"+GLOBALS['user']+"/", {
@@ -10,7 +10,7 @@ sessionApp.controller('ProfileCtrl', function ProfileCtrl($scope, $http, $timeou
 	$scope.tab="questions"
 });
 
-sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeout, $rootScope, $sce){
+sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeout, $rootScope, $sce, $cookieStore){
 	$scope.toApply = null;
 	function repeat(){
 		if(GLOBALS['owner'])
@@ -38,6 +38,8 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeou
 	$scope.state.question = ""
 	$scope.state.drafts = {}
 	$scope.refresh = true;
+	$scope.state.question = $cookieStore.get("askDrafts."+GLOBALS['session']) || "";
+	$cookieStore.remove("askDrafts."+GLOBALS['session']);
 
 	$scope.$watch("state.edit", function(){
 		if($scope.toApply != null){
@@ -97,11 +99,20 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeou
 		});
 	}
 
+	$scope.doAsk = function(){
+		if(GLOBALS['user']){
+			$scope.ask();
+		}else{
+			$cookieStore.put("askDrafts."+GLOBALS['session'], $scope.state.question);
+			$("#btnc").click();
+		}
+	}
+
 	$scope.edit = function(field, value){
 		$scope.state.edit = null;
 		if($scope.toApply != null)
 			$scope.toApply[field] = value;
-		data = {}
+		dataz = {}
 		data[field] = value;
 		$http({
 			method: 'PATCH',

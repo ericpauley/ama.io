@@ -4,7 +4,7 @@
 		<textarea ng-model="state.question" maxlength="1000"></textarea>
 		<span ng-if="state.question && state.question.length < 6">{{6 - state.question.length}} characters to go...</span>
 		<span ng-if="state.question && state.question.length >= 6">{{1000 - state.question.length}} characters left...</span>
-		<a id="ask-btn" class="clickable" ng-click="ask()" ng-disabled="state.question.length < 6 || state.question.length > 1000">ASK!</a>
+		<a id="ask-btn" class="clickable" ng-click="doAsk()" ng-disabled="state.question.length < 6 || state.question.length > 1000">ASK!</a>
 	</div>
 </div>
 <div id="questions-area">
