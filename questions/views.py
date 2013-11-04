@@ -86,7 +86,7 @@ def static_page(page, title):
     return lambda request: render(request, page, {"title": title})
 
 def logout_view(request):
-    if(request.user.is_authenticated):
+    if request.user.is_authenticated():
         logout(request)
         request.session['has_logged_in'] = True
     return redirect("home")
