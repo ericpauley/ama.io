@@ -98,7 +98,7 @@
 						<div style="clear: both"></div>
 					</form>
 				</div>
-				<div class="comment" ng-repeat="comment in comments" ng-click="$event.stopPropagation()">
+				<div class="comment" ng-class="{'comment-from-owner': comment.owner}" ng-repeat="comment in comments" ng-click="$event.stopPropagation()">
 					<div class="user-picture-left">
 						<a ng-href="/u/{{comment.user.username}}" target="_self" ng-if="comment.user.image">
 							<img class="circular" ng-src="{{comment.user.image}}" width="75" height="75" />

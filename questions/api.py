@@ -834,6 +834,10 @@ class CommentResource(ModelResource):
 
     user = fields.ForeignKey(UserResource, 'user', readonly=True, full=True)
     question = fields.OneToOneField('questions.api.QuestionResource', 'question')
+    owner = fields.BooleanField()
+
+    def dehydrate_owner(self, bundle):
+        return bundle.obj.question.target == bundle.obj.user
 
     def hydrate(self, bundle):
         if bundle.obj.user_id is None:
