@@ -400,6 +400,11 @@ class SessionResource(ModelResource):
                     'success': False,
                     'reason': 'no_desc',
                 }, HttpBadRequest)
+        if len(s.title) > 125 or len(s.name) > 50 or len(s.role) > 75 or len(s.desc) > 1500:
+            return self.create_response(request, {
+                    'success': False,
+                    'reason': 'error',
+                }, HttpBadRequest)
         try:
             duration = float(request.POST['duration']) if request.POST['duration'] != "" else 12
             if duration < .5:
