@@ -28,6 +28,9 @@
 				<a href="{% url 'user' user.username %}" target="_self"><li>Profile</li></a>
 				<a href="#create-session" rel="leanModal" target="_self"><li>Create Session</li></a>
 				<a href="#change-password" rel="leanModal" target="_self"><li>Change&nbsp;Password</li></a>
+				{%for session in my_live_sessions%}
+				<a href="{{session.get_absolute_url}}" target="_self"><li><span class="live">[Live]</span> Session</li></a>
+				{%endfor%}
 				<a href="{%url 'logout'%}" target="_self"><li>Logout</li></a>
 			</ul>
 		</div>

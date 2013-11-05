@@ -15,9 +15,11 @@ def run_processors(request):
 	return env
 
 @process
-def recent_sessions(request):
+def my_live_sessions(request):
 	if request.user.is_authenticated():
-		return {"recent_sessions": request.user.sessions.order_by("-start_time")[:5]}
+		return {"my_live_sessions": request.user.sessions.filter(
+        start_time__lt=timezone.now(),
+        end_time__gt=timezone.now())[:1]}
 	else:
 		return {}
 
