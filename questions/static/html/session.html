@@ -18,8 +18,27 @@
 				<a class="filter-options" ng-class="{current: tab == 'starred'}" ng-href="/s/{{sessionId}}/starred"> Starred</a></span>
 			</div>
 		</div>
-		<div id="no-questions" ng-if="!session.questions.length">
-			There is nothing here. Be the first to ask a question!
+		<div id="no-questions" ng-if="!(session.questions | filter:qfilter).length && state.owner" ng-switch="tab">
+			<div ng-switch-when="unanswered">
+				There are no unanswered questions! Use the share button above to share your session.
+			</div>
+			<div ng-switch-when="answered">
+				There are no answered questions. See all unanswered questions in the unanswered tab.
+			</div>
+			<div ng-switch-when="starred">
+				There are no starred questions. You can star questions by clicking the star option.
+			</div>
+		</div>
+		<div id="no-questions" ng-if="!(session.questions | filter:qfilter).length && !state.owner" ng-switch="tab">
+			<div ng-switch-when="unanswered">
+				There are no unanswered questions. Put yours in the spotlight!
+			</div>
+			<div ng-switch-when="answered">
+				There are no answered questions. Check back when the session owner starts to respond to questions.
+			</div>
+			<div ng-switch-when="starred">
+				There are no starred questions. When session owners star questions they like, they show up here.
+			</div>
 		</div>
 		<div class="question-wrapper">
 			<div class="pair" ng-repeat="question in session.questions | filter:qfilter | orderBy:'-score'" ng-click="state.drafts[state.answering || -1] = state.answerdraft;state.answering = state.owner && question.id; state.answerdraft = state.drafts[question.id] || question.answer.response || ''">
@@ -46,10 +65,10 @@
 							<a class="clickable" ng-if="state.owner && !question.starred" ng-click="star(question, true); $event.stopPropagation()">
 								<i class="fa fa-star"></i>&nbsp;star
 							</a>
-							<a class="clickable" ng-if="question.asker" ng-click="star(question, false); $event.stopPropagation()">
+							<a class="clickable" ng-if="question.asker.username == state.user" ng-click="star(question, false); $event.stopPropagation()">
 								<i class="fa fa-pencil"></i>&nbsp;edit
 							</a>
-							<a class="clickable" ng-if="question.asker" ng-click="star(question, true); $event.stopPropagation()">
+							<a class="clickable" ng-if="question.asker.username == state.user" ng-click="star(question, true); $event.stopPropagation()">
 								<i class="fa fa-trash-o"></i>&nbsp;delete
 							</a>
 							<a ng-href="/q/{{question.id}}">
