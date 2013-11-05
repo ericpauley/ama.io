@@ -2,8 +2,10 @@
 	<div id="ask-box">
 		<h2>Ask {{session.name}}:</h2>
 		<textarea ng-model="state.question" maxlength="1000"></textarea>
-		<span ng-if="state.question && state.question.length < 6">{{6 - state.question.length}} characters to go...</span>
-		<span ng-if="state.question && state.question.length >= 6">{{1000 - state.question.length}} characters left...</span>
+		<span ng-if="state.question">
+			<span ng-show="state.question.length < 6">{{6 - state.question.length}} characters to go...</span>
+			<span ng-show="state.question.length >= 6">{{1000 - state.question.length}} characters left...</span>
+		</span>
 		<a id="ask-btn" class="clickable" ng-click="doAsk()" ng-disabled="state.question.length < 6 || state.question.length > 1000">ASK!</a>
 	</div>
 </div>
