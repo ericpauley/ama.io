@@ -578,6 +578,7 @@ class QuestionResource(ModelResource):
     target = fields.ForeignKey('questions.api.UserResource', 'target', readonly=True, full=True)
     answered = fields.BooleanField(readonly=True)
     vote = fields.IntegerField(attribute = "vote", default = 0)
+    num_comments = fields.IntegerField(attribute="num_comments", readonly=True, default=0)
 
     def dehydrate_answered(self, bundle):
         try:

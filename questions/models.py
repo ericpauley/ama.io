@@ -205,6 +205,11 @@ class AMAQuestionManager(models.Manager):
             SELECT IFNULL(SUM(value), 0)
             FROM questions_amavote
             WHERE questions_amavote.question_id = questions_amaquestion.id
+            """,
+            "num_comments":"""
+            SELECT COUNT(*)
+            FROM questions_comment
+            WHERE questions_comment.question_id = questions_amaquestion.id
             """
         }).order_by("-starred","-score")
 
