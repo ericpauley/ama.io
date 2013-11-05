@@ -65,10 +65,10 @@
 							<a class="clickable" ng-if="state.owner && !question.starred" ng-click="star(question, true); $event.stopPropagation()">
 								<i class="fa fa-star"></i>&nbsp;star
 							</a>
-							<a class="clickable" ng-if="question.asker.username == state.user" ng-click="star(question, false); $event.stopPropagation()">
+							<a class="clickable" ng-if="question.asker.username == state.user && session.state != 'after' && !question.answered" ng-click="$event.stopPropagation()">
 								<i class="fa fa-pencil"></i>&nbsp;edit
 							</a>
-							<a class="clickable" ng-if="question.asker.username == state.user" ng-click="star(question, true); $event.stopPropagation()">
+							<a class="clickable" ng-if="question.asker.username == state.user && session.state != 'after' && !question.answered" ng-click="delete(question, $index); $event.stopPropagation()">
 								<i class="fa fa-trash-o"></i>&nbsp;delete
 							</a>
 							<a ng-href="/q/{{question.id}}">

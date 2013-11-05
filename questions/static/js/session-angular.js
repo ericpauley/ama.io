@@ -67,6 +67,15 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeou
 		question.score += question.vote - old;
 	}
 
+	$scope.delete = function(question, index){
+		$http({
+			method: 'DELETE',
+			url: question.resource_uri,
+		}).success(function(){
+			$scope.session.questions.splice(index, 1);
+		});
+	}
+
 	$scope.star = function(question, val){
 		question.starred = val;
 		if(val){

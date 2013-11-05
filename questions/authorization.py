@@ -1,5 +1,6 @@
 from tastypie.authorization import Authorization,ReadOnlyAuthorization
 from tastypie.exceptions import Unauthorized
+from questions.models import AMAAnswer
 
 def permcheck(func):
     def inner(*args, **kwargs):
@@ -49,4 +50,14 @@ class CommentAuthorization(ReadOnlyAuthorization):
         return bundle.request.user.is_authenticated()
 
 class QuestionAuthorization(ReadOnlyAuthorization):
-    pass
+    
+    @permcheck
+    def delete_detail(self, object_list, bundle):
+        if bundle.obj.asker != bundle.request.user:
+            return False
+        try:
+            answer = bundle.obj.answer
+        except AMAAnswer.DoesNotExist:
+            return False
+        return bundle.obj.session.state != 'after'
+
