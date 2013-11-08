@@ -111,7 +111,7 @@
 	</div>
 </form>
 <form class="lightbox" id="create-session" action="/api/v1/session/create/" method="post"
-enctype="multipart/form-data" ng-controller="CreateCtrl">
+enctype="multipart/form-data" ng-controller="CreateCtrl" ng-submit="error=null">
 	<div class="lightbox-header">
 		Create QA Session
 	</div>
@@ -128,6 +128,7 @@ enctype="multipart/form-data" ng-controller="CreateCtrl">
 			<div ng-switch-when="bad_image">Only JPEG and PNG images are allowed.</div>
 			<div ng-switch-when="small_image">Images must be at least 220x220 px.</div>
 			<div ng-switch-when="image_error">There was a problem processing your image.</div>
+			<div ng-switch-when="still_running">You already have a session scheduled.</div>
 			<div ng-switch-when="error">There was a problem creating your session.</div>
 		</div>
 		<label for="title">Title</label>

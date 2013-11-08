@@ -423,6 +423,11 @@ class SessionResource(ModelResource):
                 }, HttpBadRequest)
         
         if not request.user.is_staff:
+            if AMASession.objects.filter(end_time__gt=timezone.now()).count():
+                return self.create_response(request, {
+                    'success': False,
+                    'reason': 'still_running',
+                }, HttpBadRequest)
             last = request.user.sessions.order_by("-created")[:1]
             if last and last[0].created > timezone.now() - datetime.timedelta(hours=1):
                 return self.create_response(request, {
