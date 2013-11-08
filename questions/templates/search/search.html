@@ -16,7 +16,8 @@
                                         <img class="img150" src="{{session.auto_image}}" />
                                     </a><br/>
                                     <div id="session-tile-info">
-                                        <strong>{{session.title}}</strong><br/>
+                                        <strong>{{session.title}}
+                                            {% if session.state == 'running'%}<span class="live">[LIVE]</span>{%endif%}</strong><br/>
                                         {% if session.state == 'running'%}
                                         {{session.num_viewers}} in AMA session{%else%}
                                         {{session.num_views}} views{%endif%}<br/>
