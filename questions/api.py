@@ -44,6 +44,7 @@ from allauth.socialaccount.providers.oauth.client import OAuth
 from django.conf import settings
 from tweepy.error import TweepError
 from django.templatetags.static import static
+import allauth.account.forms
 
 class CachedResource():
     def wrap_view(self, view):
@@ -148,7 +149,10 @@ class UserResource(ModelResource):
                 self.wrap_view('register'), name='api_register'),
             url(r'^(?P<resource_name>%s)/change_password%s$' %
                 (self._meta.resource_name, trailing_slash()),
-                self.wrap_view('change_password'), name='api_register'),
+                self.wrap_view('change_password'), name='api_chjange_password'),
+            url(r'^(?P<resource_name>%s)/reset_password%s$' %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('reset_password'), name='api_reset_password'),
             url(r'^(?P<resource_name>%s)/make_old%s$' %
                 (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('make_old'), name='api_make_old'),
@@ -279,6 +283,15 @@ class UserResource(ModelResource):
             #print "User is now "+str(user.meta.new)
             return self.create_response(request, { 'success': True})
         return self.create_response(request, { 'success': False, 'reason': "Dup User"}, HttpNotFound)
+
+    def reset_password(self, request, **kwargs):
+        self.method_check(request, allowed=['post'])
+        info = allauth.account.forms.ResetPasswordForm(request.POST)
+        if info.is_valid():
+            info.save()
+            return self.create_response(request, { 'success': True })
+        else:
+            return self.create_response(request, { 'success': False, 'reason': "invalid_email"}, HttpNotFound)
 
     def change_password(self, request, **kwargs):
         self.method_check(request, allowed=['post'])

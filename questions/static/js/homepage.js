@@ -69,6 +69,27 @@ homepage.controller("RegisterCtrl", function RegisterCtrl($scope, $http){
     }
 })
 
+homepage.controller("ForgotCtrl", function ForgotCtrl($scope, $http){
+    $scope.error = null;
+    $scope.working = false;
+    $scope.reset = function(){
+        $scope.error = null;
+        $scope.working = true;
+        $http({
+            method: 'POST',
+            url: "/api/v1/user/reset_password/",
+            data: $.param({
+                email: $scope.email}),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function(data){
+            location.reload();
+        }).error(function(data){
+            $scope.error = data.reason || 'error';
+            $scope.working = false;
+        });
+    }
+});
+
 homepage.controller("RequestCtrl", function RequestCtrl($scope, $http){
     $scope.tweet = true;
     $scope.username = "";

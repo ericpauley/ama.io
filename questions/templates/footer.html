@@ -61,6 +61,24 @@
 		</div>
 	</div>
 </form>
+<form class="lightbox" id="forgot" ng-controller="ForgotCtrl" ng-submit="reset()">
+	<div class="lightbox-header">
+		Reset Password
+	</div>
+	<div class="lightbox-error" ng-switch="error">
+		<div ng-switch-when="invalid_email">There are no accounts with that email address.</div>
+		<div ng-switch-when="error">There was a problem resetting your password.</div>
+	</div>
+	<div class="lightbox-content">
+		<input placeholder="Email" type="text" ng-model="email"/>
+		<input class="lightbox-button" type="submit" value="Go" ng-disabled="working"/>
+		<div class="lightbox-bottom-link">
+			<a href="#signin" rel="leanModal" class="lightbox-bottom-link" id="signup-bottom">
+				Know your password?
+			</a>
+		</div>
+	</div>
+</form>
 <form class="lightbox" id="signin" ng-controller="SigninCtrl" ng-submit="login()">
 	<div class="lightbox-header">
 		Sign In
@@ -82,7 +100,7 @@
 		<input id="email-or-username" placeholder="Username or Email" type="text" ng-model="username"/>
 		<input id="password" placeholder="Password" type="password" ng-model="password"/>
 		<div class="forgot-pass">
-			<a class="forgot-pass">Forgot password?</a>
+			<a href="#forgot" rel="leanModal" class="forgot-pass">Forgot password?</a>
 		</div>
 		<input class="lightbox-button" type="submit" ng-disabled="working" value="Go"/>
 		<div class="lightbox-bottom-link">
