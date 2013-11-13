@@ -601,7 +601,7 @@ textarea {
 }
 
 #votes {
-	float: right;
+	float: right !important;
 }
 
 #question {
@@ -627,6 +627,10 @@ textarea {
 
 .live {
 	color: @green;
+}
+
+.char-left {
+	color: @white;
 }
 
 #session-header {
@@ -995,6 +999,7 @@ textarea {
 	background: @white;
 	color: red;
 	text-align: center;
+	padding: 5px 5px 0 5px;
 }
 
 .lightbox {
@@ -1043,3 +1048,16 @@ textarea {
 	}
 }
 
+/* LEGAL */
+.legal-text {
+	.main-center(800px, 0px, 0px);
+	margin-bottom: 50px;
+
+	h2 {
+		margin-top: 15px;
+	}
+
+	p {
+		padding-bottom: 10px;
+	}
+}

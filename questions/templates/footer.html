@@ -13,6 +13,9 @@
 					<a href="{% url 'press' %}">Press</a>
 				</td>
 				<td>
+					<a href="{% url 'legal' %}">Legal</a>
+				</td>
+				<td>
 					<a href="{% url 'about' %}">Support</a>
 				</td>
 				<td>
@@ -99,13 +102,15 @@
 	<div class="lightbox-content">
 		<input id="email-or-username" placeholder="Username or Email" type="text" ng-model="username"/>
 		<input id="password" placeholder="Password" type="password" ng-model="password"/>
-		<div class="forgot-pass">
-			<a href="#forgot" rel="leanModal" class="forgot-pass">Forgot password?</a>
-		</div>
 		<input class="lightbox-button" type="submit" ng-disabled="working" value="Go"/>
 		<div class="lightbox-bottom-link">
 			<a href="#signup" rel="leanModal" class="lightbox-bottom-link" id="signin-bottom">
 				Don't have an account?
+			</a>
+		</div>
+		<div class="forgot-pass">
+			<a href="#forgot" rel="leanModal" class="forgot-pass">
+				Forgot your password?
 			</a>
 		</div>
 	</div>

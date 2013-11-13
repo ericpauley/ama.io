@@ -61,6 +61,11 @@ GLOBALS['owner'] = true
 				<a id="twitter-name" href="//twitter.com/{{session.twitter}}" ng-if="session.twitter" target="_blank">
 					@{{session.twitter}}
 				</a>
+				<div id="share-session">
+					Share on:
+					<img src="{% static 'images/twitter-icon.png' %}" />
+					<img src="{% static 'images/fb-icon.png' %}" />
+				</div>
 				{%endverbatim%}
 				{%if user.is_staff%}
 				<div>
