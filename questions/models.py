@@ -64,9 +64,9 @@ class UserMeta(models.Model):
 class AMASessionManager(models.Manager):
     def get_query_set(self):
         if db.settings.DATABASES['default']['ENGINE'] == "django.db.backends.mysql":
-            part = "DATE_SUB(NOW(), INTERVAL 30 second)"
+            part = "DATE_SUB(NOW(), INTERVAL 60 second)"
         elif db.settings.DATABASES['default']['ENGINE'] == "django.db.backends.sqlite3":
-            part = "datetime('now', '-30second')"
+            part = "datetime('now', '-60 seconds')"
         return super(AMASessionManager,self).get_query_set().extra(select={
             "num_viewers":"""
             SELECT Count(*)
@@ -245,6 +245,8 @@ class AMAQuestion(models.Model):
     data = JSONField(default={}, blank=True)
     
     session = models.ForeignKey(AMASession, related_name='questions')
+
+    answer = models.OneToOneField('AMAAnswer', null=True, related_name="question")
     
     created = models.DateTimeField(auto_now_add=True, editable=False)
     edited = models.DateTimeField(auto_now=True, editable=False)
@@ -272,7 +274,6 @@ class AMAAnswer(models.Model):
     Answers to questions are represented by this model.
     '''
     
-    question = models.OneToOneField(AMAQuestion, related_name='answer')
     response = models.TextField()
     
     data = JSONField(default={}, blank=True)

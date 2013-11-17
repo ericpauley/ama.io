@@ -68,7 +68,7 @@
 							<a class="clickable" ng-if="state.owner && !question.starred" ng-click="star(question, true); $event.stopPropagation()">
 								<i class="fa fa-star"></i>&nbsp;star
 							</a>
-							<a class="clickable" ng-if="question.asker.username == state.user && session.state != 'after' && !question.answered" ng-click="$event.stopPropagation()">
+							<a class="clickable" ng-if="question.asker.username == state.user && session.state != 'after' && !question.answered" ng-click="state.questionEdit = question.id;$event.stopPropagation()">
 								<i class="fa fa-pencil"></i>&nbsp;edit
 							</a>
 							<a class="clickable" ng-if="question.asker.username == state.user && session.state != 'after' && !question.answered" ng-click="delete(question, $index); $event.stopPropagation()">
@@ -90,6 +90,7 @@
 							</div>
 						</div>
 						<br/>
+						<textarea maxlength="1000" ng-show="state.questionEdit == question.id" ng-model="question.question" focus-on-show ng-blur="editQuestion(question);state.questionEdit=0"></textarea>
 						<div id="text" ng-bind-html="question.question | linky: '_blank' | linesplit">
 						</div>
 					</div>

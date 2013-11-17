@@ -63,8 +63,10 @@ GLOBALS['owner'] = true
 				</a>
 				<div id="share-session">
 					Share on:
+					{%endverbatim%}
 					<img src="{% static 'images/twitter-icon.png' %}" />
 					<img src="{% static 'images/fb-icon.png' %}" />
+					{%verbatim%}
 				</div>
 				{%endverbatim%}
 				{%if user.is_staff%}

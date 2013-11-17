@@ -3,6 +3,7 @@ from tastypie.exceptions import Unauthorized
 from questions.models import AMAAnswer
 from django.utils import timezone
 import datetime
+import json
 
 def permcheck(func):
     def inner(*args, **kwargs):
@@ -67,6 +68,19 @@ class QuestionAuthorization(ReadOnlyAuthorization):
             answer = bundle.obj.answer
             return False
         except AMAAnswer.DoesNotExist:
-            return True
+            pass
         return bundle.obj.session.state != 'after'
 
+    @permcheck
+    def update_detail(self, object_list, bundle):
+        if bundle.obj.asker != bundle.request.user:
+            return False
+        try:
+            answer = bundle.obj.answer
+            return False
+        except AMAAnswer.DoesNotExist:
+            pass
+        for k, v in json.loads(bundle.request.body).items():
+            if k != "question":
+                return False
+        return True

@@ -22,7 +22,7 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeou
 				repeat();
 			}, 30000);
 		$http.get("/api/v1/session/"+GLOBALS['session']+"/").success(function(data) {
-			if($scope.state.edit == null && $scope.refresh){
+			if($scope.state.edit == null && $scope.refresh && $scope.state.questionEdit == 0){
 				$scope.session = data;
 			}else{
 				$scope.toApply = data;
@@ -31,9 +31,11 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeou
 	}
 	repeat();
 	$scope.sessionId = GLOBALS['session']
+	$scope.staticRoot = GLOBALS.staticRoot;
 	$scope.state = $rootScope
 	$scope.state.user = GLOBALS['user']
 	$scope.state.edit = null;
+	$scope.state.questionEdit = 0;
 	$scope.state.owner = GLOBALS['owner']
 	$scope.state.question = ""
 	$scope.state.drafts = {}
@@ -56,6 +58,18 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeou
 			$("#edit-title").focus();
 		}
 	})
+
+	$scope.editQuestion = function(question){
+		$http({
+			method: "PATCH",
+			url: question.resource_uri,
+			data: {question: question.question}
+		}).success(function(){
+
+		}).error(function(){
+
+		});
+	}
 
 	$scope.vote = function(question, val){
 		var old = question.vote;

@@ -62,7 +62,6 @@ class Action():
         self.__dict__.update(kwargs)
 
 def p(x):
-    print x
     return x
 
 class UserResource(ModelResource):
@@ -275,12 +274,9 @@ class UserResource(ModelResource):
             return self.create_response(request, { 'success': False }, HttpNotFound)
         elif user.count() == 1 and request.user and request.user.is_authenticated():
             user = user[0]
-            #print "User was "+str(user.meta.new)
             user.meta.new = False
-            #print "User is now "+str(user.meta.new)
             user.meta.save()
             user.save()
-            #print "User is now "+str(user.meta.new)
             return self.create_response(request, { 'success': True})
         return self.create_response(request, { 'success': False, 'reason': "Dup User"}, HttpNotFound)
 
@@ -316,12 +312,9 @@ class UserResource(ModelResource):
             return self.create_response(request, { 'success': False }, HttpNotFound)
         elif user.count() == 1 and request.user and request.user.is_authenticated():
             user = user[0]
-            #print "User was "+str(user.meta.new)
             user.meta.new = True
-            #print "User is now "+str(user.meta.new)
             user.meta.save()
             user.save()
-            #print "User is now "+str(user.meta.new)
             return self.create_response(request, { 'success': True})
         return self.create_response(request, { 'success': False, 'reason': "Dup User"}, HttpNotFound)
     
@@ -363,7 +356,7 @@ class SessionResource(ModelResource):
         return bundle
 
     def dehydrate_num_viewers(self, bundle):
-        return bundle.obj.viewers.filter(timestamp__gte=datetime.datetime.now() - datetime.timedelta(seconds=10)).count()
+        return bundle.obj.viewers.filter(timestamp__gte=timezone.now() - datetime.timedelta(seconds=10)).count()
 
     def prepend_urls(self):
         return [
@@ -596,14 +589,14 @@ class SessionResource(ModelResource):
 class QuestionResource(ModelResource):
 
     answer = fields.OneToOneField('questions.api.AnswerResource', 'answer', related_name='question', null=True, full=True)
-    session = fields.OneToOneField('questions.api.SessionResource', 'session', null=True)
+    session = fields.OneToOneField('questions.api.SessionResource', 'session', null=True, readonly=True)
     #comments = fields.ToManyField('questions.api.CommentResource', readonly=True, attribute='comments', null=True, use_in="detail", full=True, related_name='question')
     #html = fields.CharField(use_in = "detail")
     score = fields.IntegerField(attribute='score', default=0, readonly=True)
     asker = fields.ForeignKey('questions.api.UserResource', 'asker', readonly=True, full=True)
     target = fields.ForeignKey('questions.api.UserResource', 'target', readonly=True, full=True)
     answered = fields.BooleanField(readonly=True)
-    vote = fields.IntegerField(attribute = "vote", default = 0)
+    vote = fields.IntegerField(attribute = "vote", default = 0, readonly=True)
     num_comments = fields.IntegerField(attribute="num_comments", readonly=True, default=0)
 
     def dehydrate_answered(self, bundle):
@@ -686,10 +679,9 @@ class QuestionResource(ModelResource):
                     'status': 'deleted'
                 })
         else:
-            try:
-                answer = q.answer
-                t = "edited"
-            except AMAAnswer.DoesNotExist:
+            answer = q.answer
+            t = "edited"
+            if answer is None:
                 answer = AMAAnswer(question=q)
                 t = "created"
             answer.response = a
