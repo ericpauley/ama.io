@@ -107,14 +107,16 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeou
 		success(function(data, status, headers, config) {
 			$scope.session.questions.unshift(data.question);
 			$scope.state.question = "";
+			$scope.state.askTimer = moment().add('minutes', 1).valueOf();
+			$timeout(function(){
+				$scope.state['askTimer'] = null;
+			}, $scope.state.askTimer - moment().unix());
 		}).
 		error(function(data, status, headers, config) {
-			if(data.reason == 'too_soon'){
-				$scope.state.askTimer = Date.parse(data.soonest);
-				$timeout(function(){
-					$scope.state['askTimer'] = null;
-				}, $scope.state.askTimer - new Date().getTime());
-			}
+			$scope.state.askTimer = moment().add('minutes', 1).valueOf();
+			$timeout(function(){
+				$scope.state['askTimer'] = null;
+			}, $scope.state.askTimer - moment().unix());
 		});
 	}
 

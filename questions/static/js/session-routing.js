@@ -34,8 +34,18 @@ sessionApp.controller("QuestionCtrl", function QuestionCtrl($scope, $rootScope, 
 			$http.get(headers("Location")).success(function(data){
 				$scope.comments.unshift(data);
 			});
+			$scope.state.commentTimer = moment().add('minutes', 1).valueOf();
+			$timeout(function(){
+				$scope.state['commentTimer'] = null;
+			}, $scope.state.commentTimer - moment().unix());
+			console.log($scope.state.commentTimer - moment().valueOf())
 		}).error(function(data){
-
+			if(data.reason == 'too_soon'){
+				$scope.state.commentTimer = Date.parse(data.soonest);
+				$timeout(function(){
+					$scope.state['commentTimer'] = null;
+				}, $scope.state.commentTimer - moment().valueOf());
+			}
 		})
 	}
 })

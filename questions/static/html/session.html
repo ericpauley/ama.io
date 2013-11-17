@@ -6,8 +6,6 @@
 			<span ng-show="state.question.length < 6">{{6 - state.question.length}} characters to go...</span>
 			<span ng-show="state.question.length >= 6">{{1000 - state.question.length}} characters left...</span>
 		</span>
-		{{state.askTimer}}
-		{{state.askTimer | countdown:true}}
 		<a id="ask-btn" disabled ng-if="state.askTimer" >Wait {{state.askTimer | countdown : true}}</a>
 		<a id="ask-btn" ng-if="!state.askTimer" class="clickable" ng-click="doAsk()" ng-disabled="state.question.length < 6 || state.question.length > 1000">ASK!</a>
 	</div>
@@ -122,7 +120,8 @@
 					<form id="main">
 						<textarea placeholder="Comment on this question..." ng-model="state.comment" maxlength="500" focus-on-show></textarea>
 						<span ng-if="state.comment">{{500 - state.comment.length}} characters left.</span>
-						<div class="comment-btn" ng-click="postComment()">Post Comment</div>
+						<div class="comment-btn" ng-if="commentTimer" disabled>Wait {{commentTimer | countdown:true}}</div>
+						<div class="comment-btn" ng-if="!commentTimer" ng-click="postComment()">Post Comment</div>
 						<div style="clear: both"></div>
 					</form>
 				</div>

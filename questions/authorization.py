@@ -1,6 +1,8 @@
 from tastypie.authorization import Authorization,ReadOnlyAuthorization
 from tastypie.exceptions import Unauthorized
 from questions.models import AMAAnswer
+from django.utils import timezone
+import datetime
 
 def permcheck(func):
     def inner(*args, **kwargs):
@@ -47,7 +49,13 @@ class SessionAuthorization(Authorization):
 
 class CommentAuthorization(ReadOnlyAuthorization):
     def create_detail(self, object_list, bundle):
-        return bundle.request.user.is_authenticated()
+        if bundle.request.user.is_authenticated():
+            if bundle.request.user.comments.filter(created__gte=timezone.now() - datetime.timedelta(minutes=1)).count():
+                return False
+            else:
+                return True
+        else:
+            return False
 
 class QuestionAuthorization(ReadOnlyAuthorization):
     
@@ -57,7 +65,8 @@ class QuestionAuthorization(ReadOnlyAuthorization):
             return False
         try:
             answer = bundle.obj.answer
-        except AMAAnswer.DoesNotExist:
             return False
+        except AMAAnswer.DoesNotExist:
+            return True
         return bundle.obj.session.state != 'after'
 
