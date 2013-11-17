@@ -566,6 +566,14 @@ class SessionResource(ModelResource):
                 'reason': 'question_short',
                 }, HttpBadRequest )
 
+        if request.user.own_questions.filter(created__gte=timezone.now() - datetime.timedelta(minutes=1)).count():
+            latest = request.user.own_questions.order_by("-created")[0]
+            return self.create_response(request, {
+                'success': False,
+                'reason': 'too_soon',
+                'soonest': latest.created + datetime.timedelta(minutes=1),
+                }, HttpBadRequest )
+
         s = AMASession.objects.get(pk=pk)
         if s.after:
             return self.create_response(request, {

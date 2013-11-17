@@ -41,6 +41,12 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeou
 	$scope.state.question = $cookieStore.get("askDrafts."+GLOBALS['session']) || "";
 	$cookieStore.remove("askDrafts."+GLOBALS['session']);
 
+	function reapply(){
+		$timeout(reapply, 1000);
+		$scope.$apply();
+	}
+	reapply();
+
 	$scope.$watch("state.edit", function(){
 		if($scope.toApply != null){
 			$scope.session = $scope.toApply;
@@ -103,8 +109,12 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeou
 			$scope.state.question = "";
 		}).
 		error(function(data, status, headers, config) {
-			// called asynchronously if an error occurs
-			// or server returns response with an error status.
+			if(data.reason == 'too_soon'){
+				$scope.state.askTimer = Date.parse(data.soonest);
+				$timeout(function(){
+					$scope.state['askTimer'] = null;
+				}, $scope.state.askTimer - new Date().getTime());
+			}
 		});
 	}
 
@@ -121,7 +131,7 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeou
 		$scope.state.edit = null;
 		if($scope.toApply != null)
 			$scope.toApply[field] = value;
-		dataz = {}
+		data = {}
 		data[field] = value;
 		$http({
 			method: 'PATCH',
@@ -205,7 +215,7 @@ sessionApp.filter('linesplit', ['$sce', function($sce){
 }]);
 
 sessionApp.filter('countdown', function(){
-	return function(input){
-		return moment(input).fromNow()
+	return function(input, prefix){
+		return moment(input).fromNow(prefix);
 	};
 });

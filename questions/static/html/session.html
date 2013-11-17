@@ -6,7 +6,10 @@
 			<span ng-show="state.question.length < 6">{{6 - state.question.length}} characters to go...</span>
 			<span ng-show="state.question.length >= 6">{{1000 - state.question.length}} characters left...</span>
 		</span>
-		<a id="ask-btn" class="clickable" ng-click="doAsk()" ng-disabled="state.question.length < 6 || state.question.length > 1000">ASK!</a>
+		{{state.askTimer}}
+		{{state.askTimer | countdown:true}}
+		<a id="ask-btn" disabled ng-if="state.askTimer" >Wait {{state.askTimer | countdown : true}}</a>
+		<a id="ask-btn" ng-if="!state.askTimer" class="clickable" ng-click="doAsk()" ng-disabled="state.question.length < 6 || state.question.length > 1000">ASK!</a>
 	</div>
 </div>
 <div id="questions-area">
