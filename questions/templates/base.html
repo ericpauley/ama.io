@@ -10,8 +10,10 @@
 </head>
 <body>
 <div class="container">
+
 	{%include "header.html"%}
 	<div id="content">
+		{%include 'messages.html'%}
 		{%block content%}{%endblock%}
 	</div>
 	{% block push %}<div class="push"></div>{% endblock %}
