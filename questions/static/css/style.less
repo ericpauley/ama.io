@@ -5,6 +5,8 @@
 @grey: #666666;
 @green: #4CB548;
 @yellow: #fceb4e;
+@warning: #FFF8C9;
+@info: #ADFFAD;
 @darkgrey: #212226;
 @lightgrey: #F2F2F2;
 @black: #000000;
@@ -240,6 +242,34 @@ textarea {
 	margin: 30px 0 30px 0;
 	font-style: italic;
 }
+
+.messages {
+	a {
+		color: @teal;
+		text-decoration: underline;
+	}
+}
+
+.warning {
+	background: @warning;
+	width: 500px;
+	margin: 0 auto;
+	text-align: center;
+	line-height: 25px;
+	margin-bottom: 5px;
+	.rounded-corners;
+}
+
+.info {
+	background: @info;
+	width: 500px;
+	margin: 0 auto;
+	text-align: center;
+	line-height: 25px;
+	margin-bottom: 5px;
+	.rounded-corners;	
+}
+
 
 /* HEADER */
 #header {
@@ -690,6 +720,11 @@ textarea {
 	position: absolute;
 	left: -9999px;
 	width: 0px;
+}
+
+.share-btn {
+	vertical-align: middle;
+	padding: 3px;
 }
 
 /* PROFILES */
