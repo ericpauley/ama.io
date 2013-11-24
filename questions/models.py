@@ -17,7 +17,7 @@ from random import choice
 from django import db
 from django.utils import timezone
 from django.core.urlresolvers import reverse
-from django.templatetags.static import static
+from django.contrib.staticfiles.storage import staticfiles_storage
 
 try:
     from urllib import urlencode
@@ -128,7 +128,7 @@ class AMASession(SluggedModel):
         except ValueError as e:
             for acc in self.owner.socialaccount_set.all():
                 return acc.get_avatar_url()
-            return static("images/default-session.png")
+            return staticfiles_storage.url("images/default-session.png")
 
     @property 
     def object(self):
