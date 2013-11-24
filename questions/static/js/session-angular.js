@@ -41,9 +41,8 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeou
 
 	function reapply(){
 		$timeout(reapply, 1000);
-		$scope.$apply();
 	}
-	$timeout(reapply, 1000);
+	reapply();
 
 	$scope.$watch("state.edit", function(){
 		if($scope.toApply != null){
