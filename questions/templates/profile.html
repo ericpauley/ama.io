@@ -13,7 +13,7 @@ GLOBALS['user'] = '{{user.username}}';
 {% block content %}
 {%verbatim%}
 <div class="header-separator"></div>
-<div ng-controller="ProfileCtrl">
+<div ng-controller="ProfileCtrl" ng-cloak>
 	<div id="profile-box">
 		<div id="profile-image">
 			<img ng-src="{{user.image}}" />
