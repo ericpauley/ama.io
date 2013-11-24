@@ -5,6 +5,7 @@
 <script>GLOBALS={}</script>
 {%if user.is_authenticated%}<script>GLOBALS['user']='{{user.username}}'</script>{%endif%}
 {%block prescript%}{%endblock%}
+<meta property="og:site_name" content="Project AMA" />
 {%include "head.html"%}
 {%block postscript%}{%endblock%}
 </head>

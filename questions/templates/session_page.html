@@ -17,6 +17,9 @@ GLOBALS['votes'] = {}
 GLOBALS['owner'] = true
 {%endif%}
 </script>
+<meta property="og:title" content="{{session.title}}" />
+<meta property="og:description" content="{{session.desc}}" />
+<meta property="og:image" content="{{session.auto_image}}" />
 {%endblock%}
 
 {%block postscript%}
