@@ -14,13 +14,9 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeou
 	$scope.toApply = null;
 	function repeat(){
 		if(GLOBALS['owner'])
-			$timeout(function(){
-				repeat();
-			}, 10000);
+			$timeout(repeat, 10000);
 		else
-			$timeout(function(){
-				repeat();
-			}, 30000);
+			$timeout(repeat, 30000);
 		$http.get("/api/v1/session/"+GLOBALS['session']+"/").success(function(data) {
 			if($scope.state.edit == null && $scope.refresh && $scope.state.questionEdit == 0){
 				$scope.session = data;
@@ -47,7 +43,7 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeou
 		$timeout(reapply, 1000);
 		$scope.$apply();
 	}
-	reapply();
+	$timeout(reapply, 1000);
 
 	$scope.$watch("state.edit", function(){
 		if($scope.toApply != null){
