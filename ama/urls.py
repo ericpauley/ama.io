@@ -6,6 +6,10 @@ admin.autodiscover()
 from django.conf import settings
 from django.conf.urls.static import static
 
+import django.templatetags.static
+import django.contrib.staticfiles.templatetags.staticfiles
+django.templatetags.static.static = django.contrib.staticfiles.templatetags.staticfiles.static
+
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'ama.views.home', name='home'),
