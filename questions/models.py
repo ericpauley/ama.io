@@ -59,6 +59,12 @@ class UserMeta(models.Model):
             if account.provider == "twitter" and account.extra_data['verified']:
                 return True
         return False
+
+    @property 
+    def auto_image(self):
+        for acc in self.user.socialaccount_set.all():
+            return acc.get_avatar_url()
+        return staticfiles_storage.url("images/default-session.png")
     
 
 class AMASessionManager(models.Manager):

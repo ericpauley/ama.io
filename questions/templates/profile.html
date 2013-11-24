@@ -16,7 +16,7 @@ GLOBALS['user'] = '{{user.username}}';
 <div ng-controller="ProfileCtrl">
 	<div id="profile-box">
 		<div id="profile-image">
-			<img src="http://www.biography.com/imported/images/Biography/Images/Profiles/S/Will-Smith-9542165-1-402.jpg" />
+			<img ng-src="{{user.image}}" />
 		</div>
 		<div id="profile-info">
 			<div id="bio">
