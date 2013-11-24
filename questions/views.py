@@ -75,7 +75,7 @@ def session(request, slug):
             votes = None
         if not s.owner.meta.is_verified:
             if s.owner == request.user:
-                messages.add_message(request, messages.WARNING, 'You have not yet linked a verified Twitter account. You can do so <a href="/accounts/twitter/login/?process=connect">here</a>.')
+                messages.add_message(request, messages.WARNING, 'You have not yet linked a verified Twitter account. You can do so <a href="/accounts/twitter/login/?process=connect" target="_self">here</a>.')
             else:
                 messages.add_message(request, messages.WARNING, 'This user has not verified their account with Twitter. Beware of impersonators.')
         else:
