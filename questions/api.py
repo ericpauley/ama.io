@@ -207,7 +207,7 @@ class UserResource(ModelResource):
                     'reason': 'email_exists',
                 }, HttpConflict)
 
-        if username+"\n" in open("reserved.txt").readlines():
+        if username in settings.RESERVED_USERNAMES:
             return self.create_response(request, {
                     'success': False,
                     'reason': 'reserved',
