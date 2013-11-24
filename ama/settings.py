@@ -86,7 +86,7 @@ STATICFILES_DIRS = (
     os.path.join(PROJECT_PATH, 'vendor/static'),
 )
 
-RESERVED_USERNAMES = [username.strip() for username in open("reserved.txt").readlines()]
+RESERVED_USERNAMES = [username.strip() for username in open(os.path.join(PROJECT_PATH, 'reserved.txt')).readlines()]
 
 # List of finder classes that know how to find static files in
 # various locations.
