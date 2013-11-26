@@ -63,7 +63,7 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeou
 		FB.ui({
 				method: 'feed',
 				name: $scope.session.title,
-				link: document.location.href,
+				link: $('<a href="/s/'+$scope.session.slug+'"></a>')[0].href,
 				picture: $scope.session.image,
 				caption: $scope.session.name,
 				description: $scope.session.desc
@@ -230,6 +230,19 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeou
 			}
 		})
 	}
+
+	$scope.twitter = function() {
+		if($scope.session){
+			if($scope.owner){
+				return "I'm doing an AMA! Check it out! " + $('<a href="/s/'+$scope.session.slug+'"></a>')[0].href;
+			}else{
+				return $scope.session.name + " is doing an AMA! Check it out! " + $('<a href="/s/'+$scope.session.slug+'"></a>')[0].href;
+			}
+
+		}else
+			return ""
+	}
+
 });
 
 sessionApp.directive('focusOnShow', function($timeout) {
@@ -273,4 +286,8 @@ sessionApp.filter('countdown', function() {
 	return function(input, prefix) {
 		return moment(input).fromNow(prefix);
 	};
+});
+
+sessionApp.filter('escape', function() {
+  return window.escape;
 });

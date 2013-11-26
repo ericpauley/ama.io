@@ -66,12 +66,9 @@ GLOBALS['owner'] = true
 				</a>
 				<div id="share-session">
 					Share on:
-					{%endverbatim%}
-					<img class="share-btn" width="25" height="25" src="{% static 'images/twitter-icon.png' %}" />
-					<img class="share-btn" width="25" height="25" src="{% static 'images/fb-icon.png' %}" ng-click="facebook()"/>
-					{%verbatim%}
+					<a ng-href="https://twitter.com/intent/tweet?text={{twitter() | escape}}"><img class="share-btn" width="25" height="25" {%endverbatim%} src="{% static 'images/twitter-icon.png' %}" /></a>
+					<img class="share-btn clickable" width="25" height="25" src="{% static 'images/fb-icon.png' %}" ng-click="facebook()"/>
 				</div>
-				{%endverbatim%}
 				{%if user.is_staff%}
 				<div>
 					<input type="checkbox" ng-model="refresh" name="refresh">
