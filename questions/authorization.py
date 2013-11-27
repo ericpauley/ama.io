@@ -80,7 +80,4 @@ class QuestionAuthorization(ReadOnlyAuthorization):
             return False
         except AMAAnswer.DoesNotExist:
             pass
-        for k, v in json.loads(bundle.request.body).items():
-            if k != "question":
-                return False
         return True
