@@ -75,9 +75,6 @@ class QuestionAuthorization(ReadOnlyAuthorization):
     def update_detail(self, object_list, bundle):
         if bundle.obj.asker != bundle.request.user:
             return False
-        try:
-            answer = bundle.obj.answer
+        if bundle.obj.answer != None:
             return False
-        except AMAAnswer.DoesNotExist:
-            pass
         return True
