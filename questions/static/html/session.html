@@ -45,9 +45,13 @@
 		</div>
 		<div class="question-wrapper">
 			<div class="pair" ng-repeat="question in session.questions | filter:qfilter | orderBy:'-score'" ng-click="state.drafts[state.answering || -1] = state.answerdraft;state.answering = state.owner && question.id; state.answerdraft = state.drafts[question.id] || question.answer.response || ''">
-				<div id="vote">
+				<div id="vote" ng-if="state.user">
 					<a class="clickable" ng-click="vote(question, 1); $event.stopPropagation()" ng-class="{upvote: question.vote == 1}">&#x25B2;</a><br/>
 					<a class="clickable" ng-click="vote(question, -1); $event.stopPropagation()" ng-class="{downvote: question.vote == -1}">&#x25BC;</a>
+				</div>
+				<div id="vote" ng-if="!state.user">
+					<a class="clickable" onclick="$('#btnc').click()">&#x25B2;</a><br/>
+					<a class="clickable" onclick="$('#btnc').click()">&#x25BC;</a>
 				</div>
 				<div id="question">
 					<div class="user-picture-left">

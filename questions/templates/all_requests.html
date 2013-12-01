@@ -1,4 +1,8 @@
 {% extends "base.html" %}
+
+{% block title %}
+Requests
+{% endblock%}
 {% block content %}
 <div class="header-separator"></div>
 <div id="sessions-list">
@@ -28,6 +32,12 @@
 {%endif%}
 <div class="bottom-cta">
 	Want to invite your favorite musician or actor to host an AMA?  Well what are you waiting for?<br/>
+	{% if user.is_authenticated %}
 	<a href="#request" rel="leanModal" class="tweet-btn">Request them!</a>
+	{%elif request.session.has_logged_in%}
+	<a href="#signin" rel="leanModal" class="tweet-btn">Request them!</a>
+	{%else%}
+	<a href="#signup" rel="leanModal" class="tweet-btn">Request them!</a>
+	{%endif%}
 </div>
 {% endblock %}
