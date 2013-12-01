@@ -254,6 +254,8 @@ TWITTER_ACCESS_TOKEN_SECRET = ENV.get("TWITTER_ACCESS_TOKEN_SECRET")
 
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 
+ACCOUNT_EMAIL_VERIFICATION = "none"
+
 try:
     from ama.settings_local import *
     print("Using local settings...")
