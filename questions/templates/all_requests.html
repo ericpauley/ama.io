@@ -17,7 +17,7 @@ Requests
 				</td>
 				<td>
 					{{request.score}}
-					<a class="btn tweet-btn" href="{{request.tweet_url}}">Tweet them!</a>
+					<a class="btn tweet-btn" onclick="$.post('/api/v1/request/{{request.id}}/vote/')" href="{{request.tweet_url}}">Tweet them!</a>
 				</td>
 			</tr>
 			{% endfor %}
