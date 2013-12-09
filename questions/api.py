@@ -240,7 +240,7 @@ class UserResource(ModelResource):
 
         user = authenticate(username=username, password=password)
         allauth.account.utils.sync_user_email_addresses(user)
-        allauth.account.utils.send_email_confirmation(request, user)
+        #allauth.account.utils.send_email_confirmation(request, user)
         if user:
             if user.is_active:
                 login(request, user)

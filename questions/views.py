@@ -64,6 +64,8 @@ def user_sessions(request, username):
     return render(request, "session_list.html", {'sessions': user.sessions.order_by("-start_time"), 'title':"%s's Sessions" % username})
 
 def session(request, slug):
+    if slug.lower() != slug:
+        redirect("session", slug.lower())
     try:
         s = AMASession.objects.get(slug=slug.lower())
         s.mark_viewed(request)
