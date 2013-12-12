@@ -64,11 +64,8 @@ class QuestionAuthorization(ReadOnlyAuthorization):
     def delete_detail(self, object_list, bundle):
         if bundle.obj.asker != bundle.request.user:
             return False
-        try:
-            answer = bundle.obj.answer
+        if bundle.obj.answer != None:
             return False
-        except AMAAnswer.DoesNotExist:
-            pass
         return bundle.obj.session.state != 'after'
 
     @permcheck
@@ -77,4 +74,4 @@ class QuestionAuthorization(ReadOnlyAuthorization):
             return False
         if bundle.obj.answer != None:
             return False
-        return True
+        return bundle.obj.session.state != 'after'
