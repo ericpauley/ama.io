@@ -153,13 +153,13 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeou
 			$scope.state.askTimer = moment().add('minutes', 1).valueOf();
 			$timeout(function() {
 				$scope.state['askTimer'] = null;
-			}, $scope.state.askTimer - moment().unix());
+			}, $scope.state.askTimer - moment().valueOf());
 		}).
 		error(function(data, status, headers, config) {
 			$scope.state.askTimer = moment().add('minutes', 1).valueOf();
 			$timeout(function() {
 				$scope.state['askTimer'] = null;
-			}, $scope.state.askTimer - moment().unix());
+			}, $scope.state.askTimer - moment().valueOf());
 		});
 	}
 
