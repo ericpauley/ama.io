@@ -356,7 +356,7 @@ class SessionResource(ModelResource):
         return bundle
 
     def dehydrate_num_viewers(self, bundle):
-        return bundle.obj.num_viewers
+        return bundle.obj.viewers.filter(timestamp__gte=timezone.now() - datetime.timedelta(seconds=40)).count()
 
     def prepend_urls(self):
         return [
