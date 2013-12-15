@@ -353,11 +353,10 @@ class SessionResource(ModelResource):
 
     def dehydrate(self, bundle):
         bundle.obj.mark_viewed(bundle.request)
-        bundle.data['num_viewers'] = bundle.obj.num_viewers
         return bundle
 
     def dehydrate_num_viewers(self, bundle):
-        return bundle.obj.viewers.filter(timestamp__gte=timezone.now() - datetime.timedelta(seconds=10)).count()
+        return bundle.obj.num_viewers
 
     def prepend_urls(self):
         return [
