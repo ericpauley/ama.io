@@ -70,9 +70,9 @@ class UserMeta(models.Model):
 class AMASessionManager(models.Manager):
     def get_query_set(self):
         if db.settings.DATABASES['default']['ENGINE'] == "django.db.backends.mysql":
-            part = "DATE_SUB(NOW(), INTERVAL 90 second)"
+            part = "DATE_SUB(NOW(), INTERVAL 40 second)"
         elif db.settings.DATABASES['default']['ENGINE'] == "django.db.backends.sqlite3":
-            part = "datetime('now', '-90 seconds')"
+            part = "datetime('now', '-40 seconds')"
         return super(AMASessionManager,self).get_query_set().extra(select={
             "num_viewers":"""
             SELECT Count(*)

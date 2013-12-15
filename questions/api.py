@@ -322,7 +322,7 @@ class UserResource(ModelResource):
 class SessionResource(ModelResource):
     owner = fields.ForeignKey(UserResource, 'owner', readonly=True, full=True)
     questions = fields.ToManyField('questions.api.QuestionResource', lambda bundle:bundle.obj.get_marked_questions(bundle.request), readonly=True, null=True, use_in='detail', full=True, related_name='session')
-    num_viewers = fields.IntegerField(attribute="num_viewers", readonly=True)
+    num_viewers = fields.IntegerField(readonly=True)
     views = fields.IntegerField(readonly=True)
     time = fields.DateField()
     image = fields.CharField(attribute="auto_image", readonly=True, default="")
@@ -353,6 +353,7 @@ class SessionResource(ModelResource):
 
     def dehydrate(self, bundle):
         bundle.obj.mark_viewed(bundle.request)
+        bundle.data['num_viewers'] = bundle.obj.num_viewers
         return bundle
 
     def dehydrate_num_viewers(self, bundle):
