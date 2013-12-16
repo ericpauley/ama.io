@@ -91,7 +91,7 @@ homepage.controller("ForgotCtrl", function ForgotCtrl($scope, $http){
 });
 
 homepage.controller("RequestCtrl", function RequestCtrl($scope, $http){
-    $scope.tweet = true;
+    $scope.tweet = false;
     $scope.username = "";
     $scope.request = function(){
         $scope.error = null;
