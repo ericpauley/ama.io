@@ -150,8 +150,6 @@ INSTALLED_APPS = (
     'south',
     'easy_thumbnails',
     'haystack',
-    'debug_toolbar',
-    'template_timings_panel'
 )
 
 # A sample logging configuration. The only tangible logging
