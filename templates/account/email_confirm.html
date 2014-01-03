@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% load url from future %}
+{% load account %}
+
+{% block content %}
+    <div class="blank-page">
+        <div class="thumbnail white cell span7">
+            <h1>Confirm Email Address</h1>
+
+            {% if confirmation %}
+            {% user_display confirmation.email_address.user as user_display %}
+
+            <p>Please confirm that <a href="mailto:{{confirmation.email_address.email}}">{{ confirmation.email_address.email }}</a> is an e-mail address for user {{ user_display }}.</p>
+            <br/>
+            <form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
+            {% csrf_token %}
+                <div class="yellow-btn" type="submit" name="action" onclick="this.parentNode.submit()">Confirm</div>
+            </form>
+
+            {% else %}
+
+            {% url 'account_email' as email_url %}
+
+            <p>This e-mail confirmation link expired or is invalid. Please <a href="{{email_url}}">issue a new e-mail confirmation request</a>.</p>
+
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

@@ -8,6 +8,7 @@
 @yellow: #fceb4e;
 @warning: #FFF8C9;
 @info: #ADFFAD;
+@error: #ffc2c7;
 @darkgrey: #212226;
 @lightgrey: #F2F2F2;
 @black: #000000;
@@ -148,7 +149,11 @@ textarea {
 	color: @grey;
 }
 
-.tweet-btn{
+.yellow-btn {
+	.btn(@yellow, @grey, 125px);
+}
+
+.tweet-btn {
 	.btn(@blue, @white, 125px);
 	margin-left: 15px;
 	font-size: 13px;
@@ -190,6 +195,7 @@ textarea {
 
 	#session-tile-info {
 		margin-top: 10px;
+		word-break: break-word;
 
 		#join-button {
 			margin-top: 10px;
@@ -263,6 +269,16 @@ textarea {
 
 .success {
 	background: @success;
+	width: 500px;
+	margin: 0 auto;
+	text-align: center;
+	line-height: 25px;
+	margin-bottom: 5px;
+	.rounded-corners;
+}
+
+.error {
+	background: @error;
 	width: 500px;
 	margin: 0 auto;
 	text-align: center;
@@ -452,6 +468,7 @@ textarea {
 
 	table {
 		margin: 0 auto;
+		border-spacing: 0px;
 	}
 }
 
@@ -764,6 +781,10 @@ textarea {
 			position: absolute;
 			left: 170px;
 
+			#bio-header {
+				width: 630px;
+			}
+
 			#twitter-username {
 				line-height: 34px;
 				a {
@@ -777,7 +798,7 @@ textarea {
 			}
 
 			p {
-				float: left;
+				padding-top: 10px;
 			}
 		}
 
