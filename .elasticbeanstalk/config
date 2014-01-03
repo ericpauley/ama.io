@@ -1,17 +1,16 @@
 [global]
-ApplicationName=AMA
-AwsCredentialFile=C:\Users\Eric\.elasticbeanstalk\aws_credential_file
+ApplicationName=ama
+AwsCredentialFile=/home/eric/.elasticbeanstalk/aws_credential_file
 DevToolsEndpoint=git.elasticbeanstalk.us-east-1.amazonaws.com
-EnvironmentName=AMA-env
-OptionSettingFile=.elasticbeanstalk\optionsettings
+EnvironmentName=ama-live
+EnvironmentTier=WebServer::Standard::1.0
+EnvironmentType=LoadBalanced
+InstanceProfileName=aws-elasticbeanstalk-ec2-role
+OptionSettingFile=/home/eric/Dropbox/Code/AMA/.elasticbeanstalk/optionsettings.ama-live
+RdsDeletionPolicy=Snapshot
+RdsEnabled=Yes
+RdsSourceSnapshotName=
 Region=us-east-1
 ServiceEndpoint=https://elasticbeanstalk.us-east-1.amazonaws.com
-
-[branches]
-master=AMA-live
-
-[branch:master]
-ApplicationVersionName=Sample Application
-EnvironmentName=AMA-live
-OptionSettingFile=C:\Users\Eric\Dropbox\Code\AMA\.elasticbeanstalk\optionsettings.AMA-live
+SolutionStack=32bit Amazon Linux 2013.09 running Python 2.7
 
