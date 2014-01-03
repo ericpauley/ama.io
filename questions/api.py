@@ -115,9 +115,9 @@ class UserResource(ModelResource):
             for r in bundle.obj.request_votes.order_by("-created").select_related()[:20]:
                 a.append(Action("request", r.created, r, handle=r.request.username))
             for s in bundle.obj.sessions.all():
-                a.append(Action("session_start", s.start_time, s, title=s.title))
-                a.append(Action("session_end", s.end_time, s, title=s.title))
-                a.append(Action("session_create", s.created, s, title=s.title))
+                a.append(Action("session_start", s.start_time, s, title=s.title, session=True))
+                a.append(Action("session_end", s.end_time, s, title=s.title, session=True))
+                a.append(Action("session_create", s.created, s, title=s.title, session=True))
             return [i.__dict__ for i in sorted(a,key=lambda x:x.date, reverse=True) if i.date < timezone.now()]
 
     class Meta:
@@ -429,7 +429,7 @@ class SessionResource(ModelResource):
                 }, HttpBadRequest)
         
         if not request.user.is_staff:
-            if AMASession.objects.filter(end_time__gt=timezone.now()).count():
+            if request.user.sessions.filter(end_time__gt=timezone.now()).count():
                 return self.create_response(request, {
                     'success': False,
                     'reason': 'still_running',

@@ -55,7 +55,7 @@ GLOBALS['user'] = '{{user.username}}';
 				</div>
 				<div class="stat-block">
 					<div class="stat">{{user.questions_answered}}</div>
-					<ng-pluralize count="user.questions_asked"
+					<ng-pluralize count="user.questions_answered"
 					when="{'one': 'question answered',
 					'other': 'questions answered'}">
 					</ng-pluralize>
@@ -70,7 +70,7 @@ GLOBALS['user'] = '{{user.username}}';
 				<div id="text">
 					<a class="filter-options clickable" ng-class="{current: tab == 'questions'}" ng-click="qfilter={'action_type':'question'};tab='questions'">Questions</a>&nbsp;|&nbsp; 
 					<a class="filter-options clickable" ng-class="{current: tab == 'requests'}" ng-click="qfilter={'action_type':'request'};tab='requests'">Requests</a>&nbsp;|&nbsp;
-					<a class="filter-options clickable" ng-class="{current: tab == 'all'}" ng-click="qfilter={};tab='all'">All</a>
+					<a class="filter-options clickable" ng-class="{current: tab == 'sessions'}" ng-click="qfilter={'session': true};tab='sessions'">Sessions</a>
 				</div>
 			</div>
 		</div>
