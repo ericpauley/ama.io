@@ -51,7 +51,9 @@ class SessionAuthorization(Authorization):
 class CommentAuthorization(ReadOnlyAuthorization):
     def create_detail(self, object_list, bundle):
         if bundle.request.user.is_authenticated():
-            if bundle.request.user.comments.filter(created__gte=timezone.now() - datetime.timedelta(minutes=1)).count():
+            if bundle.obj.question.target == bundle.request.user:
+                return True
+            elif bundle.request.user.comments.filter(created__gte=timezone.now() - datetime.timedelta(minutes=1)).count():
                 return False
             else:
                 return True
