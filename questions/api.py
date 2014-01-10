@@ -682,10 +682,12 @@ class QuestionResource(ModelResource):
             answer = q.answer
             t = "edited"
             if answer is None:
-                answer = AMAAnswer(question=q)
+                answer = AMAAnswer()
                 t = "created"
             answer.response = a
             answer.save()
+            q.answer = answer
+            q.save()
             return self.create_response(request, {
                 'success': True,
                 'status': t,
