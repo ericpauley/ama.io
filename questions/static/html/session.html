@@ -117,8 +117,8 @@
 						<div id="text" ng-bind-html="question.answer.response | linky: '_blank'| linesplit" ng-if="state.answering != question.id">
 						</div>
 						<textarea ng-if="state.owner" ng-show="state.answering == question.id" ng-model="state.answerdraft" focus-on-show ng-click="$event.stopPropagation()"></textarea>
-						<button ng-if="state.owner" ng-show="state.answering == question.id" ng-click="answer(question, state.answerdraft); $event.stopPropagation()">Answer</button>
-						<button ng-click="state.drafts[question.id] = state.answerdraft;state.answering = false; $event.stopPropagation()" ng-if="state.owner" ng-show="state.answering == question.id">Cancel</button>
+						<div id="answer-btn" ng-if="state.owner" ng-show="state.answering == question.id" ng-click="answer(question, state.answerdraft); $event.stopPropagation()">Answer</div>
+						<div id="cancel-btn" ng-click="state.drafts[question.id] = state.answerdraft;state.answering = false; $event.stopPropagation()" ng-if="state.owner" ng-show="state.answering == question.id">Cancel</div>
 					</div>						
 				</div>
 				<div id="question" ng-if="tab == 'question'" ng-click="$event.stopPropagation()">
