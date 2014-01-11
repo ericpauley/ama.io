@@ -37,6 +37,8 @@ sessionApp.controller("QuestionCtrl", function QuestionCtrl($scope, $rootScope, 
     })
     $scope.state = $rootScope;
     $scope.state.comment = "";
+    $scope.state.answering = false;
+    $scope.state.drafts[question.id] = state.answerdraft;
     $http.get("/api/v1/comment/", {
         params: {
             question: $routeParams.questionId
