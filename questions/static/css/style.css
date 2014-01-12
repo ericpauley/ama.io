@@ -11,13 +11,15 @@ h2{font-size:25px;font-weight:bold;margin-bottom:10px;color:#212226}
 textarea{width:99.5%;height:75px;border:none;resize:none;-webkit-border-radius:5px;-moz-border-radius:5px;-ms-border-radius:5px;-o-border-radius:5px;border-radius:5px}
 #lean_overlay{position:fixed;z-index:100;top:0;left:0;height:100%;width:100%;background:#000;display:none}
 .clickable{cursor:pointer;text-decoration:none;color:#666}
+.yellow-btn{-webkit-border-radius:5px;-moz-border-radius:5px;-ms-border-radius:5px;-o-border-radius:5px;border-radius:5px;text-indent:0;display:inline-block;font-style:normal;height:30px;line-height:30px;text-decoration:none;text-align:center;background:#fceb4e;color:#666;width:125px;cursor:pointer}.yellow-btn:active{position:relative;top:1px}
+.yellow-btn[disabled]{background:#f2f2f2;color:#212226}
 .tweet-btn{-webkit-border-radius:5px;-moz-border-radius:5px;-ms-border-radius:5px;-o-border-radius:5px;border-radius:5px;text-indent:0;display:inline-block;font-style:normal;height:30px;line-height:30px;text-decoration:none;text-align:center;background:#2d68dc;color:#fff;width:125px;cursor:pointer;margin-left:15px;font-size:13px}.tweet-btn:active{position:relative;top:1px}
 .tweet-btn[disabled]{background:#f2f2f2;color:#212226}
 .upvote{color:#4cb548}
 .downvote{color:#3cc0db}
 .session-tile{float:left;padding:20.83px;display:table-cell;text-align:center;width:150px}.session-tile .img225{width:225px;height:225px}
 .session-tile .img150{width:150px;height:150px}
-.session-tile #session-tile-info{margin-top:10px}.session-tile #session-tile-info #join-button{margin-top:10px;-webkit-border-radius:5px;-moz-border-radius:5px;-ms-border-radius:5px;-o-border-radius:5px;border-radius:5px;text-indent:0;display:inline-block;font-style:normal;height:30px;line-height:30px;text-decoration:none;text-align:center;background:#fceb4e;color:#666;width:125px;cursor:pointer}.session-tile #session-tile-info #join-button:active{position:relative;top:1px}
+.session-tile #session-tile-info{margin-top:10px;word-break:break-word}.session-tile #session-tile-info #join-button{margin-top:10px;-webkit-border-radius:5px;-moz-border-radius:5px;-ms-border-radius:5px;-o-border-radius:5px;border-radius:5px;text-indent:0;display:inline-block;font-style:normal;height:30px;line-height:30px;text-decoration:none;text-align:center;background:#fceb4e;color:#666;width:125px;cursor:pointer}.session-tile #session-tile-info #join-button:active{position:relative;top:1px}
 .session-tile #session-tile-info #join-button[disabled]{background:#f2f2f2;color:#212226}
 .container{min-height:100%;height:auto !important;height:100%;margin:0 auto -78px}
 .blank-page{margin:30px auto;text-align:center}
@@ -29,6 +31,7 @@ textarea{width:99.5%;height:75px;border:none;resize:none;-webkit-border-radius:5
 .messages a{color:#3cc0db;text-decoration:underline}
 .warning{background:#fff8c9;width:500px;margin:0 auto;text-align:center;line-height:25px;margin-bottom:5px;-webkit-border-radius:5px;-moz-border-radius:5px;-ms-border-radius:5px;-o-border-radius:5px;border-radius:5px}
 .success{background:#c4fdc2;width:500px;margin:0 auto;text-align:center;line-height:25px;margin-bottom:5px;-webkit-border-radius:5px;-moz-border-radius:5px;-ms-border-radius:5px;-o-border-radius:5px;border-radius:5px}
+.error{background:#ffc2c7;width:500px;margin:0 auto;text-align:center;line-height:25px;margin-bottom:5px;-webkit-border-radius:5px;-moz-border-radius:5px;-ms-border-radius:5px;-o-border-radius:5px;border-radius:5px}
 .info{background:#adffad;width:500px;margin:0 auto;text-align:center;line-height:25px;margin-bottom:5px;-webkit-border-radius:5px;-moz-border-radius:5px;-ms-border-radius:5px;-o-border-radius:5px;border-radius:5px}
 #header{width:100%;height:50px;padding-top:10px;font-size:10pt;background:#fff}#header #center{width:800px;margin:0 auto;padding:0 0 0 0}#header #center .logo{float:left;margin-right:20px;font-size:40px;font-family:'Lobster';color:#2d68dc}
 #header #center #links{line-height:50px;position:relative;left:0;float:left;display:block}#header #center #links a{margin-right:10px}
@@ -48,7 +51,7 @@ textarea{width:99.5%;height:75px;border:none;resize:none;-webkit-border-radius:5
 .box-btn-left[disabled]{background:#f2f2f2;color:#212226}
 .box-btn-right{margin-left:10px;-webkit-border-radius:5px;-moz-border-radius:5px;-ms-border-radius:5px;-o-border-radius:5px;border-radius:5px;text-indent:0;display:inline-block;font-style:normal;height:30px;line-height:30px;text-decoration:none;text-align:center;background:#fceb4e;color:#212226;width:150px;cursor:pointer}.box-btn-right:active{position:relative;top:1px}
 .box-btn-right[disabled]{background:#f2f2f2;color:#212226}
-#home-live{width:600px;margin:30px auto;padding:0 0 0 0;text-align:center;font-size:13px}#home-live table{margin:0 auto}
+#home-live{width:600px;margin:30px auto;padding:0 0 0 0;text-align:center;font-size:13px}#home-live table{margin:0 auto;border-spacing:0}
 #home-requests{text-align:center;background:#f2f2f2}#home-requests #main{width:600px;margin:0 auto;padding:30px 0 30px 0}
 #home-requests table{margin:25px auto;width:80%}#home-requests table tr:nth-child(even){background-color:#f2f2f2}
 #home-requests table tr:nth-child(odd){background-color:#fff}
@@ -61,7 +64,7 @@ textarea{width:99.5%;height:75px;border:none;resize:none;-webkit-border-radius:5
 #sessions-list #sessions-list-container{margin:30px auto;overflow:hidden}
 #search-results-container{width:100%;background:#f2f2f2}
 .four-sessions-list{width:768px;margin:0 auto;padding:30px 0 30px 0;text-align:center}.four-sessions-list .session-overflow{overflow:hidden}
-.user-picture-right{float:right;margin-right:-35px;margin-left:25px}
+.user-picture-right{float:right;margin-right:-35px}
 .user-picture-left{float:left;margin-left:-35px;margin-right:21px}
 #questions-area{background:#f2f2f2;min-height:300px}
 #questions{width:800px;margin:0 auto;padding:45px 0 45px 0}#questions img{width:75px;height:75px;border-radius:150px;-webkit-border-radius:150px;-moz-border-radius:150px}
@@ -102,10 +105,15 @@ textarea{width:99.5%;height:75px;border:none;resize:none;-webkit-border-radius:5
 #session-ask #ask-box #ask-btn[disabled]{background:#f2f2f2;color:#212226}
 #image-edit{position:absolute;left:-9999px;width:0}
 .share-btn{vertical-align:middle;padding:3px}
+#answer-btn{-webkit-border-radius:5px;-moz-border-radius:5px;-ms-border-radius:5px;-o-border-radius:5px;border-radius:5px;text-indent:0;display:inline-block;font-style:normal;height:30px;line-height:30px;text-decoration:none;text-align:center;background:#fceb4e;color:#666;width:100px;cursor:pointer;margin-top:5px}#answer-btn:active{position:relative;top:1px}
+#answer-btn[disabled]{background:#f2f2f2;color:#212226}
+#cancel-btn{-webkit-border-radius:5px;-moz-border-radius:5px;-ms-border-radius:5px;-o-border-radius:5px;border-radius:5px;text-indent:0;display:inline-block;font-style:normal;height:30px;line-height:30px;text-decoration:none;text-align:center;background:#f2f2f2;color:#666;width:100px;cursor:pointer;margin-top:5px}#cancel-btn:active{position:relative;top:1px}
+#cancel-btn[disabled]{background:#f2f2f2;color:#212226}
 #profile-box{width:800px;margin:30px auto;padding:0 0 0 0;background:#fff;position:relative;height:150px}#profile-box #profile-image{position:absolute;top:0;left:0}#profile-box #profile-image img{width:150px;height:150px}
-#profile-box #profile-info{padding:15px 15px 15px 0}#profile-box #profile-info #bio{position:absolute;left:170px}#profile-box #profile-info #bio #twitter-username{line-height:34px}#profile-box #profile-info #bio #twitter-username a{color:#3cc0db}
+#profile-box #profile-info{padding:15px 15px 15px 0}#profile-box #profile-info #bio{position:absolute;left:170px}#profile-box #profile-info #bio #bio-header{width:630px}
+#profile-box #profile-info #bio #twitter-username{line-height:34px}#profile-box #profile-info #bio #twitter-username a{color:#3cc0db}
 #profile-box #profile-info #bio h2{float:left;margin-right:10px}
-#profile-box #profile-info #bio p{float:left}
+#profile-box #profile-info #bio p{padding-top:10px}
 #profile-box #profile-info #profile-stats{position:absolute;bottom:10px;left:170px}#profile-box #profile-info #profile-stats .stat-block{float:left;text-align:center;padding:0 10px 0 10px}
 #profile-box #profile-info #profile-stats .stat{font-size:20px;font-weight:bold;color:#212226}
 #activity{width:800px;margin:0 auto;padding:0 0 0 0;clear:both}#activity #activity-header{text-align:center}#activity #activity-header h2{margin-bottom:0}
