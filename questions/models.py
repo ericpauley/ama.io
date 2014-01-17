@@ -316,7 +316,7 @@ class RequestManager(models.Manager):
     def get_query_set(self):
         return super(RequestManager, self).get_query_set().extra(select={
             "score":"""
-            SELECT IFNULL(SUM(value), 0)
+            SELECT IFNULL(SUM(value), 0) + questions_request.vote_weight
             FROM questions_requestvote
             WHERE questions_requestvote.request_id = questions_request.id
             """
@@ -366,6 +366,10 @@ class Request(models.Model):
     creator = models.ForeignKey(User, related_name="requests_created", null=True, on_delete=models.SET_NULL)
     created = models.DateTimeField(auto_now_add=True, editable=False)
     edited = models.DateTimeField(auto_now=True, editable=False)
+    vote_weight = models.IntegerField(default=0)
+
+    def __unicode__(self):
+        return self.username
 
     @property
     def tweet_url(self):

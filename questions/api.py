@@ -769,6 +769,7 @@ class RequestResource(ModelResource):
         resource_name = 'request'
         filtering = {
         }
+        excludes = ["vote_weight"]
 
     def prepend_urls(self):
         return [
