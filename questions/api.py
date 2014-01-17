@@ -443,7 +443,7 @@ class SessionResource(ModelResource):
         try:
             file = None
             file=request.FILES['image']
-            if len(file.name.split(".")) < 2 or not file.name.split(".")[-1].lower() in ("jpg, png"):
+            if len(file.name.split(".")) < 2 or not file.name.split(".")[-1].lower() in ("jpg", "jpeg", "png"):
                 return self.create_response(request, {
                     'success': False,
                     'reason': 'bad_image',
@@ -497,7 +497,7 @@ class SessionResource(ModelResource):
         file = None
         try:
             file=request.FILES['image']
-            if len(file.name.split(".")) < 2 or not file.name.split(".")[-1].lower() in ("jpg, png"):
+            if len(file.name.split(".")) < 2 or not file.name.split(".")[-1].lower() in ("jpg", "jpeg", "png"):
                 return self.create_response(request, {
                     'success': False,
                     'reason': 'bad_image',
