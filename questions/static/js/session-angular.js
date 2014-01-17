@@ -113,7 +113,7 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeou
             method: 'DELETE',
             url: question.resource_uri,
         }).success(function() {
-            $scope.session.questions.splice(index, 1);
+            $scope.session.questions.splice($scope.session.questions.indexOf(question), 1);
         });
     }
 
