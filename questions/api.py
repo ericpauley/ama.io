@@ -559,7 +559,7 @@ class SessionResource(ModelResource):
                 'reason': 'question_short',
                 }, HttpBadRequest )
 
-        if request.user.own_questions.filter(created__gte=timezone.now() - datetime.timedelta(minutes=1)).count():
+        if !request.user.is_staff && request.user.own_questions.filter(created__gte=timezone.now() - datetime.timedelta(minutes=1)).count():
             latest = request.user.own_questions.order_by("-created")[0]
             return self.create_response(request, {
                 'success': False,
@@ -584,6 +584,7 @@ class SessionResource(ModelResource):
             'success': True,
             "question": qr.full_dehydrate(qr.build_bundle(obj=q, request=request)),
             "state": s.state,
+            "staff": request.user.is_staff
         })
 
 class QuestionResource(ModelResource):

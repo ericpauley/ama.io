@@ -150,10 +150,12 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeou
         success(function(data, status, headers, config) {
             $scope.session.questions.unshift(data.question);
             $scope.state.question = "";
-            $scope.state.askTimer = moment().add('minutes', 1).valueOf();
-            $timeout(function() {
-                $scope.state['askTimer'] = null;
-            }, $scope.state.askTimer - moment().valueOf());
+            if(!data.staff){
+                $scope.state.askTimer = moment().add('minutes', 1).valueOf();
+                $timeout(function() {
+                    $scope.state['askTimer'] = null;
+                }, $scope.state.askTimer - moment().valueOf());
+            }
         }).
         error(function(data, status, headers, config) {
             $scope.state.askTimer = moment().add('minutes', 1).valueOf();
