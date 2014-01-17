@@ -559,7 +559,7 @@ class SessionResource(ModelResource):
                 'reason': 'question_short',
                 }, HttpBadRequest )
 
-        if !request.user.is_staff && request.user.own_questions.filter(created__gte=timezone.now() - datetime.timedelta(minutes=1)).count():
+        if not request.user.is_staff and request.user.own_questions.filter(created__gte=timezone.now() - datetime.timedelta(minutes=1)).count():
             latest = request.user.own_questions.order_by("-created")[0]
             return self.create_response(request, {
                 'success': False,
