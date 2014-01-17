@@ -90,7 +90,7 @@ sessionApp.config(function($routeProvider, $locationProvider, $sceDelegateProvid
         controller: 'QuestionCtrl',
         templateUrl: GLOBALS['session_html']
     }).otherwise({
-        redirectTo: '/s/' + GLOBALS['session'] + '/unanswered'
+        redirectTo: '/s/' + GLOBALS['session'] + '/answered'
     });
     $locationProvider.html5Mode(true);
 });
