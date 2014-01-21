@@ -21,8 +21,8 @@ def upcoming(request):
 def home(request):
     top_requests = Request.objects.all()[:5]
     return render(request, "home.html", {
-        'live_sessions': AMASession.objects.live()[:6],
-#        'upcoming_sessions': AMASession.objects.upcoming()[:6],
+        'live_sessions': AMASession.objects.live()[:3],
+        'upcoming_sessions': AMASession.objects.upcoming()[:3],
 #        'past_sessions': AMASession.objects.past()[:6],
         'top_requests': top_requests,
         'title':'AMA'

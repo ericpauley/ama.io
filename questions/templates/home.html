@@ -42,6 +42,13 @@
 	</div>
 	{% endif %}
 	{% include "session_list.html" with sessions=live_sessions %}
+	<h2>UPCOMING AMAs</h2>
+	{% if not upcoming_sessions.all %}
+	<div class="empty-content">
+		There are currently no upcoming AMA sessions.
+	</div>
+	{% endif %}
+	{% include "session_list.html" with sessions=upcoming_sessions %}
 	<a class="link-all" href="/live">
 		View all AMAs
 	</a>
