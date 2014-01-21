@@ -8,11 +8,7 @@
 GLOBALS['session_html'] = "{%static "html/session.html"%}"
 GLOBALS['session'] = "{{session.slug}}"
 GLOBALS['question_full'] = false
-{% if votes%}
-GLOBALS['votes'] = {{votes|safe}}
-{%else%}
-GLOBALS['votes'] = {}
-{%endif%}
+GLOBALS['state'] = '{{session.state}}'
 {%if session.owner == user%}
 GLOBALS['owner'] = true
 {%endif%}

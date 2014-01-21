@@ -73,6 +73,11 @@ sessionApp.controller("QuestionCtrl", function QuestionCtrl($scope, $rootScope, 
 })
 
 sessionApp.config(function($routeProvider, $locationProvider, $sceDelegateProvider) {
+    if (GLOBALS['state'] == "before") {
+        redirect = '/s/' + GLOBALS['session'] + '/unanswered'
+    } else {
+        redirect = '/s/' + GLOBALS['session'] + '/answered'
+    }
     $sceDelegateProvider.resourceUrlWhitelist([
         'self',
         'http://static.ama.io/**'
@@ -90,7 +95,7 @@ sessionApp.config(function($routeProvider, $locationProvider, $sceDelegateProvid
         controller: 'QuestionCtrl',
         templateUrl: GLOBALS['session_html']
     }).otherwise({
-        redirectTo: '/s/' + GLOBALS['session'] + '/answered'
+        redirectTo: redirect
     });
     $locationProvider.html5Mode(true);
 });
