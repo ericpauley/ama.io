@@ -32,6 +32,10 @@
 	</div>
 </div>
 <div id="home-live">
+	{% if upcoming_sessions.all %}
+	<h2>UPCOMING AMAs</h2>
+	{% include "session_list.html" with sessions=upcoming_sessions %}
+	{% endif %}
 	<h2>LIVE AMAs</h2>
 	<div class="desc">
 		<strong>What is an AMA?</strong> In an AMA session, a person interacts with their fans or followers in a fun, live question and answer interface.
@@ -42,13 +46,6 @@
 	</div>
 	{% endif %}
 	{% include "session_list.html" with sessions=live_sessions %}
-	<h2>UPCOMING AMAs</h2>
-	{% if not upcoming_sessions.all %}
-	<div class="empty-content">
-		There are currently no upcoming AMA sessions.
-	</div>
-	{% endif %}
-	{% include "session_list.html" with sessions=upcoming_sessions %}
 	<a class="link-all" href="/live">
 		View all AMAs
 	</a>
