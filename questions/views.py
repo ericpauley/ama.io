@@ -54,7 +54,7 @@ def user(request, username):
     past = AMASession.objects.past().filter(owner=user)[:4]
     upcoming = AMASession.objects.upcoming().filter(owner=user)[:4]
     live = AMASession.objects.live().filter(owner=user)[:1]
-    return render(request, "profile.html", {'user': user, 'past':past, 'upcoming':upcoming, 'live':live})
+    return render(request, "profile.html", {'shown_user': user, 'past':past, 'upcoming':upcoming, 'live':live})
 
 def user_sessions(request, username):
     try:

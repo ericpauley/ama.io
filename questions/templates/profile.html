@@ -2,11 +2,11 @@
 
 {%load staticfiles%}
 
-{% block title %}{{user.meta.full_name}}'s Profile{% endblock %}
+{% block title %}{{shown_user.meta.full_name}}'s Profile{% endblock %}
 
 {%block postscript%}
 <script>
-GLOBALS['user'] = '{{user.username}}';
+GLOBALS['user'] = '{{shown_user.username}}';
 </script>
 {%endblock%}
 
