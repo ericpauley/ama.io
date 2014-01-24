@@ -42,7 +42,7 @@ GLOBALS['owner'] = true
 						<i class="fa fa-clock-o"></i> Ends {{session.end_time | countdown}}
 					</div>
 					<div id="time-left" ng-switch-when="before">
-						Starts {{session.start_time | countdown}}
+						Starts {{session.start_time | calendar}}
 					</div>
 					<div id="time-left" ng-switch-when="after">
 						Ended {{session.end_time | countdown}}

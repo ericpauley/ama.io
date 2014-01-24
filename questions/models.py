@@ -55,6 +55,8 @@ class UserMeta(models.Model):
 
     @property
     def is_verified(self):
+        if self.verified:
+            return True
         for account in self.user.socialaccount_set.all():
             if account.provider == "twitter" and account.extra_data['verified']:
                 return True
@@ -65,6 +67,9 @@ class UserMeta(models.Model):
         for acc in self.user.socialaccount_set.all():
             return acc.get_avatar_url()
         return staticfiles_storage.url("images/default-session.png")
+
+    def __unicode__(self):
+        return self.user.__unicode__()
     
 
 class AMASessionManager(models.Manager):
@@ -198,10 +203,19 @@ class AMASession(SluggedModel):
             except SessionView.DoesNotExist:
                 obj = SessionView(session = self, user = request.user)
             obj.save()
+        else:
+            if not request.session.exists(request.session.session_key):
+                request.session.create() 
+            try:
+                obj = self.viewers.get(session_key=request.session.session_key)
+            except SessionView.DoesNotExist:
+                obj = SessionView(session = self, session_key=request.session.session_key)
+            obj.save()
 
 class SessionView(models.Model):
     session = models.ForeignKey(AMASession, related_name='viewers')
-    user = models.ForeignKey(User, related_name='views', null=True)
+    user = models.ForeignKey(User, related_name='views', null=True, blank=True)
+    session_key = models.CharField(max_length=256, blank=True, null=True)
     timestamp = models.DateTimeField(auto_now = True)
 
 class AMAQuestionManager(models.Manager):

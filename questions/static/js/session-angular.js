@@ -150,7 +150,7 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeou
         success(function(data, status, headers, config) {
             $scope.session.questions.unshift(data.question);
             $scope.state.question = "";
-            if(!data.staff){
+            if (!data.staff) {
                 $scope.state.askTimer = moment().add('minutes', 1).valueOf();
                 $timeout(function() {
                     $scope.state['askTimer'] = null;
@@ -287,6 +287,12 @@ sessionApp.filter('linesplit', ['$sce',
 sessionApp.filter('countdown', function() {
     return function(input, prefix) {
         return moment(input).fromNow(prefix);
+    };
+});
+
+sessionApp.filter('calendar', function() {
+    return function(input, prefix) {
+        return moment(input).calendar();
     };
 });
 

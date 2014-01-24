@@ -12,6 +12,10 @@
                     <div id="session-tile-info">
                         <strong>{{session.name}}</strong><br/>
                         {{session.role}}
+                        {%if session.before%}
+                        <strong><div ng-bind="'{{session.start_time.isoformat}}' | calendar">
+						</div></strong>
+                        {%endif%}
                     </div>
                 </div> 
 			</td>
