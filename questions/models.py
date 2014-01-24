@@ -204,7 +204,7 @@ class AMASession(SluggedModel):
                 obj = SessionView(session = self, user = request.user)
             obj.save()
         else:
-            if not request.session.exists(request.session.session_key):
+            if request.session.session_key is None or not request.session.exists(request.session.session_key):
                 request.session.create() 
             try:
                 obj = self.viewers.get(session_key=request.session.session_key)
