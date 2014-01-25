@@ -47,9 +47,9 @@ from django.templatetags.static import static
 import allauth.account.forms
 import pytz
 
-class CachedResource():
+class CachedResource(ModelResource):
     def wrap_view(self, view):
-        return cache_page(Resource.wrap_view(self, view),10)
+        return cache_page(Resource.wrap_view(self, view),60)
 
 class Action():
 
@@ -320,7 +320,7 @@ class UserResource(ModelResource):
         return self.create_response(request, { 'success': False, 'reason': "Dup User"}, HttpNotFound)
     
 
-class SessionResource(ModelResource):
+class SessionResource(CachedResource):
     owner = fields.ForeignKey(UserResource, 'owner', readonly=True, full=True)
     questions = fields.ToManyField('questions.api.QuestionResource', lambda bundle:bundle.obj.questions.all(), readonly=True, null=True, use_in='detail', full=True, related_name='session')
     num_viewers = fields.IntegerField(readonly=True)
@@ -351,7 +351,7 @@ class SessionResource(ModelResource):
             'end_time': ALL
         }
         validation = FormValidation(form_class=SessionForm)
-
+        cache = SimpleCache(timeout=30)
 
     def dehydrate(self, bundle):
         bundle.obj.mark_viewed(bundle.request)

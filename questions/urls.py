@@ -7,7 +7,7 @@ from django.views.decorators.cache import cache_page
 class CachedApi(Api):
     def wrap_view(self, view):
         return cache_page(Api.wrap_view(self, view),10)
-v1_api = Api(api_name='v1')
+v1_api = CachedApi(api_name='v1')
 v1_api.register(UserResource())
 v1_api.register(SessionResource())
 v1_api.register(QuestionResource())
