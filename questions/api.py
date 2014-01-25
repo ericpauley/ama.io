@@ -45,6 +45,7 @@ from django.conf import settings
 from tweepy.error import TweepError
 from django.templatetags.static import static
 import allauth.account.forms
+import pytz
 
 class CachedResource():
     def wrap_view(self, view):
@@ -419,7 +420,8 @@ class SessionResource(ModelResource):
                         'reason': 'too_short',
                     }, HttpBadRequest)
             s.start_time = parser.parse('%s %s' % (request.POST['date'], request.POST['time']), ignoretz=True)
-            if s.start_time.replace(tzinfo=timezone.get_current_timezone()) < timezone.now():
+            s.start_time = s.start_time.replace(tzinfo=pytz.timezone(request.COOKIES['tzname']))
+            if s.start_time < timezone.now():
                 s.start_time = timezone.now()
             s.end_time = s.start_time + datetime.timedelta(hours=duration)
         except:
