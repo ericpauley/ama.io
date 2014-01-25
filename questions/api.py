@@ -665,7 +665,7 @@ class QuestionResource(ModelResource):
                 'success': False,
                 'reason': 'not-target',
                 }, HttpForbidden )
-        if not q.session.running:
+        if q.session.before:
             return self.create_response(request, {
                 'success': False,
                 'reason': 'not_running',

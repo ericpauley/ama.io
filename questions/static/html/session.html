@@ -63,7 +63,7 @@
 						<div id="top-row">
 							<a id="user-name" ng-href="/u/{{question.asker.username}}" target="_self">{{question.asker.display}}</a>
 							<div id="timestamp">{{question.created | countdown}}</div>
-							<a class="clickable" ng-if="state.owner && session.state == 'running'">
+							<a class="clickable" ng-if="state.owner">
 								<i class="fa fa-comment"></i>&nbsp;reply
 							</a>
 							<a class="clickable" ng-if="state.owner && question.starred" ng-click="star(question, false); $event.stopPropagation()">
