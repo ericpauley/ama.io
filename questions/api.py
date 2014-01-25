@@ -322,7 +322,7 @@ class UserResource(ModelResource):
 
 class SessionResource(ModelResource):
     owner = fields.ForeignKey(UserResource, 'owner', readonly=True, full=True)
-    questions = fields.ToManyField('questions.api.QuestionResource', lambda bundle:bundle.obj.get_marked_questions(bundle.request), readonly=True, null=True, use_in='detail', full=True, related_name='session')
+    questions = fields.ToManyField('questions.api.QuestionResource', lambda bundle:bundle.obj.questions.all(), readonly=True, null=True, use_in='detail', full=True, related_name='session')
     num_viewers = fields.IntegerField(readonly=True)
     views = fields.IntegerField(readonly=True)
     time = fields.DateField()
@@ -351,6 +351,7 @@ class SessionResource(ModelResource):
             'end_time': ALL
         }
         validation = FormValidation(form_class=SessionForm)
+
 
     def dehydrate(self, bundle):
         bundle.obj.mark_viewed(bundle.request)
@@ -618,6 +619,7 @@ class QuestionResource(ModelResource):
             'score': ALL
         }
         authorization = QuestionAuthorization()
+        cache = SimpleCache(timeout=30)
 
     def dehydrate_html(self, bundle):
         return render_to_string("question.html", {'question': bundle.obj}, RequestContext(bundle.request))
