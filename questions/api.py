@@ -71,7 +71,7 @@ class UserResource(ModelResource):
     questions_asked = fields.IntegerField(readonly=True)
     questions_answered = fields.IntegerField(readonly=True)
     sessions_viewed = fields.IntegerField(readonly=True)
-    activities = fields.ListField(readonly=True, use_in=lambda b:p(b.related_name) is None)
+    #activities = fields.ListField(readonly=True, use_in=lambda b:p(b.related_name) is None)
     twitter = fields.CharField(readonly=True)
     desc = fields.CharField(readonly=True)
     image = fields.CharField(readonly=True)
