@@ -193,7 +193,6 @@ class AMASession(SluggedModel):
     @property
     def num_views(self):
         cached = cache.get("session_%s_num_views" % self.slug)
-        print cached
         if cached is None:
             result = service.data().ga().get(ids="ga:76526399",start_date="1000daysAgo", end_date="today", metrics="ga:visits", filters="ga:pagePath=~/s/%s/.*" % self.slug).execute()
             if 'rows' in result:
@@ -206,22 +205,24 @@ class AMASession(SluggedModel):
                 self.save()
             return self.views
         else:
-            print cached
             return int(cached)
 
     @property
     def num_viewers(self,):
-        cached = cache.get("session_%s_num_viewers" % self.slug)
-        if cached is None:
-            result = service.data().realtime().get(ids="ga:76526399", metrics="ga:activeVisitors", filters="ga:pagePath=~/s/%s/.*" % self.slug).execute()
-            if 'rows' in result:
-                viewers = int(result['rows'][0][0])
+        if self.running:
+            cached = cache.get("session_%s_num_viewers" % self.slug)
+            if cached is None:
+                result = service.data().realtime().get(ids="ga:76526399", metrics="ga:activeVisitors", filters="ga:pagePath=~/s/%s/.*" % self.slug).execute()
+                if 'rows' in result:
+                    viewers = int(result['rows'][0][0])
+                else:
+                    viewers = 0
+                cache.set("session_%s_num_viewers" % self.slug, viewers, 30)
+                return viewers
             else:
-                viewers = 0
-            cache.set("session_%s_num_viewers" % self.slug, viewers, 300)
-            return viewers
+                return int(cached)
         else:
-            return int(cached)
+            return 0
 
 class SessionView(models.Model):
     session = models.ForeignKey(AMASession, related_name='viewers')
