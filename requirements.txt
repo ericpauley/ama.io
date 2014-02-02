@@ -28,3 +28,4 @@ django-htmlmin
 pytz==2013d
 tweepy
 google-api-python-client
+pyopenssl
