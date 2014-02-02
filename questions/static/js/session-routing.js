@@ -1,44 +1,73 @@
-sessionApp.controller("UnansweredCtrl", function UnansweredCtrl($scope, $rootScope) {
-    $rootScope.$broadcast("tabChange", {
-        "qfilter": {
-            'answered': 'false'
-        },
-        "tab": "unanswered"
-    })
+sessionApp.controller("UnansweredCtrl", function UnansweredCtrl($scope, $rootScope, $routeParams, $http) {
     $scope.state = $rootScope
+    $http.get("/api/v1/question/", {
+        params: {
+            session: $routeParams.sessionId,
+            answer__isnull: true
+        }
+    }).success(function(data) {
+        $scope.state.questions = data.objects
+        $scope.state.next = data.meta.next
+        if ($scope.state.newQuestion != null) {
+            angular.forEach($scope.state.questions, function(value, key) {
+                if (value.id == $scope.state.newQuestion.id) {
+                    $scope.state.questions.splice(key, 1)
+                }
+            })
+            $scope.state.questions.unshift($scope.state.newQuestion)
+            $scope.state.newQuestion = null
+        }
+        $rootScope.$broadcast("tabChange", {
+            "tab": "unanswered"
+        })
+    })
 })
 
-sessionApp.controller("AnsweredCtrl", function AnsweredCtrl($scope, $rootScope) {
-    $rootScope.$broadcast("tabChange", {
-        "qfilter": {
-            'answered': 'true'
-        },
-        "tab": "answered"
-    })
+sessionApp.controller("AnsweredCtrl", function AnsweredCtrl($scope, $rootScope, $routeParams, $http) {
     $scope.state = $rootScope
+    $http.get("/api/v1/question/", {
+        params: {
+            session: $routeParams.sessionId,
+            answer__isnull: false
+        }
+    }).success(function(data) {
+        $scope.state.questions = data.objects
+        $scope.state.next = data.meta.next
+        $rootScope.$broadcast("tabChange", {
+            "tab": "answered"
+        })
+    })
 })
 
-sessionApp.controller("StarredCtrl", function StarredCtrl($scope, $rootScope) {
-    $rootScope.$broadcast("tabChange", {
-        "qfilter": {
-            'starred': 'true'
-        },
-        "tab": "starred"
-    })
+sessionApp.controller("StarredCtrl", function StarredCtrl($scope, $rootScope, $routeParams, $http) {
     $scope.state = $rootScope
+    $http.get("/api/v1/question/", {
+        params: {
+            session: $routeParams.sessionId,
+            starred: true
+        }
+    }).success(function(data) {
+        $scope.state.questions = data.objects
+        $scope.state.next = data.meta.next
+        $rootScope.$broadcast("tabChange", {
+            "tab": "starred"
+        })
+    })
 })
 
 sessionApp.controller("QuestionCtrl", function QuestionCtrl($scope, $rootScope, $routeParams, $http) {
-    $rootScope.$broadcast("tabChange", {
-        "qfilter": {
-            'id': $routeParams.questionId.toString()
-        },
-        "tab": "question"
-    })
     $scope.state = $rootScope;
     $scope.state.comment = "";
     $scope.state.answering = false;
     $scope.state.drafts[$routeParams.questionId] = $scope.state.answerdraft;
+    $http.get("/api/v1/question/" + $routeParams.questionId + "/").success(function(data) {
+        $scope.state.questions = [data]
+        $rootScope.$broadcast("tabChange", {
+            "tab": "question"
+        })
+    })
+    $scope.state.next = null
+    $scope.comments = null
     $http.get("/api/v1/comment/", {
         params: {
             question: $routeParams.questionId

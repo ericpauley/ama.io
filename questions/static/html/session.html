@@ -14,14 +14,14 @@
 	<div id="questions">
 		<div id="filter">
 			<div id="text">
-				<a class="filter-options" ng-if="tab == 'question'" ng-href="/s/{{sessionId}}">Return to session </a>
-				<span ng-if="tab != 'question'">
-				<a class="filter-options" ng-class="{current: tab == 'unanswered'}" ng-href="/s/{{sessionId}}/unanswered"> Unanswered </a> | 
-				<a class="filter-options" ng-class="{current: tab == 'answered'}" ng-href="/s/{{sessionId}}/answered"> Answered </a>|
-				<a class="filter-options" ng-class="{current: tab == 'starred'}" ng-href="/s/{{sessionId}}/starred"> Starred</a></span>
+				<a class="filter-options" ng-if="state.tab == 'question'" ng-href="/s/{{sessionId}}">Return to session </a>
+				<span ng-if="state.tab != 'question'">
+				<a class="filter-options" ng-class="{current: state.tab == 'unanswered'}" ng-href="/s/{{sessionId}}/unanswered"> Unanswered </a> | 
+				<a class="filter-options" ng-class="{current: state.tab == 'answered'}" ng-href="/s/{{sessionId}}/answered"> Answered </a>|
+				<a class="filter-options" ng-class="{current: state.tab == 'starred'}" ng-href="/s/{{sessionId}}/starred"> Starred</a></span>
 			</div>
 		</div>
-		<div id="no-questions" ng-if="!(session.questions | filter:qfilter).length && state.owner" ng-switch="tab">
+		<div id="no-questions" ng-if="!state.questions.length && state.owner" ng-switch="tab">
 			<div ng-switch-when="unanswered">
 				There are no unanswered questions! Use the share button above to share your session.
 			</div>
@@ -32,7 +32,7 @@
 				There are no starred questions. You can star questions by clicking the star option.
 			</div>
 		</div>
-		<div id="no-questions" ng-if="!(session.questions | filter:qfilter).length && !state.owner" ng-switch="tab">
+		<div id="no-questions" ng-if="!state.questions.length && !state.owner" ng-switch="tab">
 			<div ng-switch-when="unanswered">
 				There are no unanswered questions. Put yours in the spotlight!
 			</div>
@@ -44,10 +44,10 @@
 			</div>
 		</div>
 		<div class="question-wrapper">
-			<div class="pair" ng-repeat="question in session.questions | filter:qfilter | orderBy:'-score'" ng-click="state.drafts[state.answering || -1] = state.answerdraft;state.answering = state.owner && question.id; state.answerdraft = state.drafts[question.id] || question.answer.response || ''">
+			<div class="pair" ng-repeat="question in state.questions" ng-click="state.drafts[state.answering || -1] = state.answerdraft;state.answering = state.owner && question.id; state.answerdraft = state.drafts[question.id] || question.answer.response || ''">
 				<div id="vote" ng-if="state.user">
-					<a class="clickable" ng-click="vote(question, 1); $event.stopPropagation()" ng-class="{upvote: question.vote == 1}">&#x25B2;</a><br/>
-					<a class="clickable" ng-click="vote(question, -1); $event.stopPropagation()" ng-class="{downvote: question.vote == -1}">&#x25BC;</a>
+					<a class="clickable" ng-click="vote(question, 1); $event.stopPropagation()" ng-class="{upvote: votes[question.id.toString()] == 1}">&#x25B2;</a><br/>
+					<a class="clickable" ng-click="vote(question, -1); $event.stopPropagation()" ng-class="{downvote: votes[question.id.toString()] == -1}">&#x25BC;</a>
 				</div>
 				<div id="vote" ng-if="!state.user">
 					<a class="clickable" onclick="$('#btnc').click()">&#x25B2;</a><br/>
@@ -147,6 +147,9 @@
 						</div>
 					</div>
 				</div>
+			</div>
+			<div ng-if="state.next != null" class="clickable" ng-click="loadMore()">
+				Load more questions...
 			</div>
 		</div>
 	</div>

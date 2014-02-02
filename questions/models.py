@@ -18,6 +18,8 @@ from django import db
 from django.utils import timezone
 from django.core.urlresolvers import reverse
 from django.contrib.staticfiles.storage import staticfiles_storage
+from ama.google import service
+from django.core.cache import cache
 
 try:
     from urllib import urlencode
@@ -73,37 +75,19 @@ class UserMeta(models.Model):
     
 
 class AMASessionManager(models.Manager):
-    def get_query_set(self):
-        if db.settings.DATABASES['default']['ENGINE'] == "django.db.backends.mysql":
-            part = "DATE_SUB(NOW(), INTERVAL 40 second)"
-        elif db.settings.DATABASES['default']['ENGINE'] == "django.db.backends.sqlite3":
-            part = "datetime('now', '-40 seconds')"
-        return super(AMASessionManager,self).get_query_set().extra(select={
-            "num_viewers":"""
-            SELECT Count(*)
-            FROM questions_sessionview
-            WHERE questions_sessionview.session_id = questions_amasession.slug
-            AND questions_sessionview.timestamp > 
-            """+part,
-            "num_views":"""
-            SELECT Count(*)
-            FROM questions_sessionview
-            WHERE questions_sessionview.session_id = questions_amasession.slug
-            """
-        }, select_params = [timezone.now() - timedelta(seconds=30)])
 
     def live(self):
         return self.all().filter(
         start_time__lt=timezone.now(),
-        end_time__gt=timezone.now()).order_by('-num_viewers')
+        end_time__gt=timezone.now()).order_by('-views')
 
     def past(self):
         return self.all().filter(
-        end_time__lt=timezone.now()).order_by('-num_views')
+        end_time__lt=timezone.now()).order_by('-views')
 
     def upcoming(self):
         return self.all().filter(
-        start_time__gt=timezone.now()).order_by('-num_views')
+        start_time__gt=timezone.now()).order_by('-views')
 
 class AMASession(SluggedModel):
     '''
@@ -123,6 +107,8 @@ class AMASession(SluggedModel):
     
     created = models.DateTimeField(auto_now_add=True, editable=False)
     edited = models.DateTimeField(auto_now=True, editable=False)
+
+    views = models.IntegerField(default=0)
 
     objects = AMASessionManager()
     
@@ -203,29 +189,48 @@ class AMASession(SluggedModel):
             except SessionView.DoesNotExist:
                 obj = SessionView(session = self, user = request.user)
             obj.save()
+
+    @property
+    def num_views(self):
+        cached = cache.get("session_%s_num_views" % self.slug)
+        print cached
+        if cached is None:
+            result = service.data().ga().get(ids="ga:76526399",start_date="1000daysAgo", end_date="today", metrics="ga:visits", filters="ga:pagePath=~/s/%s/.*" % self.slug).execute()
+            if 'rows' in result:
+                views = int(result['rows'][0][0])
+            else:
+                views = 0
+            cache.set("session_%s_num_views" % self.slug, views, 300)
+            if self.views != views:
+                self.views = views
+                self.save()
+            return self.views
         else:
-            if request.session.session_key is None or not request.session.exists(request.session.session_key):
-                request.session.create() 
-            try:
-                obj = self.viewers.get(session_key=request.session.session_key)
-            except SessionView.DoesNotExist:
-                obj = SessionView(session = self, session_key=request.session.session_key)
-            obj.save()
+            print cached
+            return int(cached)
+
+    @property
+    def num_viewers(self,):
+        cached = cache.get("session_%s_num_viewers" % self.slug)
+        if cached is None:
+            result = service.data().realtime().get(ids="ga:76526399", metrics="ga:activeVisitors", filters="ga:pagePath=~/s/%s/.*" % self.slug).execute()
+            if 'rows' in result:
+                viewers = int(result['rows'][0][0])
+            else:
+                viewers = 0
+            cache.set("session_%s_num_viewers" % self.slug, viewers, 300)
+            return viewers
+        else:
+            return int(cached)
 
 class SessionView(models.Model):
     session = models.ForeignKey(AMASession, related_name='viewers')
     user = models.ForeignKey(User, related_name='views', null=True, blank=True)
-    session_key = models.CharField(max_length=256, blank=True, null=True)
     timestamp = models.DateTimeField(auto_now = True)
 
 class AMAQuestionManager(models.Manager):
     def get_query_set(self):
         return super(AMAQuestionManager, self).get_query_set().extra(select={
-            "score":"""
-            SELECT IFNULL(SUM(value), 0)
-            FROM questions_amavote
-            WHERE questions_amavote.question_id = questions_amaquestion.id
-            """,
             "num_comments":"""
             SELECT COUNT(*)
             FROM questions_comment
@@ -266,10 +271,12 @@ class AMAQuestion(models.Model):
     
     session = models.ForeignKey(AMASession, related_name='questions')
 
-    answer = models.OneToOneField('AMAAnswer', null=True, related_name="question")
+    answer = models.OneToOneField('AMAAnswer', null=True, related_name="question", blank=True)
     
     created = models.DateTimeField(auto_now_add=True, editable=False)
     edited = models.DateTimeField(auto_now=True, editable=False)
+
+    score = models.IntegerField(default=0)
     
     '''@property
     def vote(self):

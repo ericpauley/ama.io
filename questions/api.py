@@ -46,10 +46,11 @@ from tweepy.error import TweepError
 from django.templatetags.static import static
 import allauth.account.forms
 import pytz
+from django.db.models import F
 
 class CachedResource(ModelResource):
     def wrap_view(self, view):
-        return cache_page(Resource.wrap_view(self, view),60)
+        return cache_page(Resource.wrap_view(self, view),timeout=60)
 
 class Action():
 
@@ -67,11 +68,11 @@ def p(x):
 
 class UserResource(ModelResource):
     display = fields.CharField(readonly = True)
-    score = fields.IntegerField(readonly = True, default=0)
-    questions_asked = fields.IntegerField(readonly=True)
-    questions_answered = fields.IntegerField(readonly=True)
-    sessions_viewed = fields.IntegerField(readonly=True)
-    #activities = fields.ListField(readonly=True, use_in=lambda b:p(b.related_name) is None)
+    score = fields.IntegerField(readonly = True, default=0, use_in=lambda b:b.request.GET.get('full_pages'))
+    questions_asked = fields.IntegerField(readonly=True, use_in=lambda b:b.request.GET.get('full_pages'))
+    questions_answered = fields.IntegerField(readonly=True, use_in=lambda b:b.request.GET.get('full_pages'))
+    sessions_viewed = fields.IntegerField(readonly=True, use_in=lambda b:b.request.GET.get('full_pages'))
+    activities = fields.ListField(readonly=True, use_in=lambda b:b.request.GET.get('full_pages'))
     twitter = fields.CharField(readonly=True)
     desc = fields.CharField(readonly=True)
     image = fields.CharField(readonly=True)
@@ -320,21 +321,13 @@ class UserResource(ModelResource):
         return self.create_response(request, { 'success': False, 'reason': "Dup User"}, HttpNotFound)
     
 
-class SessionResource(CachedResource):
+class SessionResource(ModelResource):
     owner = fields.ForeignKey(UserResource, 'owner', readonly=True, full=True)
-    questions = fields.ToManyField('questions.api.QuestionResource', lambda bundle:bundle.obj.questions.all(), readonly=True, null=True, use_in='detail', full=True, related_name='session')
-    num_viewers = fields.IntegerField(readonly=True)
-    views = fields.IntegerField(readonly=True)
-    time = fields.DateField()
+    num_viewers = fields.IntegerField(attribute="num_viewers", readonly=True)
+    views = fields.IntegerField(attribute="num_views", readonly=True)
     image = fields.CharField(attribute="auto_image", readonly=True, default="")
     state = fields.CharField(attribute="state", readonly=True)
     twitter = fields.CharField(readonly=True, null=True)
-
-    def dehydrate_time(self, bundle):
-        return timezone.now()
-
-    def dehydrate_views(self, bundle):
-        return bundle.obj.viewers.count()
 
     def dehydrate_twitter(self, bundle):
         for account in bundle.obj.owner.socialaccount_set.all():
@@ -342,13 +335,13 @@ class SessionResource(CachedResource):
         return None
 
     class Meta:
-        queryset = AMASession.objects.all()
+        queryset = AMASession.objects.all().select_related("owner__meta").prefetch_related("owner__socialaccount_set")
         resource_name = 'session'
         authorization = SessionAuthorization()
         filtering = {
             'owner': ALL_WITH_RELATIONS,
             'start_time': ALL,
-            'end_time': ALL
+            'end_time': ALL,
         }
         validation = FormValidation(form_class=SessionForm)
         cache = SimpleCache(timeout=30)
@@ -356,9 +349,6 @@ class SessionResource(CachedResource):
     def dehydrate(self, bundle):
         bundle.obj.mark_viewed(bundle.request)
         return bundle
-
-    def dehydrate_num_viewers(self, bundle):
-        return bundle.obj.viewers.filter(timestamp__gte=timezone.now() - datetime.timedelta(seconds=40)).count()
 
     def prepend_urls(self):
         return [
@@ -594,35 +584,35 @@ class QuestionResource(ModelResource):
 
     answer = fields.OneToOneField('questions.api.AnswerResource', 'answer', related_name='question', null=True, full=True)
     session = fields.OneToOneField('questions.api.SessionResource', 'session', null=True, readonly=True)
-    #comments = fields.ToManyField('questions.api.CommentResource', readonly=True, attribute='comments', null=True, use_in="detail", full=True, related_name='question')
-    #html = fields.CharField(use_in = "detail")
-    score = fields.IntegerField(attribute='score', default=0, readonly=True)
     asker = fields.ForeignKey('questions.api.UserResource', 'asker', readonly=True, full=True)
     target = fields.ForeignKey('questions.api.UserResource', 'target', readonly=True, full=True)
-    answered = fields.BooleanField(readonly=True)
-    vote = fields.IntegerField(attribute = "vote", default = 0, readonly=True)
     num_comments = fields.IntegerField(attribute="num_comments", readonly=True, default=0)
 
-    def dehydrate_answered(self, bundle):
-        try:
-            return bundle.obj.answer is not None
-        except AMAAnswer.DoesNotExist:
-            return False
-
     class Meta:
-        queryset = AMAQuestion.objects.all().order_by("-starred", "-score")
+        queryset = AMAQuestion.objects.all().order_by("-starred", "-score").select_related("answer", "asker__meta", "target__meta", "session") \
+            .prefetch_related('asker__socialaccount_set','target__socialaccount_set')
         resource_name = 'question'
         filtering = {
             'session': ALL_WITH_RELATIONS,
             'answer': ALL_WITH_RELATIONS,
             'comments': ALL_WITH_RELATIONS,
-            'score': ALL
+            'score': ALL,
+            'starred': ALL
         }
         authorization = QuestionAuthorization()
-        cache = SimpleCache(timeout=30)
 
-    def dehydrate_html(self, bundle):
-        return render_to_string("question.html", {'question': bundle.obj}, RequestContext(bundle.request))
+    def get_object_list(self, request):
+        if request.user.is_anonymous():
+            return super(QuestionResource, self).get_object_list(request)
+        else:
+            return super(QuestionResource, self).get_object_list(request).extra(select = {
+                "vote" : """
+                SELECT value
+                FROM questions_amavote
+                WHERE questions_amavote.question_id = questions_amaquestion.id
+                AND questions_amavote.user_id = (%s)
+                """
+            }, select_params=[request.user.id])
 
     def prepend_urls(self):
         return [
@@ -635,13 +625,7 @@ class QuestionResource(ModelResource):
             url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/star%s$" %
                 (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('star'), name="api_star"),
-            url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/comments%s$" %
-                (self._meta.resource_name, trailing_slash()),
-                self.wrap_view('get_comments'), name="api_comments"),
         ]
-
-    def get_comments(self, request, pk, **kwargs):
-        return render(request, "comments.html")
 
     def submit_answer(self, request, pk, **kwargs):
         if not request.user.is_authenticated():
@@ -748,10 +732,16 @@ class QuestionResource(ModelResource):
                 'success': False,
                 'reason': 'bad_vote',
                 }, HttpBadRequest )
-
-        AMAVote.objects.filter(question__pk=pk, user__username=request.user.username).delete()
+        question=AMAQuestion.objects.get(pk=pk)
+        question.score = F("score")
+        for current in AMAVote.objects.filter(question__pk=pk, user__username=request.user.username):
+            current.delete()
+            question.score -= current.value
         if vote != 0:
-            AMAVote(user=request.user, question=AMAQuestion.objects.get(pk=pk), value=vote).save()
+            vote = AMAVote(user=request.user, question=AMAQuestion.objects.get(pk=pk), value=vote)
+            question.score += vote.value
+            vote.save()
+        question.save()
         return self.create_response(request, {
             'success': True,
             'score': AMAQuestion.objects.get(pk=pk).score

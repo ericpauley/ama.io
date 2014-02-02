@@ -67,7 +67,7 @@ def session(request, slug):
     if slug.lower() != slug:
         redirect("session", slug.lower())
     try:
-        s = AMASession.objects.get(slug=slug.lower())
+        s = AMASession.objects.select_related('owner__meta').prefetch_related("owner__socialaccount_set").get(slug=slug.lower())
         s.mark_viewed(request)
         answered = s.get_marked_questions(request).exclude(answer=None)
         unanswered = s.get_marked_questions(request).filter(answer=None)

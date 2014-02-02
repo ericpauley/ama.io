@@ -12,6 +12,9 @@ GLOBALS['state'] = '{{session.state}}'
 {%if session.owner == user%}
 GLOBALS['owner'] = true
 {%endif%}
+{%if votes%}
+GLOBALS['votes'] = {{votes|safe}}
+{%endif%}
 </script>
 <meta property="og:title" content="{{session.title}}" />
 <meta property="og:description" content="{{session.desc}}" />

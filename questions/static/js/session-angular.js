@@ -14,7 +14,7 @@ sessionApp.controller('ProfileCtrl', function ProfileCtrl($scope, $http, $timeou
     $scope.tab = "questions"
 });
 
-sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeout, $rootScope, $sce, $cookieStore) {
+sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeout, $rootScope, $sce, $cookieStore, $location, $routeParams) {
     $scope.toApply = null;
 
     function repeat() {
@@ -43,6 +43,8 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeou
     $scope.refresh = true;
     $scope.state.question = $cookieStore.get("askDrafts." + GLOBALS['session']) || "";
     $cookieStore.remove("askDrafts." + GLOBALS['session']);
+    $scope.state.questions = []
+    $scope.votes = GLOBALS['votes']
 
     function reapply() {
         $timeout(reapply, 1000);
@@ -89,23 +91,23 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeou
     }
 
     $scope.vote = function(question, val) {
-        var old = question.vote;
-        if (question.vote == val) {
-            question.vote = 0;
+        var old = $scope.votes[question.id.toString()] || 0
+        if (old == val) {
+            $scope.votes[question.id.toString()] = 0;
         } else {
-            question.vote = val;
+            $scope.votes[question.id.toString()] = val;
         }
         $http({
             method: 'POST',
             url: question.resource_uri + "vote/",
             data: $.param({
-                vote: question.vote
+                vote: $scope.votes[question.id.toString()]
             }),
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
         });
-        question.score += question.vote - old;
+        question.score += $scope.votes[question.id.toString()] - old;
     }
 
     $scope.delete = function(question, index) {
@@ -113,8 +115,16 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeou
             method: 'DELETE',
             url: question.resource_uri,
         }).success(function() {
-            $scope.session.questions.splice($scope.session.questions.indexOf(question), 1);
+            $scope.state.questions.splice($scope.state.questions.indexOf(question), 1);
         });
+    }
+
+    $scope.loadMore = function() {
+        $http.get($scope.state.next).success(function(data) {
+            $scope.state.next = data.meta.next
+            $scope.state.questions = $scope.state.questions.concat(data.objects)
+        })
+        $scope.state.next = null
     }
 
     $scope.star = function(question, val) {
@@ -148,7 +158,12 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeou
             }
         }).
         success(function(data, status, headers, config) {
-            $scope.session.questions.unshift(data.question);
+            if ($scope.state.tab == "unanswered") {
+                $scope.state.questions.unshift(data.question);
+            } else {
+                $scope.state.newQuestion = data.question
+                $location.path("/s/" + $scope.sessionId + "/unanswered/")
+            }
             $scope.state.question = "";
             if (!data.staff) {
                 $scope.state.askTimer = moment().add('minutes', 1).valueOf();
@@ -210,7 +225,7 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeou
     }
 
     $rootScope.$on("tabChange", function(event, args) {
-        angular.extend($scope, args)
+        $scope.state.tab = args.tab
         $scope.state.answering = false
     })
 

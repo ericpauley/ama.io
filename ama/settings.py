@@ -126,7 +126,39 @@ MIDDLEWARE_CLASSES = (
     'htmlmin.middleware.HtmlMinifyMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'questions.middleware.TimezoneMiddleware',
+    'ama.settings.NonHtmlDebugToolbarMiddleware',
 )
+
+from django.http import HttpResponse
+import json 
+
+class NonHtmlDebugToolbarMiddleware(object):
+    """
+    The Django Debug Toolbar usually only works for views that return HTML.
+    This middleware wraps any non-HTML response in HTML if the request
+    has a 'debug' query parameter (e.g. http://localhost/foo?debug)
+    Special handling for json (pretty printing) and
+    binary data (only show data length)
+    """
+
+    @staticmethod
+    def process_response(request, response):
+        if request.GET.get('debug') == '':
+            if response['Content-Type'] == 'application/octet-stream':
+                new_content = '<html><body>Binary Data, ' \
+                    'Length: {}</body></html>'.format(len(response.content))
+                response = HttpResponse(new_content)
+            elif response['Content-Type'] != 'text/html':
+                content = response.content
+                try:
+                    json_ = json.loads(content)
+                    content = json.dumps(json_, sort_keys=True, indent=2)
+                except ValueError:
+                    pass
+                response = HttpResponse('<html><body><pre>{}'
+                                        '</pre></body></html>'.format(content))
+
+        return response
 
 ROOT_URLCONF = 'ama.urls'
 
@@ -144,7 +176,6 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.markup',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -160,6 +191,7 @@ INSTALLED_APPS = (
     'south',
     'easy_thumbnails',
     'haystack',
+    'debug_toolbar',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -234,26 +266,6 @@ def custom_show_toolbar(request):
         return True
     return False
 
-DEBUG_TOOLBAR_CONFIG = {
-    'SHOW_TOOLBAR_CALLBACK':'ama.settings.custom_show_toolbar',
-    'INTERCEPT_REDIRECTS':False
-}
-
-DEBUG_TOOLBAR_PANELS = [
-    'debug_toolbar.panels.versions.VersionsPanel',
-    'debug_toolbar.panels.timer.TimerPanel',
-    'debug_toolbar.panels.settings.SettingsPanel',
-    'debug_toolbar.panels.headers.HeadersPanel',
-    'debug_toolbar.panels.request.RequestPanel',
-    'debug_toolbar.panels.sql.SQLPanel',
-    'debug_toolbar.panels.staticfiles.StaticFilesPanel',
-    'debug_toolbar.panels.templates.TemplatesPanel',
-    'debug_toolbar.panels.cache.CachePanel',
-    'debug_toolbar.panels.signals.SignalsPanel',
-    'debug_toolbar.panels.logging.LoggingPanel',
-    'debug_toolbar.panels.redirects.RedirectsPanel',
-]
-
 ENV = dict(os.environ)
 
 TWITTER_CONSUMER_KEY = ENV.get("TWITTER_CONSUMER_KEY")
@@ -261,6 +273,8 @@ TWITTER_CONSUMER_SECRET = ENV.get("TWITTER_CONSUMER_SECRET")
 
 TWITTER_ACCESS_TOKEN = ENV.get("TWITTER_ACCESS_TOKEN")
 TWITTER_ACCESS_TOKEN_SECRET = ENV.get("TWITTER_ACCESS_TOKEN_SECRET")
+
+GOOGLE_KEY = ENV.get("GOOGLE_KEY")
 
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 
