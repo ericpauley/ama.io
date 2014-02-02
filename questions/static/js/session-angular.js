@@ -28,7 +28,7 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeou
             } else {
                 $scope.toApply = data;
             }
-            ga("event", "keepAlive", "keepAlive", "keepAlive", 0)
+            ga("send", "event", "keepAlive", "keepAlive")
         });
     }
     repeat();
