@@ -99,7 +99,7 @@
 						</div>
 					</div>
 				</div>
-				<div id="response" ng-if="question.answered || state.answering == question.id">
+				<div id="response" ng-if="question.answer || state.answering == question.id">
 					<div class="user-picture-right">
 						<a ng-href="/u/{{session.owner.username}}" target="_self">
 							<img class="circular" ng-src="{{question.target.image}}" width="75" height="75" />
@@ -108,8 +108,8 @@
 					<div id="main">
 						<div id="top-row">
 							<a id="user-name" ng-href="/u/{{session.owner.username}}" target="_self">{{session.owner.display}}</a>
-							<div id="timestamp" ng-if="question.answered">{{question.answer.created | countdown}}</div>
-							<a class="clickable" ng-if="state.owner && question.answered" ng-click="answer(question, ''); $event.stopPropagation()">
+							<div id="timestamp" ng-if="question.answer.created">{{question.answer.created | countdown}}</div>
+							<a class="clickable" ng-if="state.owner && question.answer.created" ng-click="answer(question, ''); $event.stopPropagation()">
 								<i class="fa fa-trash-o"></i>&nbsp;delete
 							</a>
 						</div>
