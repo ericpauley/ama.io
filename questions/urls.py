@@ -19,7 +19,7 @@ urlpatterns = patterns('',
     url(r'^requests/$', views.requests, name="requests"),
     url(r'^requests/(?P<page>\d{1,5})/$', views.requests, name="requests"),
     url(r'^s/(?P<slug>\w{4})/.*$', views.session, name="session"),
-    url(r'^u/(?P<username>[\w\-]{3,})/$', views.user, name="user"),
+    url(r'^u/(?P<username>[\w\-\_]{3,})/$', views.user, name="user"),
     url(r'^q/(?P<question>\d{1,5})', views.question, name="question"),
     url(r'^api/', include(v1_api.urls)),
 

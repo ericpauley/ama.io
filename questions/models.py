@@ -45,6 +45,7 @@ class UserMeta(models.Model):
     user = AutoOneToOneField(User, primary_key=True, related_name="meta")
     verified = models.BooleanField(default=False)
     new = models.BooleanField(default=True)
+    image = ThumbnailerImageField(upload_to="user_images", resize_source=dict(size=(220, 220), crop=True), null= True, blank = True)
 
     def answers(self):
         return AMAAnswer.objects.filter(question__target=self)
@@ -194,7 +195,13 @@ class AMASession(SluggedModel):
     def num_views(self):
         cached = cache.get("session_%s_num_views" % self.slug)
         if cached is None:
-            result = service.data().ga().get(ids="ga:76526399",start_date="1000daysAgo", end_date="today", metrics="ga:visits", filters="ga:pagePath=~/s/%s/.*" % self.slug).execute()
+            for i in range(3):
+                try:
+                    result = service.data().ga().get(ids="ga:76526399",start_date="1000daysAgo", end_date="today", metrics="ga:visits", filters="ga:pagePath=~/s/%s/.*" % self.slug).execute()
+                    break
+                except:
+                    if i == 2:
+                        return self.views
             if 'rows' in result:
                 views = int(result['rows'][0][0])
             else:
@@ -212,7 +219,12 @@ class AMASession(SluggedModel):
         if self.running:
             cached = cache.get("session_%s_num_viewers" % self.slug)
             if cached is None:
-                result = service.data().realtime().get(ids="ga:76526399", metrics="ga:activeVisitors", filters="ga:pagePath=~/s/%s/.*" % self.slug).execute()
+                for i in range(3):
+                    try:
+                        result = service.data().realtime().get(ids="ga:76526399", metrics="ga:activeVisitors", filters="ga:pagePath=~/s/%s/.*" % self.slug).execute()
+                    except:
+                        if i == 2:
+                            return 0
                 if 'rows' in result:
                     viewers = int(result['rows'][0][0])
                 else:

@@ -48,7 +48,7 @@ def requests(request, page="1"):
 
 def user(request, username):
     try:
-        user = User.objects.get(username=username.lower())
+        user = User.objects.get(username__iexact=username.lower())
     except User.DoesNotExist:
         raise Http404
     past = AMASession.objects.past().filter(owner=user)[:4]
