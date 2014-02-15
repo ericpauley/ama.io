@@ -215,15 +215,14 @@ class UserResource(ModelResource):
                     'reason': 'reserved',
                 }, HttpConflict)
 
-        user = User.objects.create_user(username, email, password)
-        allauth.account.utils.setup_user_email(request, user, [EmailAddress(
+        new_user = User.objects.create_user(username, email, password)
+        allauth.account.utils.setup_user_email(request, new_user, [EmailAddress(
                                                                     email=email,
                                                                     primary=True,
                                                                     verified=False)])
-        allauth.account.utils.send_email_confirmation(request, user, True)
-        user.save()
-        user = authenticate(username=username, password=password)
-        login(request, user)
+        allauth.account.utils.send_email_confirmation(request, new_user, True)
+        new_user = authenticate(username=username, password=password)
+        login(request, new_user)
         return self.create_response(request, {
             'success': True
         })
