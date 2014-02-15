@@ -231,6 +231,8 @@ class UserResource(ModelResource):
             return self.create_response(request, {
                 'success': False,
                 'reason': 'error',
+                'user': str(user),
+                'active': str(user.is_active)
                 }, HttpApplicationError )
 
 
