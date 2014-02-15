@@ -221,19 +221,12 @@ class UserResource(ModelResource):
                                                                     primary=True,
                                                                     verified=False)])
         allauth.account.utils.send_email_confirmation(request, user, True)
+        user.save()
         user = authenticate(username=username, password=password)
-        if user and user.is_active:
-            login(request, user)
-            return self.create_response(request, {
-                'success': True
-            })
-        else:
-            return self.create_response(request, {
-                'success': False,
-                'reason': 'error',
-                'user': str(user),
-                'active': str(user.is_active)
-                }, HttpApplicationError )
+        login(request, user)
+        return self.create_response(request, {
+            'success': True
+        })
 
 
     def login(self, request, **kwargs):
