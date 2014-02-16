@@ -216,12 +216,12 @@ class UserResource(ModelResource):
                 }, HttpConflict)
 
         new_user = User.objects.create_user(username, email, password)
+        user = authenticate(username=username, password=password)
         allauth.account.utils.setup_user_email(request, new_user, [EmailAddress(
                                                                     email=email,
                                                                     primary=True,
                                                                     verified=False)])
         allauth.account.utils.send_email_confirmation(request, new_user, True)
-        user = authenticate(username=username, password=password)
         if user:
             if user.is_active:
                 login(request, user)
@@ -237,6 +237,7 @@ class UserResource(ModelResource):
             return self.create_response(request, {
                 'success': False,
                 'reason': 'incorrect',
+                'info': repr(user),
                 }, HttpUnauthorized )
 
 
