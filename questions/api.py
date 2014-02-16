@@ -222,10 +222,22 @@ class UserResource(ModelResource):
                                                                     verified=False)])
         allauth.account.utils.send_email_confirmation(request, new_user, True)
         new_user = authenticate(username=username, password=password)
-        login(request, new_user)
-        return self.create_response(request, {
-            'success': True
-        })
+        if user:
+            if user.is_active:
+                login(request, user)
+                return self.create_response(request, {
+                    'success': True
+                })
+            else:
+                return self.create_response(request, {
+                    'success': False,
+                    'reason': 'disabled',
+                    }, HttpForbidden )
+        else:
+            return self.create_response(request, {
+                'success': False,
+                'reason': 'incorrect',
+                }, HttpUnauthorized )
 
 
     def login(self, request, **kwargs):
