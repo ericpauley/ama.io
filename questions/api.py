@@ -221,7 +221,7 @@ class UserResource(ModelResource):
                                                                     primary=True,
                                                                     verified=False)])
         allauth.account.utils.send_email_confirmation(request, new_user, True)
-        new_user = authenticate(username=username, password=password)
+        user = authenticate(username=username, password=password)
         if user:
             if user.is_active:
                 login(request, user)
