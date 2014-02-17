@@ -216,6 +216,7 @@ class UserResource(ModelResource):
                 }, HttpConflict)
 
         new_user = User.objects.create_user(username, email, password)
+        new_user.save()
         user = authenticate(username=username, password=password)
         allauth.account.utils.setup_user_email(request, new_user, [EmailAddress(
                                                                     email=email,
