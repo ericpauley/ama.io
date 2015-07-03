@@ -802,7 +802,7 @@ class RequestResource(ModelResource):
         if request.user.is_authenticated():
             return super(RequestResource, self).get_object_list(request).extra(select = {
                 "vote" : """
-                SELECT IFNULL(SUM(value), 0)
+                SELECT COALESCE(SUM(value), 0)
                 FROM questions_requestvote
                 WHERE questions_requestvote.request_id = questions_request.id
                 AND questions_requestvote.user_id = (%d)

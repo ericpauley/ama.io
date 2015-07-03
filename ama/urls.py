@@ -2,7 +2,6 @@ from django.conf.urls import patterns, include, url
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
-admin.autodiscover()
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -24,3 +23,5 @@ urlpatterns = patterns('',
     url(r'^accounts/', include('allauth.urls')),
     url(r'^search/', include('haystack.urls')),
 )+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+admin.autodiscover()

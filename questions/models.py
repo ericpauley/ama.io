@@ -350,7 +350,7 @@ class RequestManager(models.Manager):
     def get_query_set(self):
         return super(RequestManager, self).get_query_set().extra(select={
             "score":"""
-            SELECT IFNULL(SUM(value), 0) + questions_request.vote_weight
+            SELECT COALESCE(SUM(value), 0) + questions_request.vote_weight
             FROM questions_requestvote
             WHERE questions_requestvote.request_id = questions_request.id
             """
@@ -361,7 +361,7 @@ class RequestManager(models.Manager):
         if user.is_authenticated():
             return answered.extra(select = {
                 "vote" : """
-                SELECT IFNULL(value, 0)
+                SELECT COALESCE(value, 0)
                 FROM questions_requestvote
                 WHERE questions_requestvote.request_id = questions_request.id
                 AND questions_requestvote.user_id = %s
