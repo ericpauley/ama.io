@@ -24,5 +24,5 @@ django-debug-toolbar-template-timings
 django-htmlmin
 pytz==2013d
 tweepy
-google-api-python-client
+google-api-python-client==1.3.2
 pyopenssl
