@@ -55,7 +55,7 @@
 		<input id="signup-email" placeholder="Email" type="text" ng-model="email"/>
 		<input id="signup-username" placeholder="Username" type="text" ng-model="username"/>
 		<input id="signup-password" placeholder="Password" type="password" ng-model="password"/>
-		<input id="signup-confirm-password" placeholder="Confirm password" type="password" ng-model="confirm"/>	
+		<input id="signup-confirm-password" placeholder="Confirm password" type="password" ng-model="confirm"/>
 		<input class="lightbox-button" type="submit" value="Go" ng-disabled="working"/>
 		<div class="lightbox-bottom-link">
 			<a href="#signin" rel="leanModal" class="lightbox-bottom-link" id="signup-bottom">
@@ -126,9 +126,9 @@
 	</div>
 	<div class="lightbox-content">
 		<input id="email-or-username" placeholder="Twitter Username" type="text" ng-model="username"/>
-		<div id="send-tweet" style="dislay:none">
+		<!--<div id="send-tweet" style="dislay:none">
 			<input id="checkbox" value="Tweet" type="checkbox" ng-model="tweet">  Send them a tweet?
-		</div>
+		</div>-->
 		<input class="lightbox-button" type="submit" ng-disabled="working" value="Submit" ng-if="!tweet"/>
 		<input class="lightbox-button" type="submit" ng-disabled="working" value="Submit and Tweet" ng-if="tweet"/>
 	</div>
