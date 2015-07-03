@@ -3,7 +3,7 @@
 import os
 import tweepy
 
-DEBUG = True
+DEBUG = False
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -31,8 +31,6 @@ DATABASES = {
     }
 }
 
-DATABASE_ROUTERS = ['questions.routers.MasterSlaveRouter']
-
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_SUBJECT_PREFIX = "[AMA] "
 SERVER_EMAIL = "noreply@ama.io"
@@ -44,7 +42,7 @@ TASTYPIE_DATETIME_FORMATTING = 'rfc-2822'
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ['localhost', 'ama.io', '104.236.109.244']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -198,7 +196,7 @@ AUTHENTICATION_BACKENDS = (
     # Default backend
     'django.contrib.auth.backends.ModelBackend',
     # `allauth` specific authentication methods, such as login by e-mail
-    # "allauth.account.auth_backends.AuthenticationBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -243,8 +241,6 @@ TWITTER_CONSUMER_SECRET = ENV.get("TWITTER_CONSUMER_SECRET")
 
 TWITTER_ACCESS_TOKEN = ENV.get("TWITTER_ACCESS_TOKEN")
 TWITTER_ACCESS_TOKEN_SECRET = ENV.get("TWITTER_ACCESS_TOKEN_SECRET")
-
-GOOGLE_KEY = ENV.get("GOOGLE_KEY")
 
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 
