@@ -1,80 +1,80 @@
 .question{
-	margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 
 .question-area60{
-	margin-left: 60px;
+    margin-left: 60px;
 }
 
 .question-area110{
-	margin-left: 110px;
+    margin-left: 110px;
 }
 
 .question-options{
-	float: left;
-	padding: 10px 10px 0 10px;
+    float: left;
+    padding: 10px 10px 0 10px;
 }
 
 #comment-show{
-	padding: 10px 0 10px 10px;
+    padding: 10px 0 10px 10px;
 }
 
 .comment-wrapper{
-	padding: 0 10px 0px 10px;
+    padding: 0 10px 0px 10px;
 }
 
 .comment-form-wrapper{
-	margin-bottom: 30px;
+    margin-bottom: 30px;
 }
 
 .comment-form{
-	width: 97.3%;
-	max-width: 97.3%;
-	height: 75px;
+    width: 97.3%;
+    max-width: 97.3%;
+    height: 75px;
 }
 
 .add-comment{
-	float: right;
+    float: right;
 }
 
 .view-more{
-	margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 .no-comments{
-	margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 .star{
-	float: right;
-	margin: 10px 10px 0 0;
+    float: right;
+    margin: 10px 10px 0 0;
 }
 
 .permalink{
-	float: right;
-	margin: 10px 10px 0 0;
+    float: right;
+    margin: 10px 10px 0 0;
 }
 
 #ask-question{
-	width: 80%;
+    width: 80%;
 }
 
 #session-create-title{
-	width: 50%;
+    width: 50%;
 }
 
 #session-desc{
-	width: 97%;
+    width: 97%;
 }
 
 .answer-area{
-	text-align: center;
+    text-align: center;
 }
 
 .answer-textarea{
-	width: 80%;
-	max-width: 90%;
-	height: 100px;
+    width: 80%;
+    max-width: 90%;
+    height: 100px;
 }
 
 .answer-confirm-btn{
@@ -82,41 +82,40 @@
 }
 
 .response-area{
-	font-size: 15px;
-	padding-left: 25px;
+    font-size: 15px;
+    padding-left: 25px;
 }
 
 @media (min-width: 768px){
 .ask-btn{
-	margin-left: 10px;
-	width: 65px;
+    margin-left: 10px;
+    width: 65px;
 }
 .ask-btn-bottom{
-	display: none;
+    display: none;
 }
 }
 
 @media (max-width: 767px){
 .ask-btn{
-	display: none;
+    display: none;
 }
 
 .ask-btn-bottom{
-	margin-left: -40%;
-	left: 50%;
-	position: fixed;
-	bottom: 10px;
-	display: block;
-	width: 80%;
-	padding-right: 0;
-	padding-left: 0;
-	-webkit-box-sizing: border-box;
-		-moz-box-sizing: border-box;
+    margin-left: -40%;
+    left: 50%;
+    position: fixed;
+    bottom: 10px;
+    display: block;
+    width: 80%;
+    padding-right: 0;
+    padding-left: 0;
+    -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
          box-sizing: border-box;
 }
 
 .support{
-	display: none;
-}
+    display: none;
 }
 
