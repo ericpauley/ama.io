@@ -1,3 +1,14 @@
+var getAbsoluteUrl = (function() {
+	var a;
+
+	return function(url) {
+		if(!a) a = document.createElement('a');
+		a.href = url;
+
+		return a.href;
+	};
+})();
+
 var sessionApp = angular.module('sessionApp', ['ngRoute', 'ngSanitize', 'homepage', 'ngCookies']);
 
 sessionApp.controller('ProfileCtrl', function ProfileCtrl($scope, $http, $timeout, $rootScope, $sce) {
@@ -67,7 +78,7 @@ sessionApp.controller('SessionCtrl', function SessionCtrl($scope, $http, $timeou
                 method: 'feed',
                 name: $scope.session.title,
                 link: $('<a href="/s/' + $scope.session.slug + '"></a>')[0].href,
-                picture: $scope.session.image,
+                picture: getAbsoluteUrl($scope.session.image),
                 caption: $scope.session.name,
                 description: $scope.session.desc
             },
